@@ -16,14 +16,28 @@
         "url": "https://github.com/RechInformatica/rech-editor-internal.git"
     },
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "*"
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [
             {
-                "command": "extension.sayHello",
-                "title": "Hello World"
+                "command": "extension.openFontesTrunk",
+                "title": "openFontesTrunk"
+            },
+            {
+                "command": "extension.openScripts",
+                "title": "openScripts"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "extension.openFontesTrunk",
+                "key": "ctrl+shift+o"
+            },
+            {
+                "command": "extension.openScripts",
+                "key": "ctrl+shift+y"
             }
         ]
     },
