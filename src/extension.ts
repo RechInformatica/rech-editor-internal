@@ -18,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand('extension.sayHello', () => {
         // The code you place here will be executed every time your command is executed
         let editor = new Editor();
-        
+        console.log(editor.getPath());
         // Display a message box to the user
         vscode.window.showInformationMessage('Hello World!');
     });

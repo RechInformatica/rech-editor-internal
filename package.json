@@ -34,12 +34,14 @@
         "postinstall": "node ./node_modules/vscode/bin/install",
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
+    "dependencies": {
+        "rech-editor-vscode": "file:../rech-editor-vscode"
+    },
     "devDependencies": {
         "typescript": "^2.6.1",
         "vscode": "^1.1.6",
         "tslint": "^5.8.0",
         "@types/node": "^7.0.43",
-        "@types/mocha": "^2.2.42",
-        "rech-editor-vscode": "file:../rech-editor-vscode"
+        "@types/mocha": "^2.2.42"
     }
 }
