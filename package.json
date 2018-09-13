@@ -28,6 +28,10 @@
             {
                 "command": "extension.openScripts",
                 "title": "openScripts"
+            },
+            {
+                "command": "extension.openWc",
+                "title": "openWc"
             }
         ],
         "keybindings": [
@@ -38,6 +42,10 @@
             {
                 "command": "extension.openScripts",
                 "key": "ctrl+shift+y"
+            },
+            {
+                "command": "extension.openWc",
+                "key": "alt+o"
             }
         ]
     },
