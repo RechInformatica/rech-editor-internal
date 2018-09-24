@@ -38,12 +38,25 @@ export default class FileOpener {
    * Opens file from current line
    */
   public openFromCurrentLine() {
-    var editor = new Editor();
-    var line = editor.getCurrentLine();
-    this.matcher.getFilePathsFromLine(line).forEach((match) => {
+    var text = this.retrieveTargetText();
+    var matches = this.matcher.getFilePathsFromLine(text);
+    if (matches && matches.length > 0) {
+      var match = matches[0];
       let resolvedPath = this.resolvePathForFile(match.file);
-      editor.openFile(resolvedPath);
-    });
+      new Editor().openFile(resolvedPath);
+    }
+  }
+
+  /**
+   * Retrieves the target text for the filename extraction
+   */
+  private retrieveTargetText() {
+     var editor = new Editor();
+     var selection = editor.getSelectionBuffer();
+     if (selection && selection.length > 0 && selection[0] !== "") {
+       return selection[0];
+     }
+     return editor.getCurrentLine();
   }
 
   /**
@@ -51,7 +64,7 @@ export default class FileOpener {
    * 
    * @param file target file
    */
-  resolvePathForFile(file: string) {
+  private resolvePathForFile(file: string) {
     var resolvedPath = "";
     this.paths.forEach((currentPath) => {
       if (resolvedPath === "") {
@@ -65,4 +78,5 @@ export default class FileOpener {
   }
 
 };
+
 
