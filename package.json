@@ -32,6 +32,10 @@
             {
                 "command": "extension.openWc",
                 "title": "openWc"
+            },
+            {
+                "command": "extension.openThis",
+                "title": "openThis"
             }
         ],
         "keybindings": [
@@ -46,6 +50,10 @@
             {
                 "command": "extension.openWc",
                 "key": "alt+o"
+            },
+            {
+                "command": "extension.openThis",
+                "key": "alt+f2"
             }
         ]
     },

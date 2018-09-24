@@ -4,6 +4,7 @@
 import * as vscode from 'vscode';
 import Editor      from 'rech-editor-vscode';
 import WorkingCopy from './wc/WorkingCopy';
+import FileOpener from './open/FileOpener';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -17,7 +18,12 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('extension.openWc', () => {
         showOpenDialog(WorkingCopy.current().getSourcesDir());
     }));
-
+    context.subscriptions.push(vscode.commands.registerCommand('extension.openThis', () => {
+        var fileOpener = new FileOpener();
+        fileOpener.addPathForFileSearching("F:\\FONTES\\");
+        fileOpener.addPathForFileSearching("F:\\BAT\\");
+        fileOpener.openFromCurrentLine();
+    }));
 }
 
 /**
