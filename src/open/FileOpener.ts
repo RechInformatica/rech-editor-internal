@@ -37,13 +37,16 @@ export default class FileOpener {
   /**
    * Opens file from current line
    */
-  public openFromCurrentLine() {
+  openFromCurrentLine() {
     var text = this.retrieveTargetText();
     var matches = this.matcher.getFilePathsFromLine(text);
     if (matches && matches.length > 0) {
       var match = matches[0];
       let resolvedPath = this.resolvePathForFile(match.file);
-      new Editor().openFile(resolvedPath);
+      // Opens the specified file
+      new Editor().openFile(resolvedPath, () => {
+        new Editor().setCursor(match.row - 1, match.column);
+      });
     }
   }
 

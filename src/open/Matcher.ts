@@ -33,15 +33,6 @@ export default class Matcher {
           return this.buildMatch(match.replace(/['\"]/g, ""));
       }));
     }
-    // Remove duplicates
-    var obj : { [key: string]: Match } = {};
-    for ( var i=0, len=result.length; i < len; i++ ) {
-      obj[result[i].file] = result[i];
-    }
-    result = new Array();
-    for ( var key in obj ) {
-      result.push(obj[key]);
-    }
     return result;
   }
 
