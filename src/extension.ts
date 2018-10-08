@@ -2,8 +2,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Editor } from 'rech-editor-vscode';
+import { Editor, Executor } from 'rech-editor-vscode';
 import { WorkingCopy } from './wc/WorkingCopy';
+import { VSCodeSaver } from './save/VSCodeSaver';
 import { FileOpener } from './open/FileOpener';
 
 // this method is called when your extension is activated
@@ -24,6 +25,8 @@ export function activate(context: vscode.ExtensionContext) {
         fileOpener.addPathForFileSearching("F:\\BAT\\");
         fileOpener.openFromCurrentLine();
     }));
+    vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
+    vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
 }
 
 /**
