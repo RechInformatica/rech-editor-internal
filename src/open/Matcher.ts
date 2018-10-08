@@ -1,10 +1,10 @@
 'use babel';
-import Match from './match';
+import { Match } from './match';
 
 /**
  * File search matcher
  */
-export default class Matcher {
+export class Matcher {
 
   constructor() {
   }

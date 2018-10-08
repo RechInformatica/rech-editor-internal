@@ -1,7 +1,7 @@
 /**
  * File search match in the buffer
  */
-export default class Match {
+export class Match {
 
   /* File name */
   public file: string;

@@ -1,11 +1,11 @@
-import Editor from "rech-editor-vscode";
-import Matcher from "./matcher";
+import { Editor } from "rech-editor-vscode";
+import { Matcher} from "./matcher";
 import * as fs from 'fs';
 
 /**
  * Class for opening files on current line
  */
-export default class FileOpener {
+export class FileOpener {
 
   /* Paths for file searching */
   private paths: string[];
@@ -81,5 +81,3 @@ export default class FileOpener {
   }
 
 };
-
-

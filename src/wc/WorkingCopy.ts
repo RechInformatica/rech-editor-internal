@@ -1,7 +1,7 @@
 /**
  * Class for returning Working-Copy general information
  */
-export default class WorkingCopy {
+export class WorkingCopy {
 
     /** Name of the working-copy */
     name: string;
