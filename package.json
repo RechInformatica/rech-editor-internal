@@ -34,6 +34,10 @@
                 "title": "openWc"
             },
             {
+                "command": "extension.fonGrep",
+                "title": "fonGrep"
+            },
+            {
                 "command": "extension.openThis",
                 "title": "openThis"
             }
@@ -50,6 +54,10 @@
             {
                 "command": "extension.openWc",
                 "key": "alt+o"
+            },
+            {
+                "command": "extension.fonGrep",
+                "key": "ctrl+l"
             },
             {
                 "command": "extension.openThis",

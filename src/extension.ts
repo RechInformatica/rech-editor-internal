@@ -5,6 +5,7 @@ import * as vscode from 'vscode';
 import { Editor, Executor } from 'rech-editor-vscode';
 import { WorkingCopy } from './wc/WorkingCopy';
 import { VSCodeSaver } from './save/VSCodeSaver';
+import { FonGrep } from './fongrep/fongrep';
 import { FileOpener } from './open/FileOpener';
 
 // this method is called when your extension is activated
@@ -18,6 +19,14 @@ export function activate(context: vscode.ExtensionContext) {
     }));
     context.subscriptions.push(vscode.commands.registerCommand('extension.openWc', () => {
         showOpenDialog(WorkingCopy.current().getSourcesDir());
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.fonGrep', () => {
+        var editor = new Editor();
+        var fongrep = new FonGrep();
+        var text = editor.getSelectionBuffer()[0];
+        if (text == '')
+            text = editor.getCurrentWord();
+        fongrep.fonGrep(text);
     }));
     context.subscriptions.push(vscode.commands.registerCommand('extension.openThis', () => {
         var fileOpener = new FileOpener();
@@ -38,8 +47,8 @@ function showOpenDialog(defaultDir: string) {
     var editor = new Editor();
     editor.showOpenDialog(
         defaultDir,
-       (currentFile) => { editor.openFile(currentFile) },
-   );
+        (currentFile) => { editor.openFile(currentFile) },
+    );
 }
 
 // this method is called when your extension is deactivated
