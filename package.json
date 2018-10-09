@@ -40,6 +40,10 @@
             {
                 "command": "extension.openThis",
                 "title": "openThis"
+            },
+            {
+                "command": "extension.RechWindowDesigner",
+                "title": "RechWindowDesigner"
             }
         ],
         "keybindings": [
@@ -62,6 +66,10 @@
             {
                 "command": "extension.openThis",
                 "key": "alt+f2"
+            },
+            {
+                "command": "extension.RechWindowDesigner",
+                "key": "ctrl+alt+f8"
             }
         ]
     },
