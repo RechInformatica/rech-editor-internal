@@ -57,6 +57,7 @@ export class FileOpener {
     this.openRegexFromCurrentLine(text, /([A-Z]:)?([^:\s\*\?\"\'\<\>\|]+\.\w+)(:\d+)?/gi, 0);
     this.openRegexFromCurrentLine(text, / *CALL +"([^"]+)"/gi, 1);
     this.openRegexFromCurrentLine(text, / *CANCEL +\"([^"]+)\"/gi, 1);
+    this.openRegexFromCurrentLine(text, / *INVOKE +([^ ]+)/gi, 1);
   }
 
   /**
