@@ -24,9 +24,16 @@ export function activate(context: vscode.ExtensionContext) {
         var editor = new Editor();
         var fongrep = new FonGrep();
         var text = editor.getSelectionBuffer()[0];
-        if (text == '')
+        if (text === ''){
             text = editor.getCurrentWord();
+        }
         fongrep.fonGrep(text);
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.RechWindowDesigner', () => {
+        let FileName = new Editor().getCurrentFileName();
+        let editor = new Editor();
+        editor.showInformationMessage("Executando Rech Window Designer de " + FileName + "...");
+        new Executor().runAsync("start cmd.exe /c F:\\BAT\\RWD.bat  " + FileName);
     }));
     context.subscriptions.push(vscode.commands.registerCommand('extension.openThis', () => {
         var fileOpener = new FileOpener();
@@ -47,7 +54,7 @@ function showOpenDialog(defaultDir: string) {
     var editor = new Editor();
     editor.showOpenDialog(
         defaultDir,
-        (currentFile) => { editor.openFile(currentFile) },
+        (currentFile) => { editor.openFile(currentFile); },
     );
 }
 
