@@ -1,5 +1,5 @@
-import { Editor } from "rech-editor-vscode";
-import { Matcher} from "./matcher";
+import { Editor, Path, File } from "rech-editor-vscode";
+import { Matcher } from "./matcher";
 import * as fs from 'fs';
 
 /**
@@ -7,22 +7,37 @@ import * as fs from 'fs';
  */
 export class FileOpener {
 
-  /* Paths for file searching */
-  private paths: string[];
   /* Mathcher for file pattern extraction */
   private matcher: Matcher;
+  /* Paths for file searching */
+  private paths: string[];
+  /* Default extensions used when the Regular Expression matches a file with no extension specified */
+  private defaultExtensions: string[];
 
   constructor() {
-    this.paths = this.initializePaths();
     this.matcher = new Matcher();
+    this.paths = this.initializePaths();
+    this.defaultExtensions = this.initializeDefaultExtensions();
   }
 
   /**
    * Initializes the available paths for file searching
    */
   private initializePaths() {
-    var initialPaths: string[] = [""]; // Empty path for considering full path name
+    var initialPaths: string[] = [];
+    initialPaths.push("");    // Empty path for considering full path name
+    initialPaths.push(new Editor().getCurrentFileDirectory()); // Current directory
     return initialPaths;
+  }
+
+  /**
+   * Initializes the default extensions used when the Regular Expression matches a file with no extension specified
+   */
+  private initializeDefaultExtensions() {
+    var extensions: string[] = [];
+    extensions.push("");
+    extensions.push(".CBL");
+    return extensions;
   }
 
   /**
@@ -39,11 +54,22 @@ export class FileOpener {
    */
   openFromCurrentLine() {
     var text = this.retrieveTargetText();
-    var matches = this.matcher.getFilePathsFromLine(text);
-    if (matches && matches.length > 0) {
-      var match = matches[0];
+    this.openRegexFromCurrentLine(text, /([A-Z]:)?([^:\s\*\?\"\'\<\>\|]+\.\w+)(:\d+)?/gi, 0);
+    this.openRegexFromCurrentLine(text, / *CALL +"([^"]+)" /gi, 1);
+  }
+
+  /**
+   * Opens the file from current line after executing the specified regular expression
+   * 
+   * @param text line text
+   * @param regex regular expression to be executed
+   * @param resultIndex regular expression result index 
+   */
+  private openRegexFromCurrentLine(text: string, regex: RegExp, resultIndex: number) {
+    var matches = this.matcher.getFilePathsFromLine(text, regex);
+    if (matches && matches.length > resultIndex) {
+      var match = matches[resultIndex];
       let resolvedPath = this.resolvePathForFile(match.file);
-      // Opens the specified file
       new Editor().openFile(resolvedPath, () => {
         new Editor().setCursor(match.row - 1, match.column);
       });
@@ -54,12 +80,12 @@ export class FileOpener {
    * Retrieves the target text for the filename extraction
    */
   private retrieveTargetText() {
-     var editor = new Editor();
-     var selection = editor.getSelectionBuffer();
-     if (selection && selection.length > 0 && selection[0] !== "") {
-       return selection[0];
-     }
-     return editor.getCurrentLine();
+    var editor = new Editor();
+    var selection = editor.getSelectionBuffer();
+    if (selection && selection.length > 0 && selection[0] !== "") {
+      return selection[0];
+    }
+    return editor.getCurrentLine();
   }
 
   /**
@@ -71,10 +97,12 @@ export class FileOpener {
     var resolvedPath = "";
     this.paths.forEach((currentPath) => {
       if (resolvedPath === "") {
-        var fullPath = currentPath + file;
-        if (fs.existsSync(fullPath)) {
-          resolvedPath = fullPath;
-        }
+        this.defaultExtensions.forEach((extension) => {
+          var currentFile: File = new File(currentPath + file + extension);
+          if (currentFile.exists()) {
+            resolvedPath = currentFile.fileName;
+          }
+        });
       }
     });
     return resolvedPath;

@@ -1,5 +1,5 @@
 'use babel';
-import { Match } from './match';
+import { Match } from './Match';
 
 /**
  * File search matcher
@@ -10,27 +10,18 @@ export class Matcher {
   }
 
   /**
-   * Extracts file paths from the line
+   * Extracts file paths from the line using the specified Regular Expression
    */
-  getFilePathsFromLine(line: string) {
+  getFilePathsFromLine(line: string, regex: RegExp) {
     if (line == undefined) {
       return [];
     }
-    var result : Match[] = [];
-    // Nomralize: Compile output
-    line = line.replace(/[,;]?\s*line\s*[=:]\s*(\d+)/i, ":$1");
+    var result: Match[] = [];
     // Full filenames in the line
-    let matches = line.match(/([A-Z]:)?([^:\s\*\?\"\'\<\>\|]+\.\w+)(:\d+)?/gi);
+    let matches = regex.exec(line);
     if (matches != null) {
       result = result.concat(matches.map((match) => {
         return this.buildMatch(match);
-      }));
-    }
-    // Returns stuff that is between quotes and looks like a file name (import from 'match')
-    matches = line.match(/[\'\"]([A-Z]:)?([^:\s\*\?\"\'\<\>\|]+(\.\w+)?(:\d+)?[\'\"])/gi);
-    if (matches != null) {
-      result = result.concat(matches.map((match) => {
-          return this.buildMatch(match.replace(/['\"]/g, ""));
       }));
     }
     return result;
@@ -46,9 +37,9 @@ export class Matcher {
       // Parses the row number
       let row = parseInt(match[2]);
       if (row) {
-          row = isNaN(row) ? 1 : row;
-          return new Match(match[1], row, 1);
-        }
+        row = isNaN(row) ? 1 : row;
+        return new Match(match[1], row, 1);
+      }
     }
     return new Match(text, 1, 1);
   }
