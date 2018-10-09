@@ -10,7 +10,8 @@ import { FileOpener } from './open/FileOpener';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export function activate(_context: any) {
+    let context = <vscode.ExtensionContext>_context;
     context.subscriptions.push(vscode.commands.registerCommand('extension.openFontesTrunk', () => {
         showOpenDialog('F:\\FONTES\\');
     }));
