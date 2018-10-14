@@ -12,16 +12,16 @@ import { FileOpener } from './open/FileOpener';
 // your extension is activated the very first time the command is executed
 export function activate(_context: any) {
     let context = <vscode.ExtensionContext>_context;
-    context.subscriptions.push(vscode.commands.registerCommand('extension.openFontesTrunk', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.openFontesTrunk', () => {
         showOpenDialog('F:\\FONTES\\');
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.openScripts', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.openScripts', () => {
         showOpenDialog('F:\\BAT\\');
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.openWc', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.openWc', () => {
         showOpenDialog(WorkingCopy.current().getSourcesDir());
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.fonGrep', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.fonGrep', () => {
         var editor = new Editor();
         var fongrep = new FonGrep();
         var text = editor.getSelectionBuffer()[0];
@@ -30,13 +30,13 @@ export function activate(_context: any) {
         }
         fongrep.fonGrep(text);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.RechWindowDesigner', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.RechWindowDesigner', () => {
         let FileName = new Editor().getCurrentFileName();
         let editor = new Editor();
         editor.showInformationMessage("Executando Rech Window Designer de " + FileName + "...");
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\RWD.bat  " + FileName);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.openThis', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.openThis', () => {
         var fileOpener = new FileOpener();
         fileOpener.addPathForFileSearching("F:\\FONTES\\");
         fileOpener.addPathForFileSearching("F:\\BAT\\");

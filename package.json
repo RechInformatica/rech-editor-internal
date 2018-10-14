@@ -22,53 +22,53 @@
     "contributes": {
         "commands": [
             {
-                "command": "extension.openFontesTrunk",
+                "command": "rech.editor.internal.openFontesTrunk",
                 "title": "openFontesTrunk"
             },
             {
-                "command": "extension.openScripts",
+                "command": "rech.editor.internal.openScripts",
                 "title": "openScripts"
             },
             {
-                "command": "extension.openWc",
+                "command": "rech.editor.internal.openWc",
                 "title": "openWc"
             },
             {
-                "command": "extension.fonGrep",
+                "command": "rech.editor.internal.fonGrep",
                 "title": "fonGrep"
             },
             {
-                "command": "extension.openThis",
+                "command": "rech.editor.internal.openThis",
                 "title": "openThis"
             },
             {
-                "command": "extension.RechWindowDesigner",
+                "command": "rech.editor.internal.RechWindowDesigner",
                 "title": "RechWindowDesigner"
             }
         ],
         "keybindings": [
             {
-                "command": "extension.openFontesTrunk",
+                "command": "rech.editor.internal.openFontesTrunk",
                 "key": "ctrl+shift+o"
             },
             {
-                "command": "extension.openScripts",
+                "command": "rech.editor.internal.openScripts",
                 "key": "ctrl+shift+y"
             },
             {
-                "command": "extension.openWc",
+                "command": "rech.editor.internal.openWc",
                 "key": "alt+o"
             },
             {
-                "command": "extension.fonGrep",
+                "command": "rech.editor.internal.fonGrep",
                 "key": "ctrl+l"
             },
             {
-                "command": "extension.openThis",
+                "command": "rech.editor.internal.openThis",
                 "key": "alt+f2"
             },
             {
-                "command": "extension.RechWindowDesigner",
+                "command": "rech.editor.internal.RechWindowDesigner",
                 "key": "ctrl+alt+f8"
             }
         ]
