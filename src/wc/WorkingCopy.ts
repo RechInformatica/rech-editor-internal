@@ -1,3 +1,4 @@
+import { Executor, Process } from 'rech-editor-vscode';
 /**
  * Class for returning Working-Copy general information
  */
@@ -22,9 +23,23 @@ export class WorkingCopy {
      * Returns an instance of the current WorkingCopy
      */
     public static current() {
-        var parts = WorkingCopy.getWorkingCopyString().split(" ");
+        return new Promise<WorkingCopy>((resolve) => {
+            new Executor().runAsync("cmd.exe /C F:\\BAT\\WC.bat /show", (process) => {
+                var wc = WorkingCopy.createWcFromProcessOutput(process);
+                resolve(wc);
+            });
+        });
+    }
+
+    /**
+     * Creates a WorkingCopye instance from the 'wc' execution output
+     * 
+     * @param process process information
+     */
+    private static createWcFromProcessOutput(process: Process) {
+        var parts = WorkingCopy.getWorkingCopyString(process.getStdout()).split(" ");
         var currentName = "";
-        var currentVersion = "";
+        var currentVersion = "des";
         if (parts) {
             if (parts.length > 0) {
                 currentName = parts[0];
@@ -39,8 +54,13 @@ export class WorkingCopy {
     /**
      * Returns a String representation of the current user's Working Copy
      */
-    private static getWorkingCopyString() {
-        return require("os").userInfo().username + " des";
+    private static getWorkingCopyString(output: string) {
+        var match = /USE_VALRET=(.*)/g.exec(output);
+        if (match !== null) {
+            return match[1];
+        } else {
+            return require("os").userInfo().username;
+        }
     }
 
     /**

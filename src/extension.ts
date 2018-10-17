@@ -19,13 +19,15 @@ export function activate(_context: any) {
         showOpenDialog('F:\\BAT\\');
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.openWc', () => {
-        showOpenDialog(WorkingCopy.current().getSourcesDir());
+        WorkingCopy.current().then((wc) => {
+            showOpenDialog(wc.getSourcesDir());
+        });
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.fonGrep', () => {
         var editor = new Editor();
         var fongrep = new FonGrep();
         var text = editor.getSelectionBuffer()[0];
-        if (text === ''){
+        if (text === '') {
             text = editor.getCurrentWord();
         }
         fongrep.fonGrep(text);
