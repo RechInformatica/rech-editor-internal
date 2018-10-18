@@ -42,6 +42,7 @@ export function activate(_context: any) {
         var fileOpener = new FileOpener();
         fileOpener.addPathForFileSearching("F:\\FONTES\\");
         fileOpener.addPathForFileSearching("F:\\BAT\\");
+        fileOpener.addPathForFileSearching("F:\\");
         fileOpener.openFromCurrentLine();
     }));
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
