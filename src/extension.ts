@@ -7,6 +7,7 @@ import { WorkingCopy } from './wc/WorkingCopy';
 import { VSCodeSaver } from './save/VSCodeSaver';
 import { FonGrep } from './fongrep/fongrep';
 import { FileOpener } from './open/FileOpener';
+import { Preproc } from './preproc/preproc';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -47,6 +48,8 @@ export function activate(_context: any) {
     }));
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
+    // Define the Source Expander
+    Editor.setSourceExpander(new Preproc());
 }
 
 /**

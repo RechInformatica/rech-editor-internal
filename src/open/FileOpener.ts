@@ -110,4 +110,4 @@ export class FileOpener {
     return resolvedPath;
   }
 
-};
+}
