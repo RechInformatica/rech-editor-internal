@@ -2,7 +2,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Editor, Executor, Find } from 'rech-editor-vscode';
+import { Editor, Executor } from 'rech-editor-vscode';
 import { WorkingCopy } from './wc/WorkingCopy';
 import { VSCodeSaver } from './save/VSCodeSaver';
 import { FonGrep } from './fongrep/fongrep';
@@ -25,13 +25,6 @@ export function activate(_context: any) {
         });
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.fonGrep', () => {
-        if (Editor.getSourceExpander()) {
-            new Editor().showInformationMessage("Encontrou o source expander no internal");
-        } else {
-            new Editor().showInformationMessage("Não encontrou o source expander no internal");
-        };
-    
-
         var editor = new Editor();
         var fongrep = new FonGrep();
         var text = editor.getSelectionBuffer()[0];
@@ -55,21 +48,16 @@ export function activate(_context: any) {
     }));
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
+    defineSourceExpander();
+}
 
-
-    // // Define the Source Expander
+/**
+ * Sets the global source expander which is responsible for executing Cobol Preprocessor
+ */
+function defineSourceExpander() {
     var preproc = new Preproc();
     preproc.setOptions(["-scc", "-sco", "-" + "is", "-as="]);
     Editor.setSourceExpander(preproc);
-
-
-    if (Editor.getSourceExpander()) {
-        new Editor().showInformationMessage("Encontrou o source expander no internal");
-    } else {
-        new Editor().showInformationMessage("Não encontrou o source expander no internal");
-    };
-
-
 }
 
 /**
