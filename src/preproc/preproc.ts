@@ -15,15 +15,6 @@ export class Preproc implements GenericExecuter {
   }
 
   /**
-   * Create a new instance of preproc to update local base
-   */
-  static localDatabaseUpdate() {
-    let newPreproc = new Preproc();
-    newPreproc.buildCommandLine(["-bd", "-bdl", "-is", "-msi"]);
-    return newPreproc;
-  }
-
-  /**
    * Define the path to preprocess
    */
   public setPath(path: string | Path): Preproc {
@@ -35,31 +26,30 @@ export class Preproc implements GenericExecuter {
     return this;
   }
 
-  /**
-   * Build command line
-   */
-  public buildCommandLine(options: any): Preproc {
-    this.options = this.options.concat(options);
+  public setOptions(options: string[]) {
+    this.options = options;
     return this;
   }
 
   /**
    * Run preprocess
    */
-  public exec() {
+  public exec(file: string) {
     return new Promise((resolve) => {
-      let comandline = (this.getCmdArgs()).toString().replace(/,/g, " ");
+      let comandline = (this.getCmdArgs(file)).toString().replace(/,/g, " ") + " " + this.path.replace("file:///f%3A", "F:").replace(/\//g, "\\");
       new Executor().runAsync(comandline, (process: Process) => {
         resolve(process);
       });
     });
   }
-  
+
   /**
    * Return the comand line args
    */
-  private getCmdArgs(): string[] {
-    return ['preproc.bat'].concat(this.options).concat([this.path]);
+  private getCmdArgs(file: string): string[] {
+    const optionsWithFile = Object.assign({}, this.options);
+    optionsWithFile[optionsWithFile.length - 1] = optionsWithFile[optionsWithFile.length - 1] + file;
+    return ['preproc.bat'].concat(optionsWithFile);
   }
 
 }
