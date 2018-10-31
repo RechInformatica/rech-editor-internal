@@ -8,6 +8,7 @@ import { VSCodeSaver } from './save/VSCodeSaver';
 import { FonGrep } from './fongrep/fongrep';
 import { FileOpener } from './open/FileOpener';
 import { Preproc } from './preproc/preproc';
+import { OpenWFPF } from './open/OpenWFPF';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -45,6 +46,9 @@ export function activate(_context: any) {
         fileOpener.addPathForFileSearching("F:\\BAT\\");
         fileOpener.addPathForFileSearching("F:\\");
         fileOpener.openFromCurrentLine();
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.OpenWFPF', () => {
+        new OpenWFPF().open();
     }));
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());

@@ -44,6 +44,10 @@
             {
                 "command": "rech.editor.internal.RechWindowDesigner",
                 "title": "RechWindowDesigner"
+            },
+            {
+                "command": "rech.editor.internal.OpenWFPF",
+                "title": "OpenWFPF"
             }
         ],
         "keybindings": [
@@ -70,6 +74,10 @@
             {
                 "command": "rech.editor.internal.RechWindowDesigner",
                 "key": "ctrl+alt+f8"
+            },
+            {
+                "command": "rech.editor.internal.OpenWFPF",
+                "key": "shift+alt+f11"
             }
         ]
     },
