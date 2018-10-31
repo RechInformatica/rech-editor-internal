@@ -2,7 +2,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Editor, Executor } from 'rech-editor-vscode';
+import { Editor, Executor, Compiler } from 'rech-editor-vscode';
 import { WorkingCopy } from './wc/WorkingCopy';
 import { VSCodeSaver } from './save/VSCodeSaver';
 import { FonGrep } from './fongrep/fongrep';
@@ -50,6 +50,34 @@ export function activate(_context: any) {
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.OpenWFPF', () => {
         new OpenWFPF().open();
     }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.update', () => {
+        new Editor().showInformationMessage("Executando Update...")
+        new Executor().runAsync("start cmd.exe /c F:\\BAT\\Update.bat");
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.commit', () => {
+        new Editor().showInformationMessage("Executando Commit...")
+        new Executor().runAsync("start cmd.exe /c F:\\BAT\\Commit.bat");
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.checkout', () => {
+        let baseName = new Editor().getCurrentFileBaseName();
+        let editor = new Editor();
+        editor.showInformationMessage("Executando Checkout de " + baseName + "...");
+        editor.closeActiveEditor();
+        new Executor().runAsync("start cmd.exe /c F:\\BAT\\Checkout.bat  " + baseName);
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.compile', () => {
+        new Compiler().compileCurrentFile();
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.indent', () => {
+        new Editor().indent("N");
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.indentLeft', () => {
+        new Editor().indent("E");
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.indentRight', () => {
+        new Editor().indent("D");
+    }));    
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
     defineSourceExpander();

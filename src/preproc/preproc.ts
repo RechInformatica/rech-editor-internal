@@ -1,7 +1,7 @@
 'use babel';
-import { Executor, Path, Process, GenericExecuter } from 'rech-editor-vscode';
+import { Executor, Path, Process, GenericExecutor } from 'rech-editor-vscode';
 
-export class Preproc implements GenericExecuter {
+export class Preproc implements GenericExecutor {
 
   /** Options of préprocessor */
   private options: string[];
