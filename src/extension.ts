@@ -59,11 +59,7 @@ export function activate(_context: any) {
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\Commit.bat");
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.checkout', () => {
-        let baseName = new Editor().getCurrentFileBaseName();
-        let editor = new Editor();
-        editor.showInformationMessage("Executando Checkout de " + baseName + "...");
-        editor.closeActiveEditor();
-        new Executor().runAsync("start cmd.exe /c F:\\BAT\\Checkout.bat  " + baseName);
+        WorkingCopy.checkoutFonte(new Editor().getCurrentFileBaseName());
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.compile', () => {
         new Compiler().compileCurrentFile();

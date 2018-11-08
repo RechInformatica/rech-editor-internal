@@ -1,4 +1,4 @@
-import { Executor, Process } from 'rech-editor-vscode';
+import { Executor, Process, Editor, RechPosition } from 'rech-editor-vscode';
 /**
  * Class for returning Working-Copy general information
  */
@@ -32,7 +32,27 @@ export class WorkingCopy {
     }
 
     /**
-     * Creates a WorkingCopye instance from the 'wc' execution output
+     * Checkout current file to Working-Copy
+     * @param baseName 
+     */
+    public static checkoutFonte(baseName: String) {
+        let editor = new Editor();
+        let cursors: RechPosition[] = editor.getCursors();
+        editor.showInformationMessage("Executando Checkout de " + baseName + "...");
+        editor.closeActiveEditor();
+        new Executor().runAsync("cmd.exe /c F:\\BAT\\Checkout.bat /noopen /show " + baseName, (process) => {
+            // Parse file path checked out from executor's output
+            let fonte = process.getStdout().match("F:/SIGER/WC/.*");
+            if (fonte != null) {
+                new Editor().openFile(fonte[0], () => {
+                    new Editor().setCursors(cursors);
+                });
+            }
+        });
+    }
+
+    /**
+     * Creates a WorkingCopy instance from the 'wc' execution output
      * 
      * @param process process information
      */
