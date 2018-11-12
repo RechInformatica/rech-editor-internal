@@ -1,11 +1,14 @@
 'use babel';
 import { Executor, Path, Process, GenericExecutor } from 'rech-editor-vscode';
 
+/**
+ * Cobol source preprocessor
+ */
 export class Preproc implements GenericExecutor {
 
-  /** Options of préprocessor */
+  /** Preprocessor options */
   private options: string[];
-  /** Path of file */
+  /** File path */
   private path: string;
 
   /** Constructor of preprocessor */
@@ -26,30 +29,80 @@ export class Preproc implements GenericExecutor {
     return this;
   }
 
+  /**
+   * Defines preprocessor options
+   * 
+   * @param options 
+   */
   public setOptions(options: string[]) {
     this.options = options;
     return this;
   }
 
   /**
-   * Run preprocess
+   * Run preprocessor
    */
   public exec(file: string) {
     return new Promise((resolve) => {
-      let comandline = (this.getCmdArgs(file)).toString().replace(/,/g, " ") + " " + this.path.replace("file:///f%3A", "F:").replace(/\//g, "\\");
-      new Executor().runAsync(comandline, (process: Process) => {
+      let commandLine = this.buildCommandLine(file);
+      new Executor().runAsync(commandLine, (process: Process) => {
         resolve(process);
       });
     });
   }
 
   /**
-   * Return the comand line args
+   * Run preprocessor redirecting the output to the output channel
    */
-  private getCmdArgs(file: string): string[] {
-    const optionsWithFile = Object.assign({}, this.options);
-    optionsWithFile[optionsWithFile.length - 1] = optionsWithFile[optionsWithFile.length - 1] + file;
-    return ['preproc.bat'].concat(optionsWithFile);
+  public execOnOutputChannel(file: string) {
+    return new Promise((resolve) => {
+      let commandLine = this.buildCommandLine(file);
+      new Executor().runAsyncOutputChannel("preproc", commandLine, (errorlevel: number) => {
+        resolve(errorlevel);
+      });
+    });
+  }
+
+  /**
+   * Builds the final command line for preproc execution
+   * 
+   * @param file result filename
+   */
+  private buildCommandLine(file: string): string {
+    let finalCmd = "preproc.bat ";
+    finalCmd = finalCmd + this.path.replace("file:///f%3A", "F:") + " ";
+    finalCmd = finalCmd + this.injectFileWithinAsParameter(file).join(" ");
+    finalCmd = finalCmd.replace(/,/g, " ");
+    finalCmd = finalCmd + " -is"; // Only isCobol sources
+    finalCmd = finalCmd.replace(/\//g, "\\");
+    return finalCmd;
+  }
+
+  /**
+   * Injects the filename within the 'as' command line parameter
+   * 
+   * @param file result filename
+   */
+  private injectFileWithinAsParameter(file: string): string[] {
+    let optionsWithFile = this.cloneOptions();
+    // Updates the 'as' parameter adding the result filename.
+    // This parameter is always the last one
+    let asParameter = optionsWithFile[this.options.length - 1];
+    asParameter = asParameter + file;
+    optionsWithFile[this.options.length - 1] = asParameter;
+    //
+    return optionsWithFile;
+  }
+
+  /**
+   * Clones the original options
+   */
+  private cloneOptions(): string[] {
+    let cloned: string[] = [];
+    this.options.forEach((x) => {
+      cloned.push(x);
+    });
+    return cloned;
   }
 
 }

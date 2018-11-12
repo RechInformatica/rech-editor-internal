@@ -9,6 +9,7 @@ import { FonGrep } from './fongrep/fongrep';
 import { FileOpener } from './open/FileOpener';
 import { Preproc } from './preproc/preproc';
 import { OpenWFPF } from './open/OpenWFPF';
+import { SourcePreprocessor } from './preproc/SourcePreprocessor';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -74,6 +75,9 @@ export function activate(_context: any) {
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.indentRight', () => {
         new Editor().indent("D");
     }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess', () => {
+        new SourcePreprocessor().preprocessCurrentSource();
+    }));    
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
     defineSourceExpander();
@@ -84,7 +88,7 @@ export function activate(_context: any) {
  */
 function defineSourceExpander() {
     var preproc = new Preproc();
-    preproc.setOptions(["-scc", "-sco", "-" + "is", "-as="]);
+    preproc.setOptions(["-scc", "-sco", "-as="]);
     Editor.setSourceExpander(preproc);
 }
 
