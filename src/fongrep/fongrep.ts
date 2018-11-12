@@ -26,6 +26,7 @@ export class FonGrep {
             new Editor().showWarningMessage("Nenhum argumento informado para o FonGrep!");
         }
     }
+
      /**
      * Handles the result file
      * 

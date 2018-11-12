@@ -79,6 +79,11 @@
                 "command": "rech.editor.vscode.indentRight",
                 "key": "indentRight",
                 "title": "indentRight"
+            },
+            {
+                "command": "rech.editor.vscode.preprocess",
+                "key": "preprocess",
+                "title": "preprocess"
             }
         ],
         "keybindings": [
@@ -143,6 +148,11 @@
             {
                 "command": "rech.editor.vscode.indentRight",
                 "key": "alt+shift+right",
+                "when": "editorLangId == COBOL"
+            },
+            {
+                "command": "rech.editor.vscode.preprocess",
+                "key": "ctrl+f10",
                 "when": "editorLangId == COBOL"
             }
         ]

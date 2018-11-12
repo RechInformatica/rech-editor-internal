@@ -2,11 +2,14 @@
 import { Executor, Path, Process, GenericExecutor } from 'rech-editor-vscode';
 import { Autogrep } from '../autogrep/autogrep';
 
+/**
+ * Cobol source preprocessor
+ */
 export class Preproc implements GenericExecutor {
 
-  /** Options of préprocessor */
+  /** Preprocessor options */
   private options: string[];
-  /** Path of file */
+  /** File path */
   private path: string;
 
   /** Constructor of preprocessor */
@@ -27,13 +30,18 @@ export class Preproc implements GenericExecutor {
     return this;
   }
 
+  /**
+   * Defines preprocessor options
+   * 
+   * @param options 
+   */
   public setOptions(options: string[]) {
     this.options = options;
     return this;
   }
 
   /**
-   * Exec the preprocess
+   * Run preprocessor
    */
   public exec(file: string) {
     return new Promise((resolve, reject) => {
@@ -70,9 +78,21 @@ export class Preproc implements GenericExecutor {
    */
   private execPreproc(file: string) {
     return new Promise((resolve) => {
-      let comandline = this.buildCommandLine(file);
-      new Executor().runAsync(comandline, (process: Process) => {
+      let commandLine = this.buildCommandLine(file);
+      new Executor().runAsync(commandLine, (process: Process) => {
         resolve(process);
+      });
+    });
+  }
+
+  /**
+   * Run preprocessor redirecting the output to the output channel
+   */
+  public execOnOutputChannel(file: string) {
+    return new Promise((resolve) => {
+      let commandLine = this.buildCommandLine(file);
+      new Executor().runAsyncOutputChannel("preproc", commandLine, (errorlevel: number) => {
+        resolve(errorlevel);
       });
     });
   }
