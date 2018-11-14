@@ -1,6 +1,7 @@
 'use babel';
 import { Executor, Path, Process, GenericExecutor } from 'rech-editor-vscode';
 import { Autogrep } from '../autogrep/autogrep';
+import { WorkingCopy } from '../wc/WorkingCopy';
 
 /**
  * Cobol source preprocessor
@@ -11,11 +12,25 @@ export class Preproc implements GenericExecutor {
   private options: string[];
   /** File path */
   private path: string;
+  /** WorkingCopy */
+  private wc: WorkingCopy;
+  /** Versão */
+  private versao: string;
 
   /** Constructor of preprocessor */
-  constructor() {
+  constructor(versao?: string, wc?: WorkingCopy) {
     this.options = [];
     this.path = "";
+    if (wc) {
+      this.wc = wc;  
+    } else {
+      this.wc = WorkingCopy.currentSync();
+    }
+    if (versao) {
+      this.versao = versao;
+    } else {
+      this.versao = "DES";
+    }
   }
 
   /**
@@ -108,6 +123,7 @@ export class Preproc implements GenericExecutor {
     finalCmd = finalCmd + this.injectFileWithinAsParameter(file).join(" ");
     finalCmd = finalCmd.replace(/,/g, " ");
     finalCmd = finalCmd + " -is"; // Only isCobol sources
+    finalCmd = finalCmd + " " + this.injectDirectoriesWithinAsParameter();
     finalCmd = finalCmd.replace(/\//g, "\\");
     return finalCmd;
   }
@@ -126,6 +142,11 @@ export class Preproc implements GenericExecutor {
     optionsWithFile[this.options.length - 1] = asParameter;
     //
     return optionsWithFile;
+  }
+
+  private injectDirectoriesWithinAsParameter() {
+    let myWc = this.wc;
+    return " -dc=.\\;" + new Path(this.path).directory() + ";" + myWc.getSourcesDir() + ";" + "F:\\FONTES";
   }
 
   /**
