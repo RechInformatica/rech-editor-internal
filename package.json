@@ -23,67 +23,95 @@
         "commands": [
             {
                 "command": "rech.editor.internal.openFontesTrunk",
-                "title": "openFontesTrunk"
+                "title": "Rech: Abrir no diretório do F:\\Fontes"
             },
             {
                 "command": "rech.editor.internal.openScripts",
-                "title": "openScripts"
+                "title": "Rech: Abrir no diretório do F:\\Bat"
             },
             {
                 "command": "rech.editor.internal.openWc",
-                "title": "openWc"
+                "title": "Rech: Abrir no diretório do working-copy"
             },
             {
                 "command": "rech.editor.internal.fonGrep",
-                "title": "fonGrep"
+                "title": "Rech: FonGrep"
             },
             {
                 "command": "rech.editor.internal.openThis",
-                "title": "openThis"
+                "title": "Rech: Abre fonte da linha corrente"
             },
             {
                 "command": "rech.editor.internal.RechWindowDesigner",
-                "title": "RechWindowDesigner"
+                "title": "Rech: Abre o RechWindowDesigner (RWD) do fonte atual"
             },
             {
                 "command": "rech.editor.internal.OpenWFPF",
-                "title": "OpenWFPF"
+                "title": "Rech: Abre os copys WF/PF do fonte atual"
             },
             {
                 "command": "rech.editor.vscode.checkout",
-                "title": "checkout"
+                "title": "Rech: Checkout do fonte atual para o working copy"
             },
             {
                 "command": "rech.editor.vscode.compile",
-                "title": "compile"
+                "title": "Rech: Compilar fonte COBOL"
             },
             {
                 "command": "rech.editor.vscode.update",
-                "title": "update"
+                "title": "Rech: Update working-copy"
             },
             {
                 "command": "rech.editor.vscode.commit",
-                "title": "commit"
+                "title": "Rech: Commit working-copy"
             },
             {
                 "command": "rech.editor.vscode.indent",
-                "key": "indent",
-                "title": "indent"
+                "title": "Rech: Indenta mantendo nível atual"
             },
             {
                 "command": "rech.editor.vscode.indentLeft",
-                "key": "indentLeft",
-                "title": "indentLeft"
+                "title": "Rech: Indenta para esquerda"
             },
             {
                 "command": "rech.editor.vscode.indentRight",
-                "key": "indentRight",
-                "title": "indentRight"
+                "title": "Rech: Indenta para direita"
             },
             {
-                "command": "rech.editor.vscode.preprocess",
-                "key": "preprocess",
-                "title": "preprocess"
+                "command": "rech.editor.vscode.preprocess0",
+                "title": "Rech: PREPROC - [0] Sem opções extras"
+            },
+            {
+                "command": "rech.editor.vscode.preprocess1",
+                "title": "Rech: PREPROC - [1] - Mostrando hierarquia dos copys (-hc)"
+            },
+            {
+                "command": "rech.editor.vscode.preprocess2",
+                "title": "Rech: PREPROC - [2] - Mostrando o uso de copys pelo programa (-lc)"
+            },
+            {
+                "command": "rech.editor.vscode.preprocess3",
+                "title": "Rech: PREPROC - [3] - Mostrando os parágrafos (-lsp)"
+            },
+            {
+                "command": "rech.editor.vscode.preprocess4",
+                "title": "Rech: PREPROC - [4] - Mostrando os parágrafos do programa (-lpp)"
+            },
+            {
+                "command": "rech.editor.vscode.preprocess5",
+                "title": "Rech: PREPROC - [5] - Mostrando warnings normais e estendidos (-war -wes)"
+            },
+            {
+                "command": "rech.editor.vscode.preprocess6",
+                "title": "Rech: PREPROC - [6] - Mostrando variáveis não usadas no programa (-vnp)"
+            },
+            {
+                "command": "rech.editor.vscode.preprocess7",
+                "title": "Rech: PREPROC - [7] - Mostrando variáveis não usadas no programa e nos copys (-vnu)"
+            },
+            {
+                "command": "rech.editor.vscode.preprocess8",
+                "title": "Rech: PREPROC - [8] - Mostrando warning de truncamento em MOVE (-wop=w074)"
             }
         ],
         "keybindings": [
@@ -108,14 +136,6 @@
                 "key": "alt+f2"
             },
             {
-                "command": "rech.editor.internal.RechWindowDesigner",
-                "key": "ctrl+alt+f8"
-            },
-            {
-                "command": "rech.editor.internal.OpenWFPF",
-                "key": "shift+alt+f11"
-            },
-            {
                 "command": "rech.editor.vscode.checkout",
                 "key": "alt+f5",
                 "when": "editorLangId == COBOL"
@@ -123,16 +143,6 @@
             {
                 "command": "rech.editor.vscode.compile",
                 "key": "ctrl+f9",
-                "when": "editorLangId == COBOL"
-            },
-            {
-                "command": "rech.editor.vscode.update",
-                "key": "alt+f6",
-                "when": "editorLangId == COBOL"
-            },
-            {
-                "command": "rech.editor.vscode.commit",
-                "key": "alt+f7",
                 "when": "editorLangId == COBOL"
             },
             {
@@ -148,11 +158,6 @@
             {
                 "command": "rech.editor.vscode.indentRight",
                 "key": "alt+shift+right",
-                "when": "editorLangId == COBOL"
-            },
-            {
-                "command": "rech.editor.vscode.preprocess",
-                "key": "ctrl+f10",
                 "when": "editorLangId == COBOL"
             }
         ]

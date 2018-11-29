@@ -9,23 +9,19 @@ import { Preproc } from './preproc';
 export class SourcePreprocessor {
 
   /**
-   * Preprocesses the current file open in editor.
-   * <p>
-   * Different options are shown so the user may choose the right one 
-   * for the moment.
-   */
-  public preprocessCurrentSource() {
-    new Editor().showInputBox("Opções extras do pré-processador", "[0] - Pré-processamento sem opções extras [1] - Mostrando hierarquia dos copys (-hc) [2] - Mostrando o uso de copys pelo programa (-lc) [3] - Mostrando os parágrafos (-lsp) [4] - Mostrando os parágrafos do programa (-lpp) [5] - Mostrando warnings normais e estendidos (-war -wes) [6] - Mostrando variáveis não usadas no programa (-vnp) [7] - Mostrando variáveis não usadas no programa e nos copys (-vnu) [8] - Mostrando warning de truncamento em MOVE (-wop=w074)", (info) => {
-      this.runPreprocOnCurrentSource(info);
-    }, '0');
-  }
-
-  /**
    * Runs preproc based on the option previously selected from the user in VSCode UI
-   * 
    * @param option selected option
+   *               [0] - Pré-processamento sem opções extras
+   *               [1] - Mostrando hierarquia dos copys (-hc)
+   *               [2] - Mostrando o uso de copys pelo programa (-lc)
+   *               [3] - Mostrando os parágrafos (-lsp) 
+   *               [4] - Mostrando os parágrafos do programa (-lpp) 
+   *               [5] - Mostrando warnings normais e estendidos (-war -wes) 
+   *               [6] - Mostrando variáveis não usadas no programa (-vnp) 
+   *               [7] - Mostrando variáveis não usadas no programa e nos copys (-vnu) 
+   *               [8] - Mostrando warning de truncamento em MOVE (-wop=w074)
    */
-  private runPreprocOnCurrentSource(selected: string | undefined) {
+  public runPreprocOnCurrentSource(selected: string | undefined) {
     let specificPreprocOptions = this.getSpecificOptions(selected);
     if (specificPreprocOptions) {
       let preprocOptions = this.buildPreprocOptions(specificPreprocOptions);
