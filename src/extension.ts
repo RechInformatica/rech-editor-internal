@@ -2,6 +2,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { commands } from 'vscode';
 import { Editor, Executor, Compiler } from 'rech-editor-vscode';
 import { WorkingCopy } from './wc/WorkingCopy';
 import { VSCodeSaver } from './save/VSCodeSaver';
@@ -75,8 +76,32 @@ export function activate(_context: any) {
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.indentRight', () => {
         new Editor().indent("D");
     }));    
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess', () => {
-        new SourcePreprocessor().preprocessCurrentSource();
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess0', () => {
+        new SourcePreprocessor().runPreprocOnCurrentSource("0");
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess1', () => {
+        new SourcePreprocessor().runPreprocOnCurrentSource("1");
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess2', () => {
+        new SourcePreprocessor().runPreprocOnCurrentSource("2");
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess3', () => {
+        new SourcePreprocessor().runPreprocOnCurrentSource("3");
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess4', () => {
+        new SourcePreprocessor().runPreprocOnCurrentSource("4");
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess5', () => {
+        new SourcePreprocessor().runPreprocOnCurrentSource("5");
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess6', () => {
+        new SourcePreprocessor().runPreprocOnCurrentSource("6");
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess7', () => {
+        new SourcePreprocessor().runPreprocOnCurrentSource("7");
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess8', () => {
+        new SourcePreprocessor().runPreprocOnCurrentSource("8");
     }));    
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
