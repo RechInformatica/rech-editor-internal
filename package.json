@@ -165,6 +165,8 @@
         "test": "npm run compile && mocha -r ts-node/register ./src/test/**/*.test.ts"
     },
     "dependencies": {
+        "@types/iconv-lite": "0.0.1",
+        "iconv-lite": "^0.4.24",
         "rech-editor-vscode": "file:../rech-editor-vscode"
     },
     "devDependencies": {

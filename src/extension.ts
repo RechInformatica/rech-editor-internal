@@ -52,11 +52,11 @@ export function activate(_context: any) {
         new OpenWFPF().open();
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.update', () => {
-        new Editor().showInformationMessage("Executando Update...")
+        new Editor().showInformationMessage("Executando Update...");
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\Update.bat");
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.commit', () => {
-        new Editor().showInformationMessage("Executando Commit...")
+        new Editor().showInformationMessage("Executando Commit...");
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\Commit.bat");
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.checkout', () => {
@@ -81,6 +81,7 @@ export function activate(_context: any) {
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
     defineSourceExpander();
+    definePreprocessor();
 }
 
 /**
@@ -92,6 +93,14 @@ function defineSourceExpander() {
     Editor.setSourceExpander(preproc);
 }
 
+/**
+ * Sets the global source compile which is responsible for executing Cobol Compile
+ */
+function definePreprocessor() {
+    var preproc = new Preproc();
+    preproc.setOptions(["-cpn", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
+    Editor.setPreprocessor(preproc);
+}
 /**
  * Opens dialog for file selection and automatically opens the files in editor
  * 

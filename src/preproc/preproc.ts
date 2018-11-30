@@ -58,9 +58,9 @@ export class Preproc implements GenericExecutor {
   /**
    * Run preprocessor
    */
-  public exec(file: string) {
+  public exec(file?: string) {
     return new Promise((resolve, reject) => {
-      if (file.match(/.*\.(CPY|CPB)/)) {
+      if (file && file.match(/.*\.(CPY|CPB)/)) {
         new Autogrep([new Path(this.path).fileName()]).find().then((cblFiles) => {
           let cblFile = cblFiles[0];
           this.setPath(new Path(this.path).directory() + cblFile);
@@ -91,12 +91,12 @@ export class Preproc implements GenericExecutor {
    * 
    * @param file 
    */
-  private execPreproc(file: string) {
+  private execPreproc(file?: string) {
     return new Promise((resolve) => {
       let commandLine = this.buildCommandLine(file);
       new Executor().runAsync(commandLine, (process: Process) => {
         resolve(process);
-      });
+      }, "win1252");
     });
   }
 
@@ -117,7 +117,7 @@ export class Preproc implements GenericExecutor {
    * 
    * @param file result filename
    */
-  private buildCommandLine(file: string): string {
+  private buildCommandLine(file?: string): string {
     let finalCmd = "preproc.bat ";
     finalCmd = finalCmd + this.path + " ";
     finalCmd = finalCmd + this.injectFileWithinAsParameter(file).join(" ");
@@ -133,13 +133,15 @@ export class Preproc implements GenericExecutor {
    * 
    * @param file result filename
    */
-  private injectFileWithinAsParameter(file: string): string[] {
+  private injectFileWithinAsParameter(file?: string): string[] {
     let optionsWithFile = this.cloneOptions();
-    // Updates the 'as' parameter adding the result filename.
-    // This parameter is always the last one
-    let asParameter = optionsWithFile[this.options.length - 1];
-    asParameter = asParameter + file;
-    optionsWithFile[this.options.length - 1] = asParameter;
+    // If file is defined, updates the 'as' parameter adding the result filename.
+    if (file) {
+      let AsParameterPosition = optionsWithFile.indexOf("-as=");
+      let asParameter = optionsWithFile[AsParameterPosition];
+      asParameter = asParameter + file;
+      optionsWithFile[AsParameterPosition] = asParameter;
+    }
     //
     return optionsWithFile;
   }
