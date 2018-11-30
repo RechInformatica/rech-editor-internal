@@ -159,6 +159,11 @@
                 "command": "rech.editor.vscode.indentRight",
                 "key": "alt+shift+right",
                 "when": "editorLangId == COBOL"
+            },
+            {
+                "command": "rech.editor.internal.OpenWFPF",
+                "key": "alt+shift+f11",
+                "when": "editorLangId == COBOL"
             }
         ]
     },
