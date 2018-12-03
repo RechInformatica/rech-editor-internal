@@ -37,10 +37,8 @@ export function activate(_context: any) {
         fongrep.fonGrep(text);
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.RechWindowDesigner', () => {
-        let FileName = new Editor().getCurrentFileName();
-        let editor = new Editor();
-        editor.showInformationMessage("Executando Rech Window Designer de " + FileName + "...");
-        new Executor().runAsync("start cmd.exe /c F:\\BAT\\RWD.bat  " + FileName);
+        let FileName = new Editor().getCurrentFileBaseName();
+        commands.executeCommand('workbench.action.terminal.sendSequence', { text: `RWD ${FileName} \u000d`});
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.openThis', () => {
         var fileOpener = new FileOpener();
