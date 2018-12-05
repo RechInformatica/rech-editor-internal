@@ -131,7 +131,7 @@
             },
             {
                 "command": "rech.editor.vscode.fcw_versao",
-                "title": "Rech: FCW VERSAO - Compara o fonte atual com a versão informada pelo usuário"
+                "title": "Rech: FCW - Compara o fonte atual com a versão informada pelo usuário"
             },
             {
                 "command": "rech.editor.vscode.fonlbrlog",
@@ -152,6 +152,10 @@
             {
                 "command": "rech.editor.vscode.listbk",
                 "title": "Rech: LISTBK - Ferramenta de comparação de fontes"
+            },
+            {
+                "command": "rech.editor.vscode.blame",
+                "title": "Rech: BLAME - Visualiza alterações no SVN para fontes da versão Desenvolvimento do SIGER"
             }
         ],
         "keybindings": [

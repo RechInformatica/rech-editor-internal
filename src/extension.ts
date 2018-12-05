@@ -118,9 +118,10 @@ export function activate(_context: any) {
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat EST " + fileName);
     }));    
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fcw_versao', () => {
-        new Editor().showInputBox("Argumento a ser pesquisado pelo FonGrep", "FonGrep", (info) => {
-            let fileName = new Editor().getCurrentFileBaseName();
-            new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat " + info + " " + fileName);
+        let editor = new Editor();
+        editor.showInputBox("Informe a versão a ser realizado o FCW", "FCW", (info) => {
+            let fileName = editor.getCurrentFileBaseName();
+            new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat " + info + " " + fileName);    
         });        
     }));    
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fonlbrlog', () => {
@@ -147,7 +148,24 @@ export function activate(_context: any) {
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.listbk', () => {
         let editor = new Editor();
         let fileName = editor.getCurrentFileBaseName();
-        new Executor().runAsync('start cmd.exe /c F:\\BAT\\LISTBK.bat ' + ' ' + fileName);
+        editor.showInputBox("Informe o fonte a realizar o LISTBK", "LISTBK", (info) => {
+            if (info !== undefined && info.length > 0){
+                new Executor().runAsync('start cmd.exe /c F:\\BAT\\LISTBK.bat ' + ' ' + info);  
+            } else{
+                editor.showInformationMessage("Não foi informada o fonte a listar!");
+            }
+        }, fileName);        
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.blame', () => {
+        let editor = new Editor();
+        let fileName = editor.getCurrentFileBaseName();
+        editor.showInputBox("Informe o fonte a realizar o BLAME", "BLAME", (info) => {
+            if (info !== undefined && info.length > 0){
+                new Executor().runAsync('start cmd.exe /c F:\\BAT\\BLAME.bat ' + ' ' + info);  
+            } else{
+                editor.showInformationMessage("Não foi informada o fonte a executar!");
+            }
+        }, fileName);        
     }));    
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
