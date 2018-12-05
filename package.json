@@ -112,6 +112,46 @@
             {
                 "command": "rech.editor.vscode.preprocess8",
                 "title": "Rech: PREPROC - [8] - Mostrando warning de truncamento em MOVE (-wop=w074)"
+            },
+            {
+                "command": "rech.editor.vscode.wm",
+                "title": "Rech: WM - Compara o fonte atual com o trunk"
+            },
+            {
+                "command": "rech.editor.vscode.fcw_bet",
+                "title": "Rech: FCW BET - Compara o fonte atual com a beta"
+            },
+            {
+                "command": "rech.editor.vscode.fcw_ofi",
+                "title": "Rech: FCW OFI - Compara o fonte atual com a oficial"
+            },
+            {
+                "command": "rech.editor.vscode.fcw_est",
+                "title": "Rech: FCW EST - Compara o fonte atual com a estendida"
+            },
+            {
+                "command": "rech.editor.vscode.fcw_versao",
+                "title": "Rech: FCW VERSAO - Compara o fonte atual com a versão informada pelo usuário"
+            },
+            {
+                "command": "rech.editor.vscode.fonlbrlog",
+                "title": "Rech: FONLBRLOG - Visualiza alterações no SVN para fontes da versão Beta do SIGER"
+            },
+            {
+                "command": "rech.editor.vscode.fonteslog",
+                "title": "Rech: FONTESLOG - Visualiza alterações no SVN para fontes da versão Desenvolvimento do SIGER"
+            },
+            {
+                "command": "rech.editor.vscode.lis",
+                "title": "Rech: LIS - Lista as alterações no fonte"
+            },
+            {
+                "command": "rech.editor.vscode.lisbk",
+                "title": "Rech: LISBK - Lista as alterações no fonte salvas em backup"
+            },
+            {
+                "command": "rech.editor.vscode.listbk",
+                "title": "Rech: LISTBK - Ferramenta de comparação de fontes"
             }
         ],
         "keybindings": [

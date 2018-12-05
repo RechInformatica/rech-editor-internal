@@ -101,6 +101,54 @@ export function activate(_context: any) {
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess8', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("8");
     }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.wm', () => {
+        let fileName = new Editor().getCurrentFileBaseNameWithoutExtension();
+        new Executor().runAsync("start cmd.exe /c F:\\BAT\\WM.bat " + fileName);
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fcw_bet', () => {
+        let fileName = new Editor().getCurrentFileBaseName();
+        new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat BET " + fileName);
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fcw_ofi', () => {
+        let fileName = new Editor().getCurrentFileBaseName();
+        new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat OFI " + fileName);
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fcw_est', () => {
+        let fileName = new Editor().getCurrentFileBaseName();
+        new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat EST " + fileName);
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fcw_versao', () => {
+        new Editor().showInputBox("Argumento a ser pesquisado pelo FonGrep", "FonGrep", (info) => {
+            let fileName = new Editor().getCurrentFileBaseName();
+            new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat " + info + " " + fileName);
+        });        
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fonlbrlog', () => {
+        let fileName = new Editor().getCurrentFileBaseName();
+        new Executor().runAsync("start cmd.exe /c F:\\BAT\\FONLBRLOG.bat " + fileName);
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fonteslog', () => {
+        let fileName = new Editor().getCurrentFileBaseName();
+        new Executor().runAsync("start cmd.exe /c F:\\BAT\\FONTESLOG.bat " + fileName);
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.lis', () => {
+        let editor = new Editor();
+        let fileName = editor.getCurrentFileBaseNameWithoutExtension();
+        let directory = editor.getCurrentFileDirectory();
+        new Executor().runAsync('start cmd.exe /c F:\\BAT\\PSPADLIS.bat ' + directory + fileName + '*');
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.lisbk', () => {
+        let editor = new Editor();
+        let fileName = editor.getCurrentFileBaseNameWithoutExtension();
+        let extension = editor.getCurrentFileBaseNameExtension();
+        let directory = editor.getCurrentFileDirectory();
+        new Executor().runAsync('start cmd.exe /c F:\\BAT\\PSPADLISBK.bat ' + directory + ' ' + fileName + ' ' + extension);
+    }));    
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.listbk', () => {
+        let editor = new Editor();
+        let fileName = editor.getCurrentFileBaseName();
+        new Executor().runAsync('start cmd.exe /c F:\\BAT\\LISTBK.bat ' + ' ' + fileName);
+    }));    
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
     defineSourceExpander();
