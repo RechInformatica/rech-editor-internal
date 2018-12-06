@@ -156,6 +156,14 @@
             {
                 "command": "rech.editor.vscode.blame",
                 "title": "Rech: BLAME - Visualiza alterações no SVN para fontes da versão Desenvolvimento do SIGER"
+            },
+            {
+                "command": "rech.editor.vscode.aplicaspd",
+                "title": "Rech: APLICASPD - Executa ferramenta de aplicação de SPD"
+            },
+            {
+                "command": "rech.editor.vscode.autogrep",
+                "title": "Rech: AUTOGREP - Executa ferramenta de busca de utilização de COPY"
             }
         ],
         "keybindings": [

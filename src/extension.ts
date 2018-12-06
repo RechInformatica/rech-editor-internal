@@ -73,65 +73,65 @@ export function activate(_context: any) {
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.indentRight', () => {
         new Editor().indent("D");
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess0', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("0");
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess1', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("1");
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess2', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("2");
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess3', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("3");
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess4', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("4");
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess5', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("5");
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess6', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("6");
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess7', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("7");
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess8', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("8");
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.wm', () => {
         let fileName = new Editor().getCurrentFileBaseNameWithoutExtension();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\WM.bat " + fileName);
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fcw_bet', () => {
         let fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat BET " + fileName);
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fcw_ofi', () => {
         let fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat OFI " + fileName);
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fcw_est', () => {
         let fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat EST " + fileName);
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fcw_versao', () => {
         let editor = new Editor();
         editor.showInputBox("Informe a versão a ser realizado o FCW", "FCW", (info) => {
             let fileName = editor.getCurrentFileBaseName();
-            new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat " + info + " " + fileName);    
-        });        
-    }));    
+            new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat " + info + " " + fileName);
+        });
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fonlbrlog', () => {
         let fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FONLBRLOG.bat " + fileName);
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fonteslog', () => {
         let fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FONTESLOG.bat " + fileName);
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.lis', () => {
         let editor = new Editor();
         let fileName = editor.getCurrentFileBaseNameWithoutExtension();
@@ -144,29 +144,35 @@ export function activate(_context: any) {
         let extension = editor.getCurrentFileBaseNameExtension();
         let directory = editor.getCurrentFileDirectory();
         new Executor().runAsync('start cmd.exe /c F:\\BAT\\PSPADLISBK.bat ' + directory + ' ' + fileName + ' ' + extension);
-    }));    
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.listbk', () => {
         let editor = new Editor();
         let fileName = editor.getCurrentFileBaseName();
         editor.showInputBox("Informe o fonte a realizar o LISTBK", "LISTBK", (info) => {
             if (info !== undefined && info.length > 0){
-                new Executor().runAsync('start cmd.exe /c F:\\BAT\\LISTBK.bat ' + ' ' + info);  
+                new Executor().runAsync('start cmd.exe /c F:\\BAT\\LISTBK.bat ' + ' ' + info);
             } else{
                 editor.showInformationMessage("Não foi informada o fonte a listar!");
             }
-        }, fileName);        
-    }));    
+        }, fileName);
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.blame', () => {
         let editor = new Editor();
         let fileName = editor.getCurrentFileBaseName();
         editor.showInputBox("Informe o fonte a realizar o BLAME", "BLAME", (info) => {
             if (info !== undefined && info.length > 0){
-                new Executor().runAsync('start cmd.exe /c F:\\BAT\\BLAME.bat ' + ' ' + info);  
+                new Executor().runAsync('start cmd.exe /c F:\\BAT\\BLAME.bat ' + ' ' + info);
             } else{
                 editor.showInformationMessage("Não foi informada o fonte a executar!");
             }
-        }, fileName);        
-    }));    
+        }, fileName);
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.aplicaspd', () => {
+        new Executor().runAsync('start cmd.exe /c F:\\BAT\\APLICASPD.bat ');
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.autogrep', () => {
+        new Executor().runAsync('start cmd.exe /c F:\\BAT\\AUTOGREP.bat ');
+    }));
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
     defineSourceExpander();
@@ -192,7 +198,7 @@ function definePreprocessor() {
 }
 /**
  * Opens dialog for file selection and automatically opens the files in editor
- * 
+ *
  * @param defaultDir default directory
  */
 function showOpenDialog(defaultDir: string) {
