@@ -14,11 +14,11 @@ export class SourcePreprocessor {
    *               [0] - Pré-processamento sem opções extras
    *               [1] - Mostrando hierarquia dos copys (-hc)
    *               [2] - Mostrando o uso de copys pelo programa (-lc)
-   *               [3] - Mostrando os parágrafos (-lsp) 
-   *               [4] - Mostrando os parágrafos do programa (-lpp) 
-   *               [5] - Mostrando warnings normais e estendidos (-war -wes) 
-   *               [6] - Mostrando variáveis não usadas no programa (-vnp) 
-   *               [7] - Mostrando variáveis não usadas no programa e nos copys (-vnu) 
+   *               [3] - Mostrando os parágrafos (-lsp)
+   *               [4] - Mostrando os parágrafos do programa (-lpp)
+   *               [5] - Mostrando warnings normais e estendidos (-war -wes)
+   *               [6] - Mostrando variáveis não usadas no programa (-vnp)
+   *               [7] - Mostrando variáveis não usadas no programa e nos copys (-vnu)
    *               [8] - Mostrando warning de truncamento em MOVE (-wop=w074)
    */
   public runPreprocOnCurrentSource(selected: string | undefined) {
@@ -33,7 +33,7 @@ export class SourcePreprocessor {
 
   /**
    * Fire preproc execution with the specified options/parameters
-   * 
+   *
    * @param options command-line options
    */
   private firePreprocExecution(options: string[]) {
@@ -49,7 +49,7 @@ export class SourcePreprocessor {
 
   /**
    * Builds the result filename from the target source file
-   * 
+   *
    * @param sourceFile target source file which will be preprocessed
    */
   private buildResultFileName(sourceFile: string) {
@@ -60,7 +60,7 @@ export class SourcePreprocessor {
 
   /**
    * Build preproc command line based on the option previously selected in the UI by the user
-   * 
+   *
    * @param specificPreprocOptions specific preproc parameters for the previously selected option
    */
   private buildPreprocOptions(specificPreprocOptions: string[]): string[] {
@@ -72,7 +72,7 @@ export class SourcePreprocessor {
 
   /**
    * Returns the specific preproc options/parameters based on the UI selection
-   * 
+   *
    * @param selected UI selection
    */
   private getSpecificOptions(selected: string | undefined): string[] | undefined {
