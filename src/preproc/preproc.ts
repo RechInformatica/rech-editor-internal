@@ -1,5 +1,5 @@
 'use babel';
-import { Executor, Path, Process, GenericExecutor } from 'rech-editor-vscode';
+import { Executor, Path, Process, GenericExecutor, File } from 'rech-editor-vscode';
 import { Autogrep } from '../autogrep/autogrep';
 import { WorkingCopy } from '../wc/WorkingCopy';
 
@@ -63,7 +63,7 @@ export class Preproc implements GenericExecutor {
       if (file && file.match(/.*\.(CPY|CPB)/gi)) {
         new Autogrep([new Path(this.path).fileName()]).find().then((cblFiles) => {
           let cblFile = cblFiles[0];
-          this.setPath(new Path(this.path).directory() + cblFile);
+          this.setPath(this.builCblfullPath(cblFile));
           if (cblFile) {
             this.execPreproc(file).then((process) => {
               resolve(process);
@@ -84,6 +84,20 @@ export class Preproc implements GenericExecutor {
         });
       }
     });
+  }
+
+  /**
+   * Build the cblFile full path
+   *
+   * @param cblFile
+   */
+  private builCblfullPath(cblFile: string): string {
+    let file = new File(new Path(this.path).directory() + cblFile);
+    if (file.exists()) {
+      return file.fileName;
+    } else {
+      return "F:\\FONTES\\" + cblFile;
+    }
   }
 
   /**
