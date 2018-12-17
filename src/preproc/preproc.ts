@@ -22,7 +22,7 @@ export class Preproc implements GenericExecutor {
     this.options = [];
     this.path = "";
     if (wc) {
-      this.wc = wc;  
+      this.wc = wc;
     } else {
       this.wc = WorkingCopy.currentSync();
     }
@@ -47,8 +47,8 @@ export class Preproc implements GenericExecutor {
 
   /**
    * Defines preprocessor options
-   * 
-   * @param options 
+   *
+   * @param options
    */
   public setOptions(options: string[]) {
     this.options = options;
@@ -60,7 +60,7 @@ export class Preproc implements GenericExecutor {
    */
   public exec(file?: string) {
     return new Promise((resolve, reject) => {
-      if (file && file.match(/.*\.(CPY|CPB)/)) {
+      if (file && file.match(/.*\.(CPY|CPB)/gi)) {
         new Autogrep([new Path(this.path).fileName()]).find().then((cblFiles) => {
           let cblFile = cblFiles[0];
           this.setPath(new Path(this.path).directory() + cblFile);
@@ -88,8 +88,8 @@ export class Preproc implements GenericExecutor {
 
   /**
    * Run the preproc
-   * 
-   * @param file 
+   *
+   * @param file
    */
   private execPreproc(file?: string) {
     return new Promise((resolve) => {
@@ -114,7 +114,7 @@ export class Preproc implements GenericExecutor {
 
   /**
    * Builds the final command line for preproc execution
-   * 
+   *
    * @param file result filename
    */
   private buildCommandLine(file?: string): string {
@@ -130,7 +130,7 @@ export class Preproc implements GenericExecutor {
 
   /**
    * Injects the filename within the 'as' command line parameter
-   * 
+   *
    * @param file result filename
    */
   private injectFileWithinAsParameter(file?: string): string[] {
@@ -160,6 +160,6 @@ export class Preproc implements GenericExecutor {
       cloned.push(x);
     });
     return cloned;
-  }  
+  }
 
 }

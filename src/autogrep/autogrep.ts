@@ -62,7 +62,7 @@ export class Autogrep {
       });
     }
     if (fileList) {
-      commandline = commandline + fileList;
+      commandline = commandline + fileList.toUpperCase();
       return commandline;
     }
     return undefined;
@@ -77,8 +77,8 @@ export class Autogrep {
 
   /**
    * Add source to find
-   * 
-   * @param source 
+   *
+   * @param source
    */
   public add(source: string) {
     let path = new Path(source);
@@ -90,5 +90,5 @@ export class Autogrep {
       this.sources = [s];
     }
   }
-  
+
 }
