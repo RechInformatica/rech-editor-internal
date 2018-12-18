@@ -1,5 +1,5 @@
 import { Editor, Path, File } from "rech-editor-vscode";
-import { Matcher } from "./matcher";
+import { Matcher } from "./Matcher";
 import * as fs from 'fs';
 
 /**
