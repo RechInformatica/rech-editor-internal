@@ -184,7 +184,7 @@ export function activate(_context: any) {
  */
 function defineSourceExpander() {
     var preproc = new Preproc();
-    preproc.setOptions(["-scc", "-sco", "-as="]);
+    preproc.setOptions(["-scc", "-as="]);
     Editor.setSourceExpander(preproc);
 }
 
@@ -193,7 +193,7 @@ function defineSourceExpander() {
  */
 function definePreprocessor() {
     var preproc = new Preproc();
-    preproc.setOptions(["-cpn", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
+    preproc.setOptions(["-cpn", "-msi", "-scc", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
     Editor.setPreprocessor(preproc);
 }
 /**
