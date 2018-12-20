@@ -3,7 +3,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { commands } from 'vscode';
-import { Editor, Executor, Compiler } from 'rech-editor-vscode';
+import { Editor, Executor, Compiler} from 'rech-editor-vscode';
 import { WorkingCopy } from './wc/WorkingCopy';
 import { VSCodeSaver } from './save/VSCodeSaver';
 import { FonGrep } from './fongrep/fongrep';
@@ -11,6 +11,7 @@ import { FileOpener } from './open/FileOpener';
 import { Preproc } from './preproc/preproc';
 import { OpenWFPF } from './open/OpenWFPF';
 import { SourcePreprocessor } from './preproc/SourcePreprocessor';
+import { CommentPuller } from './comment/CommentPuller';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -172,6 +173,9 @@ export function activate(_context: any) {
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.autogrep', () => {
         new Executor().runAsync('start cmd.exe /c F:\\BAT\\AUTOGREP.bat ');
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.pullComment', () => {
+        new CommentPuller().pullCommentFromCursor();
     }));
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());

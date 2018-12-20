@@ -169,6 +169,10 @@
             {
                 "command": "rech.editor.vscode.autogrep",
                 "title": "Rech: AUTOGREP - Executa ferramenta de busca de utilização de COPY"
+            },
+            {
+                "command": "rech.editor.internal.pullComment",
+                "title": "Rech: PUXA COMENTÁRIO - Puxa o comentário do elemento (parágrafo/variável) onde está o cursor"
             }
         ],
         "keybindings": [
@@ -215,6 +219,11 @@
             {
                 "command": "rech.editor.vscode.indentRight",
                 "key": "alt+shift+right",
+                "when": "editorLangId == COBOL"
+            },
+            {
+                "command": "rech.editor.internal.pullComment",
+                "key": "shift+alt+c",
                 "when": "editorLangId == COBOL"
             }
         ]
