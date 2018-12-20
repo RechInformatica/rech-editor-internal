@@ -1,4 +1,4 @@
-import { CobolWordFinder, Path, Editor, RechPosition, ParagraphDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, Find } from 'rech-editor-vscode';
+import { CobolWordFinder, Path, Editor, RechPosition, ParagraphDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, CobolDeclarationFinder } from 'rech-editor-vscode';
 
 /**
  * Class for extracting and pulling comment from Cobol paragraphs and variables
@@ -15,7 +15,7 @@ export class CommentPuller {
         let bufferLines = buffer.split("\n");
         let file = editor.getCurrentFileName();
         let word = new CobolWordFinder().findWordAt(bufferLines[cursor.line], cursor.column);
-        new Find(buffer)
+        new CobolDeclarationFinder(buffer)
             .findDeclaration(word, file, (cacheFileName: string) => {
                 return this.fireSourceExpander(word, file, cacheFileName);
             })
