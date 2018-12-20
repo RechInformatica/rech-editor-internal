@@ -1,4 +1,4 @@
-import { CobolWordFinder, Path, Editor, RechPosition, ParagraphDocumentationExtractor, CobolDocParser, File, CobolDeclarationResolver, SourceExpander, GeradorCobol } from 'rech-editor-vscode';
+import { CobolWordFinder, Path, Editor, RechPosition, ParagraphDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, Find } from 'rech-editor-vscode';
 
 /**
  * Class for extracting and pulling comment from Cobol paragraphs and variables
@@ -10,54 +10,56 @@ export class CommentPuller {
      */
     public pullCommentFromCursor(): void {
         let editor = new Editor();
+        let cursor = editor.getCursors()[0];
         let buffer = editor.getEditorBuffer();
         let bufferLines = buffer.split("\n");
-        let position = editor.getCursors()[0];
         let file = editor.getCurrentFileName();
-        this.pullCommentFromElement(buffer, position.line, position.column, file).then(comment => {
-            if (comment.trim().length == 0) {
-                new Editor().showWarningMessage("Sem comentário vinculado.");
-            } else {
-                let previousLine = bufferLines[position.line - 1];
-                let previousComment = new CobolDocParser().parseSingleLineCobolDoc(previousLine).comment;
-                if (previousComment.trim() !== comment.trim()) {
-                    new GeradorCobol().insertCommentLineWithText(comment).then(() => {
-                        new Editor().setCursor(position.line + 1, position.column);
-                    });
-                }
-            }
-        }).catch(() => {
-            new Editor().showWarningMessage("Declaração não encontrada. Não é possível buscar o comentário.");
-        });
+        let word = new CobolWordFinder().findWordAt(bufferLines[cursor.line], cursor.column);
+        new Find(buffer)
+            .findDeclaration(word, file, (cacheFileName: string) => {
+                return this.fireSourceExpander(word, file, cacheFileName);
+            })
+            .then((position: RechPosition) => {
+                this.handleCommentPulling(cursor, position, bufferLines);
+            })
+            .catch(() => {
+                new Editor().showWarningMessage("Declaração de '" + word + "' não encontrada. Não é possível buscar o comentário.");
+            });
     }
 
     /**
-     * Pulls the coment from the element located on the specified line and column
+     * Fires source expander execution
      *
-     * @param buffer document buffer
-     * @param column line where the cursor is positioned
-     * @param column column where the cursor is positioned
-     * @param file file currently open
+     * @param word target word
+     * @param file file name
+     * @param cacheFileName cache file name
      */
-    public pullCommentFromElement(buffer: string, line: number, column: number, file: string): Promise<string> {
-        let bufferLines = buffer.split("\n");
-        var currentLine = bufferLines[line];
-        let word = new CobolWordFinder().findWordAt(currentLine, column);
-        return new Promise<string>((resolve, reject) => {
-            new CobolDeclarationResolver()
-                .setSourceExpanderCallback((cacheFileName: string) => {
-                    let fileName = new Path(file).fileName();
-                    new Editor().showInformationMessage("Pré-processando " + fileName + " para buscar o comentário de " + word + "...");
-                    return new SourceExpander().createExpanderExecutionPromise([file, cacheFileName]);
-                })
-                .findDeclaration(buffer, word, file).then(location => {
-                    if (location) {
-                        resolve(this.extractCommentFromDefinition(location, bufferLines, file));
-                    } else {
-                        reject();
-                    }
+    private fireSourceExpander(word: string, file: string, cacheFileName: string): Promise<string> {
+        let fileName = new Path(file).fileName();
+        new Editor().showInformationMessage("Pré-processando " + fileName + " para buscar o comentário de '" + word + "'...");
+        return new SourceExpander().createExpanderExecutionPromise([file, cacheFileName]);
+    }
+
+    /**
+     * Handles the comment pulling
+     *
+     * @param cursor original position where cursor was positioned when this feature has been triggered
+     * @param position position from where comment will be pulled
+     * @param bufferLines buffer lines
+     */
+    private handleCommentPulling(cursor: RechPosition, position: RechPosition, bufferLines: string[]): void {
+        let comment = this.extractCommentFromDefinition(position, bufferLines);
+        if (comment.trim().length == 0) {
+            new Editor().showWarningMessage("Sem comentário vinculado.");
+        } else {
+            let previousLine = bufferLines[cursor.line - 1];
+            let previousComment = new CobolDocParser().parseSingleLineCobolDoc(previousLine).comment;
+            if (previousComment.trim() !== comment.trim()) {
+                new GeradorCobol().insertCommentLineWithText(comment).then(() => {
+                    new Editor().setCursor(cursor.line + 1, cursor.column);
                 });
-        });
+            }
+        }
     }
 
     /**
@@ -67,19 +69,17 @@ export class CommentPuller {
      * @param bufferLines lines on the buffer
      * @param currentOpenedFile current file opened in editor
      */
-    private extractCommentFromDefinition(location: RechPosition, bufferLines: string[], currentOpenedFile: string): string {
+    private extractCommentFromDefinition(location: RechPosition, bufferLines: string[]): string {
+        let buffer: string[] = [];
+        // If the delcaration was found on an external file
         if (location.file) {
-            let buffer: string[] = [];
-            if (location.file == currentOpenedFile) {
-                buffer = bufferLines;
-            } else {
-                buffer = new File(location.file).loadBufferSync("latin1").split("\n");
-            }
-            let docArray = new ParagraphDocumentationExtractor().getParagraphDocumentation(buffer, location.line);
-            let doc = new CobolDocParser().parseCobolDoc(docArray);
-            return doc.comment;
+            buffer = new File(location.file).loadBufferSync("latin1").split("\n");
+        } else {
+            buffer = bufferLines;
         }
-        return "";
+        let docArray = new ParagraphDocumentationExtractor().getParagraphDocumentation(buffer, location.line);
+        let doc = new CobolDocParser().parseCobolDoc(docArray);
+        return doc.comment;
     }
 
 }
