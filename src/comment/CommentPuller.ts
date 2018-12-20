@@ -78,8 +78,33 @@ export class CommentPuller {
         let comment = "";
         if (copyBuffer.length > 0) {
             comment = copyBuffer[1];
+            if (this.isWorkingFd(copyFileName)) {
+                comment = this.buildWorkingFdComment(comment);
+            }
         }
         return new CobolDocParser().parseSingleLineCobolDoc(comment).comment;
+    }
+
+    /**
+     * Returns true if the copy represents a Working
+     *
+     * @param copyFileName copy filename
+     */
+    private isWorkingFd(copyFileName: string) {
+        return copyFileName.toUpperCase().includes("WREG");
+    }
+
+    /**
+     * Builds the final Working FD comment
+     *
+     * @param comment comment extracted from the Working FD header
+     */
+    private buildWorkingFdComment(comment: string): string {
+        let description = /Descrição:(.*)/.exec(comment);
+        if (description && description[1]) {
+            return "      *>-> Registro de working do arquivo de " + description[1].trim();
+        }
+        return comment;
     }
 
     /**
