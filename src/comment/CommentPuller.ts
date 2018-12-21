@@ -76,7 +76,7 @@ export class CommentPuller {
      *
      * @param copyFileName copy filename
      */
-    private extractCommentFromCopy(copyFileName: string): string {
+    private extractCommentFromCopy(copyFileName: string): string[] {
         let comment = "";
         let file = new File(copyFileName);
         if (file.exists()) {
@@ -152,22 +152,43 @@ export class CommentPuller {
     /**
      * Handles the comment pulling
      *
-     * @param cursor original position where cursor was positioned when this feature has been triggered
-     * @param position position from where comment will be pulled
-     * @param bufferLines buffer lines
+     * @param comments comments to be inserted
+     * @param cursor cursor position
+     * @param bufferLines source buffer lines
      */
-    private handleCommentPulling(comment: string, cursor: RechPosition, bufferLines: string[]): void {
-        if (comment.trim().length == 0) {
+    private handleCommentPulling(comments: string[], cursor: RechPosition, bufferLines: string[]): void {
+        if (comments.length == 0) {
             new Editor().showWarningMessage("Sem comentário vinculado.");
         } else {
             let previousLine = bufferLines[cursor.line - 1];
-            let previousComment = new CobolDocParser().parseSingleLineCobolDoc(previousLine).comment;
-            if (previousComment.trim() !== comment.trim()) {
-                new GeradorCobol().insertCommentLineWithText(comment).then(() => {
-                    new Editor().setCursor(cursor.line + 1, cursor.column);
-                });
+            if (!this.isPreviousCommentEqual(previousLine, comments)) {
+                this.insertCommentsInEditor(comments, cursor);
             }
         }
+    }
+
+    /**
+     * Returns true if the previous comment is equal to the last line of the comment to be inserted
+     *
+     * @param previousLine previous comment
+     * @param comments comments to be inserted
+     */
+    private isPreviousCommentEqual(previousLine: string,  comments: string[]): boolean {
+        let previousComment = new CobolDocParser().parseSingleLineCobolDoc(previousLine).comment;
+        return previousComment.length > 0 && previousComment[previousComment.length - 1].trim() === comments[comments.length - 1].trim();
+    }
+
+    /**
+     * Inserts the specified comments in the editor
+     *
+     * @param comments comments to be inserted
+     * @param cursor cursor position
+     */
+    private async insertCommentsInEditor(comments: string[], cursor: RechPosition) {
+        for (let i = comments.length - 1; i >= 0; i--) {
+            await new GeradorCobol().insertCommentLineWithText(comments[i]);
+        }
+        await new Editor().setCursor(cursor.line + comments.length, cursor.column);
     }
 
     /**
@@ -176,7 +197,7 @@ export class CommentPuller {
      * @param location location where the element is declared
      * @param bufferLines lines on the buffer
      */
-    private extractCommentFromDefinition(location: RechPosition, bufferLines: string[]): string {
+    private extractCommentFromDefinition(location: RechPosition, bufferLines: string[]): string[] {
         let buffer: string[] = [];
         // If the delcaration was found on an external file
         if (location.file) {
