@@ -108,7 +108,7 @@ export class CommentPuller {
     private buildWorkingFdComment(comment: string): string {
         let description = /Descrição:(.*)/.exec(comment);
         if (description && description[1]) {
-            return "      *>-> Registro de working do arquivo de " + description[1].trim();
+            return "      *>-> Registro de Working do arquivo de " + description[1].replace("<*", "").trim();
         }
         return comment;
     }
