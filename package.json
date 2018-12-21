@@ -55,119 +55,119 @@
                 "title": "Rech: Abre os copys WF/PF do fonte atual"
             },
             {
-                "command": "rech.editor.vscode.checkout",
+                "command": "rech.editor.internal.checkout",
                 "title": "Rech: Checkout do fonte atual para o working copy"
             },
             {
-                "command": "rech.editor.vscode.compile",
+                "command": "rech.editor.internal.compile",
                 "title": "Rech: Compilar fonte COBOL"
             },
             {
-                "command": "rech.editor.vscode.update",
+                "command": "rech.editor.internal.update",
                 "title": "Rech: Update working-copy"
             },
             {
-                "command": "rech.editor.vscode.commit",
+                "command": "rech.editor.internal.commit",
                 "title": "Rech: Commit working-copy"
             },
             {
-                "command": "rech.editor.vscode.indent",
+                "command": "rech.editor.internal.indent",
                 "title": "Rech: Indenta mantendo nível atual"
             },
             {
-                "command": "rech.editor.vscode.indentLeft",
+                "command": "rech.editor.internal.indentLeft",
                 "title": "Rech: Indenta para esquerda"
             },
             {
-                "command": "rech.editor.vscode.indentRight",
+                "command": "rech.editor.internal.indentRight",
                 "title": "Rech: Indenta para direita"
             },
             {
-                "command": "rech.editor.vscode.preprocess0",
+                "command": "rech.editor.internal.preprocess0",
                 "title": "Rech: PREPROC - [0] Sem opções extras"
             },
             {
-                "command": "rech.editor.vscode.preprocess1",
+                "command": "rech.editor.internal.preprocess1",
                 "title": "Rech: PREPROC - [1] - Mostrando hierarquia dos copys (-hc)"
             },
             {
-                "command": "rech.editor.vscode.preprocess2",
+                "command": "rech.editor.internal.preprocess2",
                 "title": "Rech: PREPROC - [2] - Mostrando o uso de copys pelo programa (-lc)"
             },
             {
-                "command": "rech.editor.vscode.preprocess3",
+                "command": "rech.editor.internal.preprocess3",
                 "title": "Rech: PREPROC - [3] - Mostrando os parágrafos (-lsp)"
             },
             {
-                "command": "rech.editor.vscode.preprocess4",
+                "command": "rech.editor.internal.preprocess4",
                 "title": "Rech: PREPROC - [4] - Mostrando os parágrafos do programa (-lpp)"
             },
             {
-                "command": "rech.editor.vscode.preprocess5",
+                "command": "rech.editor.internal.preprocess5",
                 "title": "Rech: PREPROC - [5] - Mostrando warnings normais e estendidos (-war -wes)"
             },
             {
-                "command": "rech.editor.vscode.preprocess6",
+                "command": "rech.editor.internal.preprocess6",
                 "title": "Rech: PREPROC - [6] - Mostrando variáveis não usadas no programa (-vnp)"
             },
             {
-                "command": "rech.editor.vscode.preprocess7",
+                "command": "rech.editor.internal.preprocess7",
                 "title": "Rech: PREPROC - [7] - Mostrando variáveis não usadas no programa e nos copys (-vnu)"
             },
             {
-                "command": "rech.editor.vscode.preprocess8",
+                "command": "rech.editor.internal.preprocess8",
                 "title": "Rech: PREPROC - [8] - Mostrando warning de truncamento em MOVE (-wop=w074)"
             },
             {
-                "command": "rech.editor.vscode.wm",
+                "command": "rech.editor.internal.wm",
                 "title": "Rech: WM - Compara o fonte atual com o trunk"
             },
             {
-                "command": "rech.editor.vscode.fcw_bet",
+                "command": "rech.editor.internal.fcw_bet",
                 "title": "Rech: FCW BET - Compara o fonte atual com a beta"
             },
             {
-                "command": "rech.editor.vscode.fcw_ofi",
+                "command": "rech.editor.internal.fcw_ofi",
                 "title": "Rech: FCW OFI - Compara o fonte atual com a oficial"
             },
             {
-                "command": "rech.editor.vscode.fcw_est",
+                "command": "rech.editor.internal.fcw_est",
                 "title": "Rech: FCW EST - Compara o fonte atual com a estendida"
             },
             {
-                "command": "rech.editor.vscode.fcw_versao",
+                "command": "rech.editor.internal.fcw_versao",
                 "title": "Rech: FCW - Compara o fonte atual com a versão informada pelo usuário"
             },
             {
-                "command": "rech.editor.vscode.fonlbrlog",
+                "command": "rech.editor.internal.fonlbrlog",
                 "title": "Rech: FONLBRLOG - Visualiza alterações no SVN para fontes da versão Beta do SIGER"
             },
             {
-                "command": "rech.editor.vscode.fonteslog",
+                "command": "rech.editor.internal.fonteslog",
                 "title": "Rech: FONTESLOG - Visualiza alterações no SVN para fontes da versão Desenvolvimento do SIGER"
             },
             {
-                "command": "rech.editor.vscode.lis",
+                "command": "rech.editor.internal.lis",
                 "title": "Rech: LIS - Lista as alterações no fonte"
             },
             {
-                "command": "rech.editor.vscode.lisbk",
+                "command": "rech.editor.internal.lisbk",
                 "title": "Rech: LISBK - Lista as alterações no fonte salvas em backup"
             },
             {
-                "command": "rech.editor.vscode.listbk",
+                "command": "rech.editor.internal.listbk",
                 "title": "Rech: LISTBK - Ferramenta de comparação de fontes"
             },
             {
-                "command": "rech.editor.vscode.blame",
+                "command": "rech.editor.internal.blame",
                 "title": "Rech: BLAME - Visualiza alterações no SVN para fontes da versão Desenvolvimento do SIGER"
             },
             {
-                "command": "rech.editor.vscode.aplicaspd",
+                "command": "rech.editor.internal.aplicaspd",
                 "title": "Rech: APLICASPD - Executa ferramenta de aplicação de SPD"
             },
             {
-                "command": "rech.editor.vscode.autogrep",
+                "command": "rech.editor.internal.autogrep",
                 "title": "Rech: AUTOGREP - Executa ferramenta de busca de utilização de COPY"
             },
             {
@@ -197,27 +197,27 @@
                 "key": "alt+f2"
             },
             {
-                "command": "rech.editor.vscode.checkout",
+                "command": "rech.editor.internal.checkout",
                 "key": "alt+f5",
                 "when": "editorLangId == COBOL"
             },
             {
-                "command": "rech.editor.vscode.compile",
+                "command": "rech.editor.internal.compile",
                 "key": "ctrl+f9",
                 "when": "editorLangId == COBOL"
             },
             {
-                "command": "rech.editor.vscode.indent",
+                "command": "rech.editor.internal.indent",
                 "key": "ctrl+p",
                 "when": "editorLangId == COBOL"
             },
             {
-                "command": "rech.editor.vscode.indentLeft",
+                "command": "rech.editor.internal.indentLeft",
                 "key": "alt+shift+left",
                 "when": "editorLangId == COBOL"
             },
             {
-                "command": "rech.editor.vscode.indentRight",
+                "command": "rech.editor.internal.indentRight",
                 "key": "alt+shift+right",
                 "when": "editorLangId == COBOL"
             },
@@ -225,6 +225,14 @@
                 "command": "rech.editor.internal.pullComment",
                 "key": "shift+alt+c",
                 "when": "editorLangId == COBOL"
+            },
+            {
+                "command": "rech.editor.internal.editorScrollUp",
+                "key": "ctrl+up"
+            },
+            {
+                "command": "rech.editor.internal.editorScrollDown",
+                "key": "ctrl+down"
             }
         ]
     },

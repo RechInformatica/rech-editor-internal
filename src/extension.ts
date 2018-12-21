@@ -51,102 +51,102 @@ export function activate(_context: any) {
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.OpenWFPF', () => {
         new OpenWFPF().open();
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.update', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.update', () => {
         new Editor().showInformationMessage("Executando Update...");
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\Update.bat");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.commit', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.commit', () => {
         new Editor().showInformationMessage("Executando Commit...");
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\Commit.bat");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.checkout', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.checkout', () => {
         WorkingCopy.checkoutFonte(new Editor().getCurrentFileBaseName());
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.compile', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.compile', () => {
         new Compiler().compileCurrentFile();
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.indent', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.indent', () => {
         new Editor().indent("N");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.indentLeft', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.indentLeft', () => {
         new Editor().indent("E");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.indentRight', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.indentRight', () => {
         new Editor().indent("D");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess0', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.preprocess0', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("0");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess1', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.preprocess1', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("1");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess2', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.preprocess2', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("2");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess3', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.preprocess3', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("3");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess4', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.preprocess4', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("4");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess5', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.preprocess5', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("5");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess6', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.preprocess6', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("6");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess7', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.preprocess7', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("7");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.preprocess8', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.preprocess8', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("8");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.wm', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.wm', () => {
         let fileName = new Editor().getCurrentFileBaseNameWithoutExtension();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\WM.bat " + fileName);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fcw_bet', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.fcw_bet', () => {
         let fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat BET " + fileName);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fcw_ofi', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.fcw_ofi', () => {
         let fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat OFI " + fileName);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fcw_est', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.fcw_est', () => {
         let fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat EST " + fileName);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fcw_versao', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.fcw_versao', () => {
         let editor = new Editor();
         editor.showInputBox("Informe a versão a ser realizado o FCW", "FCW", (info) => {
             let fileName = editor.getCurrentFileBaseName();
             new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat " + info + " " + fileName);
         });
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fonlbrlog', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.fonlbrlog', () => {
         let fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FONLBRLOG.bat " + fileName);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.fonteslog', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.fonteslog', () => {
         let fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FONTESLOG.bat " + fileName);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.lis', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.lis', () => {
         let editor = new Editor();
         let fileName = editor.getCurrentFileBaseNameWithoutExtension();
         let directory = editor.getCurrentFileDirectory();
         new Executor().runAsync('start cmd.exe /c F:\\BAT\\PSPADLIS.bat ' + directory + fileName + '*');
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.lisbk', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.lisbk', () => {
         let editor = new Editor();
         let fileName = editor.getCurrentFileBaseNameWithoutExtension();
         let extension = editor.getCurrentFileBaseNameExtension();
         let directory = editor.getCurrentFileDirectory();
         new Executor().runAsync('start cmd.exe /c F:\\BAT\\PSPADLISBK.bat ' + directory + ' ' + fileName + ' ' + extension);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.listbk', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.listbk', () => {
         let editor = new Editor();
         let fileName = editor.getCurrentFileBaseName();
         editor.showInputBox("Informe o fonte a realizar o LISTBK", "LISTBK", (info) => {
@@ -157,7 +157,7 @@ export function activate(_context: any) {
             }
         }, fileName);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.blame', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.blame', () => {
         let editor = new Editor();
         let fileName = editor.getCurrentFileBaseName();
         editor.showInputBox("Informe o fonte a realizar o BLAME", "BLAME", (info) => {
@@ -168,14 +168,20 @@ export function activate(_context: any) {
             }
         }, fileName);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.aplicaspd', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.aplicaspd', () => {
         new Executor().runAsync('start cmd.exe /c F:\\BAT\\APLICASPD.bat ');
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.vscode.autogrep', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.autogrep', () => {
         new Executor().runAsync('start cmd.exe /c F:\\BAT\\AUTOGREP.bat ');
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.pullComment', () => {
         new CommentPuller().pullCommentFromCursor();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.editorScrollUp', () => {
+        commands.executeCommand('editorScroll', { to: 'up', by: 'line', value: 1, revealCursor: true });
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.editorScrollDown', () => {
+        commands.executeCommand('editorScroll', { to: 'down', by: 'line', value: 1, revealCursor: true });
     }));
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
