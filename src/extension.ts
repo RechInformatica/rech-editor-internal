@@ -37,9 +37,10 @@ export function activate(_context: any) {
         }
         fongrep.fonGrep(text);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.RechWindowDesigner', () => {
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.RechWindowDesigner', async () => {
         let FileName = new Editor().getCurrentFileBaseName();
-        commands.executeCommand('workbench.action.terminal.sendSequence', { text: `RWD ${FileName} \u000d`});
+        await commands.executeCommand('workbench.action.terminal.focus');
+        await commands.executeCommand('workbench.action.terminal.sendSequence', { text: `RWD ${FileName} \u000d`});
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.openThis', () => {
         var fileOpener = new FileOpener();
