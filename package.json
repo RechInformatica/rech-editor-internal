@@ -25,6 +25,33 @@
     ],
     "main": "./out/extension",
     "contributes": {
+        "languages": [
+            {
+                "id": "Log",
+                "aliases": [
+                    "Log Cobol"
+                ],
+                "extensions": [
+                    ".log",
+                    ".err"
+                ],
+                "configuration": "./log.configuration.json",
+                "mimetypes": [
+                    "log",
+                    "text/log",
+                    "text/x-log",
+                    "text/x-code-output",
+                    "x-code-output"
+                ]
+            }
+        ],
+        "grammars": [
+            {
+                "language": "Log",
+                "scopeName": "code.log",
+                "path": "./syntaxes/log.tmLanguage.json"
+            }
+        ],
         "commands": [
             {
                 "command": "rech.editor.internal.openFontesTrunk",
