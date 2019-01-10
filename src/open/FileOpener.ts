@@ -42,7 +42,7 @@ export class FileOpener {
 
   /**
    * Adds path for file searchinf
-   * 
+   *
    * @param path path to be added
    */
   public addPathForFileSearching(path: string) {
@@ -54,7 +54,7 @@ export class FileOpener {
    */
   openFromCurrentLine() {
     var text = this.retrieveTargetText();
-    this.openRegexFromCurrentLine(text, /([A-Z]:)?([^:\s\*\?\"\'\<\>\|]+\.\w+)(:\d+)?/gi, 0);
+    this.openRegexFromCurrentLine(text, /([A-Z]:)?([^:\s\*\?\"\'\<\>\|]+\.\w+)(:\d+|,\sline\s=\s\d+)?(,\scol\s\d+)?/gi, 0);
     this.openRegexFromCurrentLine(text, / *CALL +"([^"]+)"/gi, 1);
     this.openRegexFromCurrentLine(text, / *CANCEL +\"([^"]+)\"/gi, 1);
     this.openRegexFromCurrentLine(text, / *INVOKE +([^ ]+)/gi, 1);
@@ -62,10 +62,10 @@ export class FileOpener {
 
   /**
    * Opens the file from current line after executing the specified regular expression
-   * 
+   *
    * @param text line text
    * @param regex regular expression to be executed
-   * @param resultIndex regular expression result index 
+   * @param resultIndex regular expression result index
    */
   private openRegexFromCurrentLine(text: string, regex: RegExp, resultIndex: number) {
     var matches = this.matcher.getFilePathsFromLine(text, regex);
@@ -92,7 +92,7 @@ export class FileOpener {
 
   /**
    * Resolves the path for the specified file
-   * 
+   *
    * @param file target file
    */
   private resolvePathForFile(file: string) {

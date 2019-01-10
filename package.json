@@ -200,6 +200,14 @@
             {
                 "command": "rech.editor.internal.pullComment",
                 "title": "Rech: PUXA COMENTÁRIO - Puxa o comentário do elemento (parágrafo/variável) onde está o cursor"
+            },
+            {
+                "command": "rech.editor.internal.findNextBlankLine",
+                "title": "findNextBlankLine"
+            },
+            {
+                "command": "rech.editor.internal.findPreviousBlankLine",
+                "title": "findPreviousBlankLine"
             }
         ],
         "keybindings": [
@@ -254,12 +262,110 @@
                 "when": "editorLangId == COBOL"
             },
             {
+                "command": "rech.editor.internal.newLineAbove",
+                "key": "ctrl+shift+enter"
+            },
+            {
+                "command": "deleteWordRight",
+                "key": "alt+w",
+                "when": "textInputFocus && !editorReadonly"
+            },
+            {
+                "command": "editor.action.nextMatchFindAction",
+                "key": "F3"
+            },
+            {
+                "command": "editor.action.previousMatchFindAction",
+                "key": "F4"
+            },
+            {
+                "command": "editor.action.previousMatchFindAction",
+                "key": "shift+F3"
+            },
+            {
+                "command": "deleteAllRight",
+                "key": "alt+l"
+            },
+            {
+                "command": "editor.action.deleteLines",
+                "key": "ctrl+F12"
+            },
+            {
+                "command": "rech.editor.internal.findWordForward",
+                "key": "alt+0"
+            },
+            {
+                "command": "rech.editor.internal.findWordBackward",
+                "key": "alt+9"
+            },
+            {
+                "command": "rech.editor.internal.copyWordUnderCursor",
+                "key": "ctrl+abnt_c1"
+            },
+            {
+                "command": "rech.editor.internal.replaceWordUnderCursor",
+                "key": "shift+ctrl+abnt_c1"
+            },
+            {
+                "key": "ctrl+right",
+                "command": "cursorWordStartRight",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "rech.editor.internal.cobolUpdateLineDots",
+                "key": "alt+abnt_c1"
+            },
+            {
+                "command": "rech.editor.internal.findNextBlankLine",
+                "key": "alt+p"
+            },
+            {
+                "command": "rech.editor.internal.findPreviousBlankLine",
+                "key": "alt+shift+p"
+            },
+            {
+                "command": "rech.editor.internal.copyLine",
+                "key": "F10"
+            },
+            {
+                "command": "rech.editor.internal.pasteLine",
+                "key": "F11"
+            },
+            {
+                "command": "rech.editor.internal.replaceLine",
+                "key": "shift+F11"
+            },
+            {
+                "command": "editor.action.copyLinesUpAction",
+                "key": "ctrl+shift+up"
+            },
+            {
+                "command": "editor.action.copyLinesDownAction",
+                "key": "ctrl+shift+down"
+            },
+            {
                 "command": "rech.editor.internal.editorScrollUp",
                 "key": "ctrl+up"
             },
             {
                 "command": "rech.editor.internal.editorScrollDown",
                 "key": "ctrl+down"
+            },
+            {
+                "command": "editor.action.moveLinesDownAction",
+                "key": "alt+shift+down"
+            },
+            {
+                "command": "editor.action.moveLinesUpAction",
+                "key": "alt+shift+up"
+            },
+            {
+                "command": "editor.action.transformToLowercase",
+                "key": "ctrl+alt+l"
+            },
+            {
+                "command": "editor.action.transformToUppercase",
+                "key": "ctrl+alt+u"
             }
         ]
     },
