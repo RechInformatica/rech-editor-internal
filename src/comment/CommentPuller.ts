@@ -1,4 +1,4 @@
-import { CobolWordFinder, Path, Editor, RechPosition, ParagraphDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, CobolDeclarationFinder } from 'rech-editor-vscode';
+import { CobolWordFinder, Path, Editor, RechPosition, ParagraphDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, CobolDeclarationFinder } from 'rech-editor-cobol';
 
 /* Max number of lines to look for a flag parent */
 const MAX_LINES_FLAG_PARENT = 2;

@@ -1,4 +1,4 @@
-import { Executor, Process, Editor, RechPosition } from "rech-editor-vscode";
+import { Executor, Process, Editor, RechPosition } from "rech-editor-cobol";
 /**
  * Class for returning Working-Copy general information
  */
@@ -32,7 +32,7 @@ export class WorkingCopy {
 
   /**
    * Returns an instance of the current WorkingCopy
-   */  
+   */
   public static currentSync() {
     let process = new Executor().runSync("cmd.exe /C F:\\BAT\\WC.bat /show");
     var wc = WorkingCopy.createWcFromProcessOutput(process);

@@ -1,4 +1,4 @@
-import { Editor, Path, File } from "rech-editor-vscode";
+import { Editor, Path, File } from "rech-editor-cobol";
 import { Matcher } from "./Matcher";
 import * as fs from 'fs';
 

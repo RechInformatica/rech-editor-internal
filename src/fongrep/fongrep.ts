@@ -1,5 +1,5 @@
-import { Executor } from 'rech-editor-vscode';
-import { Editor } from 'rech-editor-vscode';
+import { Executor } from 'rech-editor-cobol';
+import { Editor } from 'rech-editor-cobol';
 import * as fs from 'fs';
  /**
  * Class to execute FonGrep from within VSCode
@@ -29,7 +29,7 @@ export class FonGrep {
 
      /**
      * Handles the result file
-     * 
+     *
      * @param inputSearch Input search previously used as a FonGrep parameter
      * @param output FonGrep output
      */
@@ -40,7 +40,7 @@ export class FonGrep {
     }
      /**
      * Extracts FonGrep's result filename from the console output
-     * 
+     *
      * @param outputLines FonGrep output lines
      */
     private extractResultFileFromOutput(outputLines: string[]) {
@@ -59,7 +59,7 @@ export class FonGrep {
     }
      /**
      * Opens the result file if any result is found
-     * 
+     *
      * @param resultFile FonGrep result filename
      * @param inputSearch Input search previously used as a FonGrep parameter
      */
@@ -71,4 +71,4 @@ export class FonGrep {
             new Editor().showWarningMessage("Nenhum resultado encontrado no FonGrep com a busca '" + inputSearch + "'.");
         }
     }
-} 
+}

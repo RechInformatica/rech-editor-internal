@@ -1,4 +1,4 @@
-import { Editor, File, Scan} from "rech-editor-vscode";
+import { Editor, File, Scan} from "rech-editor-cobol";
 
 /**
  * Class for opening wf/pf files
@@ -25,7 +25,7 @@ export class OpenWFPF {
         const regexCBL = /(.*).CBL/gi;
         /** RegEx to find the constant from the function where the cursor is positioned */
         const regexFunction = /\s([A-Z]+\-FUN\-[A-Z]+)/gi;
-        
+
         /** Get the current file name */
         let filename = this.editor.getCurrentFileName();
         /** If the current file is a WF | PF file */

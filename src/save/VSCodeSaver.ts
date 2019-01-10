@@ -1,4 +1,4 @@
-import { Executor, Editor } from 'rech-editor-vscode';
+import { Executor, Editor } from 'rech-editor-cobol';
 
 /**
  * Class for saving files through Visual Studio Code
@@ -21,7 +21,7 @@ export class VSCodeSaver {
 
     /**
      * Executes the command according to the trigger
-     * 
+     *
      * @param trigger Word indicating the trigger
      */
     private executeCommand(trigger: string) {

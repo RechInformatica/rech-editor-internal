@@ -1,4 +1,4 @@
-import { Executor, Process, File, Path } from 'rech-editor-vscode';
+import { Executor, Process, File, Path } from 'rech-editor-cobol';
 
  /**
  * Class to find use of copys

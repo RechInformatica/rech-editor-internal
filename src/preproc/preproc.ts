@@ -1,5 +1,5 @@
 'use babel';
-import { Executor, Path, Process, GenericExecutor, File } from 'rech-editor-vscode';
+import { Executor, Path, Process, GenericExecutor, File } from 'rech-editor-cobol';
 import { Autogrep } from '../autogrep/autogrep';
 import { WorkingCopy } from '../wc/WorkingCopy';
 

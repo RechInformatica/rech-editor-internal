@@ -1,5 +1,5 @@
 'use babel';
-import { Editor, Path } from 'rech-editor-vscode';
+import { Editor, Path } from 'rech-editor-cobol';
 import { Preproc } from './preproc';
 
 /**

@@ -3,7 +3,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { commands } from 'vscode';
-import { Editor, Executor, Compiler, GeradorCobol} from 'rech-editor-vscode';
+import { Editor, Executor, Compiler, GeradorCobol} from 'rech-editor-cobol';
 import { WorkingCopy } from './wc/WorkingCopy';
 import { VSCodeSaver } from './save/VSCodeSaver';
 import { FonGrep } from './fongrep/fongrep';
