@@ -3,7 +3,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { commands } from 'vscode';
-import { Editor, Executor, Compiler} from 'rech-editor-vscode';
+import { Editor, Executor, Compiler, GeradorCobol} from 'rech-editor-vscode';
 import { WorkingCopy } from './wc/WorkingCopy';
 import { VSCodeSaver } from './save/VSCodeSaver';
 import { FonGrep } from './fongrep/fongrep';
@@ -183,6 +183,42 @@ export function activate(_context: any) {
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.editorScrollDown', () => {
         commands.executeCommand('editorScroll', { to: 'down', by: 'line', value: 1, revealCursor: true });
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.newLineAbove', () => {
+        new GeradorCobol().newLineAbove();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.findNextBlankLine', () => {
+        new Editor().findNextBlankLine();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.findPreviousBlankLine', () => {
+        new Editor().findPreviousBlankLine();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.findWordForward', () => {
+        commands.executeCommand("editor.action.addSelectionToNextFindMatch");
+        commands.executeCommand("editor.action.nextMatchFindAction");
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.findWordBackward', () => {
+        commands.executeCommand("editor.action.addSelectionToNextFindMatch");
+        commands.executeCommand("editor.action.previousMatchFindAction");
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.replaceWordUnderCursor', () => {
+        new Editor().clipboardReplaceWord();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.copyWordUnderCursor', () => {
+        new Editor().clipboardCopyWord();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.cobolUpdateLineDots', () => {
+        new GeradorCobol().updateLineDots();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.copyLine', () => {
+        commands.executeCommand("editor.action.clipboardCopyAction");
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.pasteLine', () => {
+        new GeradorCobol().pasteLine();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.replaceLine', () => {
+        commands.executeCommand("editor.action.deleteLines");
+        new GeradorCobol().pasteLine();
     }));
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
