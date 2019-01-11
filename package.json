@@ -212,6 +212,12 @@
         ],
         "keybindings": [
             {
+                "comment": "Ainda não é a rotina ideal... Mas por enquanto quebra um galho",
+                "command": "editor.action.commentLine",
+                "key": "alt+=",
+                "when": "editorLangId == COBOL"
+            },
+            {
                 "command": "rech.editor.internal.openFontesTrunk",
                 "key": "ctrl+shift+o"
             },
