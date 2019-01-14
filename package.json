@@ -52,7 +52,7 @@
                 "rech.editor.internal.autodiagnostic": {
                     "type": "boolean",
                     "description": "Whether auto diagnostic is enabled",
-                    "default": false
+                    "default": true
                 },
                 "rech.editor.internal.diagnosticfilter": {
                     "type": "array",
