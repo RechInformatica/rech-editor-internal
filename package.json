@@ -45,6 +45,21 @@
                 ]
             }
         ],
+        "configuration": {
+            "type": "object",
+            "title": "Rech internal configurations",
+            "properties": {
+                "rech.editor.internal.autodiagnostic": {
+                    "type": "boolean",
+                    "description": "Whether auto diagnostic is enabled",
+                    "default": false
+                },
+                "rech.editor.internal.diagnosticfilter": {
+                    "type": "array",
+                    "description": "Filter of warnings that should not be considered in diagnostic"
+                }
+            }
+        },
         "grammars": [
             {
                 "language": "Log",

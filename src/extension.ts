@@ -3,7 +3,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { commands } from 'vscode';
-import { Editor, Executor, Compiler, GeradorCobol} from 'rech-editor-cobol';
+import { Editor, Executor, Compiler, GeradorCobol, cobolDiagnosticFilter} from 'rech-editor-cobol';
 import { WorkingCopy } from './wc/WorkingCopy';
 import { VSCodeSaver } from './save/VSCodeSaver';
 import { FonGrep } from './fongrep/fongrep';
@@ -224,6 +224,7 @@ export function activate(_context: any) {
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
     defineSourceExpander();
     definePreprocessor();
+    defineDianosticConfigs();
 }
 
 /**
@@ -243,6 +244,19 @@ function definePreprocessor() {
     preproc.setOptions(["-cpn", "-msi", "-scc", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
     Editor.setPreprocessor(preproc);
 }
+
+/**
+ * Sets configurations for Cobol source diagnostic
+ */
+function defineDianosticConfigs() {
+    let autodiagnostic = <Boolean> vscode.workspace.getConfiguration("rech.editor.internal").get("autodiagnostic");
+    if (autodiagnostic) {
+        cobolDiagnosticFilter.setAutoDiagnostic(true);
+        let noShowWarnings = <string[]> vscode.workspace.getConfiguration("rech.editor.internal").get("diagnosticfilter");
+        cobolDiagnosticFilter.setNoShowWarnings(noShowWarnings);
+    }
+}
+
 /**
  * Opens dialog for file selection and automatically opens the files in editor
  *
