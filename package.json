@@ -407,7 +407,7 @@
         "vsce": "^1.54.0",
         "ts-node": "^7.0.1",
         "tslint": "^5.8.0",
-        "rech-editor-cobol": "^1.0.0"
+        "rech-editor-cobol": "file:../rech-editor-cobol"
     },
     "devDependencies": {
         "vscode": "^1.1.22",
