@@ -1,7 +1,7 @@
 {
     "name": "rech-editor-internal",
-    "displayName": "rech-editor-internal",
-    "description": "Package for using Rech's extensions with Visual Studio Code in Rech's intranet.",
+    "displayName": "Rech Internal",
+    "description": "Package for using Rech's extensions with Visual Studio Code in Rech's intranet",
     "version": "0.0.1",
     "publisher": "rechinformatica",
     "engines": {
