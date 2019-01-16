@@ -38,7 +38,7 @@ export class Matcher {
       let row = parseInt(match[2]);
       if (row) {
         row = isNaN(row) ? 1 : row;
-        return new Match(match[1], row, 1);
+        return new Match(match[1], row, 0);
       }
     }
     match = /((?:.:)?.+?),\sline\s=\s(\d+)(?:.+col\s(\d+))?/.exec(text);
