@@ -32,7 +32,7 @@ export class Matcher {
    */
   private buildMatch(text: string) {
     // Regex for obtaining row and column number
-    let match = /^((?:.:)?.+?)(?::(\d+))?$/.exec(text)
+    let match = /^((?:.:)?.+?)(?::(\d+))?$/.exec(text);
     if (match && match[2]) {
       // Parses the row number
       let row = parseInt(match[2]);
@@ -48,13 +48,13 @@ export class Matcher {
       if (row) {
         let column = parseInt(match[3]);
         if (!column) {
-          column = 1;
+          column = 0;
         }
         row = isNaN(row) ? 1 : row;
         return new Match(match[1], row, column);
       }
     }
-    return new Match(text, 1, 1);
+    return new Match(text, 1, 0);
   }
 
 };
