@@ -1,7 +1,4 @@
-import { CobolWordFinder, Path, Editor, RechPosition, ParagraphDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, CobolDeclarationFinder } from 'rech-editor-cobol';
-
-/* Max number of lines to look for a flag parent */
-const MAX_LINES_FLAG_PARENT = 2;
+import { CobolWordFinder, Path, Editor, RechPosition, ElementDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, CobolDeclarationFinder, VariableUtils } from 'rech-editor-cobol';
 
 /**
  * Class for extracting and pulling comment from Cobol paragraphs and variables
@@ -205,57 +202,10 @@ export class CommentPuller {
         } else {
             buffer = bufferLines;
         }
-        let targetLine = this.getAppropriateDeclarationLine(location, buffer);
-        let docArray = new ParagraphDocumentationExtractor().getParagraphDocumentation(buffer, targetLine);
+        let docArray = VariableUtils.findVariableDocArray(buffer, location.line);
         let doc = new CobolDocParser().parseCobolDoc(docArray);
         return doc.comment;
     }
 
-    /**
-     * Returns the appropriate declaration line.
-     *
-     * When one try to extract a boolean's comment sometimes it is necessary to extract the parent's comment.
-     *
-     * @param location location where the element is declared
-     * @param bufferLines lines on the buffer
-     */
-    private getAppropriateDeclarationLine(location: RechPosition, bufferLines: string[]): number {
-        if (this.isBooleanFlag(bufferLines[location.line])) {
-            return this.findParentVariableLine(location, bufferLines);
-        }
-        return location.line;
-    }
-
-    /**
-     * Returns the boolean flag parent location
-     *
-     * @param location location where the element is declared
-     * @param bufferLines lines on the buffer
-     */
-    private findParentVariableLine(location: RechPosition, bufferLines: string[]): number {
-        if (bufferLines.length < MAX_LINES_FLAG_PARENT) {
-            return location.line;
-        }
-        for (let i = 1; i <= MAX_LINES_FLAG_PARENT; i++) {
-            let currentLine = bufferLines[location.line - i];
-            if (!this.isBooleanFlag(currentLine) && !currentLine.trim().startsWith("*>")) {
-                return location.line - i;
-            }
-        }
-        return location.line;
-    }
-
-    /**
-     * Returns true if the specified line represents a SIM or NAO boolean flag
-     *
-     * @param currentLine current line text
-     */
-    private isBooleanFlag(currentLine: string): boolean {
-        let upperLine = currentLine.toUpperCase();
-        if (/\s+(88).*/.exec(upperLine) && (upperLine.includes("SIM ") || upperLine.includes("NAO "))) {
-            return true;
-        }
-        return false;
-    }
 
 }
