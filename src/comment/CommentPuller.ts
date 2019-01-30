@@ -76,6 +76,9 @@ export class CommentPuller {
     private extractCommentFromCopy(copyFileName: string): string[] {
         let comment = "";
         let file = new File(copyFileName);
+        if (!file.exists()) {
+            file = new File("F:\\Fontes\\" + new Path(file.fileName).fileName());
+        }
         if (file.exists()) {
             let copyBuffer = file.loadBufferSync("latin1").split("\n");
             if (copyBuffer.length > 0) {
