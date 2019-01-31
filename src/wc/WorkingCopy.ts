@@ -48,7 +48,6 @@ export class WorkingCopy {
     let cursors: RechPosition[] = editor.getCursors();
     editor.showInformationMessage("Executando Checkout de " + baseName + "...");
     editor.closeActiveEditor();
-    editor.showInformationMessage("cmd.exe /c F:\\BAT\\Checkout.bat /noopen /show /nodic " + baseName);
     new Executor().runAsync(
       "cmd.exe /c F:\\BAT\\Checkout.bat /noopen /show /nodic " + baseName,
       process => {
