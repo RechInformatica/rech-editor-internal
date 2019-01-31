@@ -63,6 +63,14 @@ export function activate(_context: any) {
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.checkout', () => {
         WorkingCopy.checkoutFonte(new Editor().getCurrentFileBaseName());
     }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.checkoutdic', () => {
+        new Editor().showInformationMessage("Executando checkout do dicionário...");
+        new Executor().runAsync("start cmd.exe /c F:\\BAT\\CheckoutDic.bat");
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.cleardic', () => {
+        new Editor().showInformationMessage("Limpando o dicionário do diretório por programador...");
+        new Executor().runAsync("start cmd.exe /c F:\\BAT\\ClearDic.bat");
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.compile', () => {
         new Compiler().compileCurrentFile();
     }));

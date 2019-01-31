@@ -48,12 +48,13 @@ export class WorkingCopy {
     let cursors: RechPosition[] = editor.getCursors();
     editor.showInformationMessage("Executando Checkout de " + baseName + "...");
     editor.closeActiveEditor();
+    editor.showInformationMessage("cmd.exe /c F:\\BAT\\Checkout.bat /noopen /show /nodic " + baseName);
     new Executor().runAsync(
-      "cmd.exe /c F:\\BAT\\Checkout.bat /noopen /show " + baseName,
+      "cmd.exe /c F:\\BAT\\Checkout.bat /noopen /show /nodic " + baseName,
       process => {
         // Parse file path checked out from executor's output
         let fonte = process.getStdout().match("F:/SIGER/WC/.*");
-        if (fonte != null) {
+        if (fonte !== null) {
           new Editor().openFile(fonte[0], () => {
             new Editor().setCursors(cursors);
           });
