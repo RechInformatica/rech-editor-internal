@@ -157,7 +157,7 @@ export class CommentPuller {
      * @param bufferLines source buffer lines
      */
     private handleCommentPulling(comments: string[], cursor: RechPosition, bufferLines: string[]): void {
-        if (comments.length == 0) {
+        if (comments.length === 0) {
             new Editor().showWarningMessage("Sem comentário vinculado.");
         } else {
             let previousLine = bufferLines[cursor.line - 1];

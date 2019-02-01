@@ -241,7 +241,7 @@ function defineSourceExpander() {
  */
 function definePreprocessor() {
     var preproc = new Preproc();
-    preproc.setOptions(["-cpn", "-msi", "-scc", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
+    preproc.setOptions(["-cpn", "-spn", "-sco", "-msi", "-scc", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
     Editor.setPreprocessor(preproc);
 }
 
@@ -249,9 +249,9 @@ function definePreprocessor() {
  * Sets configurations for Cobol source diagnostic
  */
 function defineDianosticConfigs() {
-    let autodiagnostic = <Boolean> vscode.workspace.getConfiguration("rech.editor.internal").get("autodiagnostic");
+    let autodiagnostic = <"onChange" | "onSave" | boolean> vscode.workspace.getConfiguration("rech.editor.internal").get("autodiagnostic");
     if (autodiagnostic) {
-        cobolDiagnosticFilter.setAutoDiagnostic(true);
+        cobolDiagnosticFilter.setAutoDiagnostic(autodiagnostic);
         let noShowWarnings = <string[]> vscode.workspace.getConfiguration("rech.editor.internal").get("diagnosticfilter");
         cobolDiagnosticFilter.setNoShowWarnings(noShowWarnings);
     }

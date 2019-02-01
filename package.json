@@ -50,7 +50,16 @@
             "title": "Rech internal configurations",
             "properties": {
                 "rech.editor.internal.autodiagnostic": {
-                    "type": "boolean",
+                    "type": [
+                        "boolean",
+                        "string",
+                        "string"
+                    ],
+                    "enum": [
+                        false,
+                        "onChange",
+                        "onSave"
+                    ],
                     "description": "Whether auto diagnostic is enabled",
                     "default": true
                 },
