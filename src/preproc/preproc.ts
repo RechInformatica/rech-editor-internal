@@ -60,6 +60,10 @@ export class Preproc implements GenericExecutor {
    */
   public exec(file?: string) {
     return new Promise((resolve, reject) => {
+      let directory = new File(new Path(file).directory());
+      if (!directory.exists()) {
+        directory.mkdir();
+      }
       if (file && file.match(/.*\.(CPY|CPB)/gi)) {
         new Autogrep([new Path(this.path).fileName()]).find().then((cblFiles) => {
           let cblFile = cblFiles[0];
