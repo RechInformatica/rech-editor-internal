@@ -61,7 +61,7 @@
                         "onSave"
                     ],
                     "description": "Whether auto diagnostic is enabled",
-                    "default": true
+                    "default": "onChange"
                 },
                 "rech.editor.internal.diagnosticfilter": {
                     "type": "array",
