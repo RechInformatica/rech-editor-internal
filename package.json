@@ -110,6 +110,14 @@
                 "title": "Rech: Checkout do fonte atual para o working copy"
             },
             {
+                "command": "rech.editor.internal.checkoutdic",
+                "title": "Rech: Checkoutdic - Atualiza dicionário do diretório por programador"
+            },
+            {
+                "command": "rech.editor.internal.cleardic",
+                "title": "Rech: Cleardic - Limpa dicionário do diretório por programador"
+            },
+            {
                 "command": "rech.editor.internal.compile",
                 "title": "Rech: Compilar fonte COBOL"
             },
