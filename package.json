@@ -363,11 +363,13 @@
             },
             {
                 "command": "rech.editor.internal.copyLine",
-                "key": "F10"
+                "key": "F10",
+                "when": "!inDebugMode"
             },
             {
                 "command": "rech.editor.internal.pasteLine",
-                "key": "F11"
+                "key": "F11",
+                "when": "!inDebugMode"
             },
             {
                 "command": "rech.editor.internal.replaceLine",
