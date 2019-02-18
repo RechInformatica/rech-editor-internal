@@ -249,7 +249,7 @@ function defineSourceExpander() {
  */
 function definePreprocessor() {
     var preproc = new Preproc();
-    preproc.setOptions(["-cpn", "-spn", "-sco", "-msi", "-scc", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
+    preproc.setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
     Editor.setPreprocessor(preproc);
 }
 
