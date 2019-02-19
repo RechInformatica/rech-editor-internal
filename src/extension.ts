@@ -12,6 +12,7 @@ import { Preproc } from './preproc/preproc';
 import { OpenWFPF } from './open/OpenWFPF';
 import { SourcePreprocessor } from './preproc/SourcePreprocessor';
 import { CommentPuller } from './comment/CommentPuller';
+import { ReadOnlyControll } from './readonly/ReadOnlyControll';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -230,6 +231,9 @@ export function activate(_context: any) {
     }));
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
+    vscode.workspace.onDidChangeTextDocument(() => {
+        ReadOnlyControll.check();
+    })
     defineSourceExpander();
     definePreprocessor();
     defineDianosticConfigs();
