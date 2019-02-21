@@ -8,18 +8,18 @@ export class FonGrep {
      /**
      * Executes FonGrep opening the result file on the editor
      */
-    public fonGrep(word: string) {
+    public fonGrep(word: string, version:string ) {
         new Editor().showInputBox("Argumento a ser pesquisado pelo FonGrep", "FonGrep", (info) => {
-            this.runFonGrep(info);
+            this.runFonGrep(info,version);
         }, word);
     }
      /**
      * Executes the FonGrep command itself and handles the result file
      */
-    runFonGrep(info: string | undefined) {
+    runFonGrep(info: string | undefined, version:string) {
         if (info !== undefined && info.length > 0) {
-            new Editor().showInformationMessage("Iniciando busca por '" + info + "'...");
-            new Executor().runAsync("cmd.exe /C F:\\BAT\\FonGrep.bat /noOpenEditor /show /delEmptyResult " + info, (process) => {
+            new Editor().showInformationMessage(`Iniciando busca por '${info}' na versão ${version} ...`);
+            new Executor().runAsync(`cmd.exe /C F:\\BAT\\FonGrep.bat /noOpenEditor /show /delEmptyResult ${version} ${info}`, (process) => {
                 this.handleResult(info, process.getStdout());
             });
         } else {

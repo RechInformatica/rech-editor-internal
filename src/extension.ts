@@ -13,6 +13,7 @@ import { OpenWFPF } from './open/OpenWFPF';
 import { SourcePreprocessor } from './preproc/SourcePreprocessor';
 import { CommentPuller } from './comment/CommentPuller';
 import { ReadOnlyControll } from './readonly/ReadOnlyControll';
+import { Matcher } from './open/Matcher';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -32,11 +33,12 @@ export function activate(_context: any) {
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.fonGrep', () => {
         var editor = new Editor();
         var fongrep = new FonGrep();
+        var version = new Matcher().getVersionFromLine(editor.getCurrentFileDirectory());
         var text = editor.getSelectionBuffer()[0];
         if (text === '') {
             text = editor.getCurrentWord();
         }
-        fongrep.fonGrep(text);
+        fongrep.fonGrep(text, version);
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.RechWindowDesigner', async () => {
         let FileName = new Editor().getCurrentFileBaseName();
@@ -239,7 +241,7 @@ export function activate(_context: any) {
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
     vscode.workspace.onDidChangeTextDocument((change) => {
         ReadOnlyControll.check(change.document.uri.fsPath);
-    })
+    });
     defineSourceExpander();
     definePreprocessor();
     defineDianosticConfigs();
