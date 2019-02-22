@@ -1,5 +1,6 @@
 'use babel';
 import { Match } from './Match';
+import { isNull, isUndefined } from 'util';
 
 /**
  * File search matcher
@@ -25,6 +26,21 @@ export class Matcher {
       }));
     }
     return result;
+  }
+
+  getVersionFromLine(line: string):string {
+      line = line.toUpperCase();
+      let regex = [/F:\\SIGER\\WC\\(.*?)\\/, /F:\\SIGER\\(.*?)\\/, /C:\\TMP\\FONTES\\(.*?)\\$/];
+      let result = regex.map(r => r.exec(line));
+      var filteredResult = result.filter(r => !isNull(r));
+      var firstResult = filteredResult[0];
+      if (!isNull(firstResult) && !isUndefined(firstResult) ) {
+          var firstMatch = firstResult[1];
+          if (!isUndefined(firstMatch)) {
+              return firstMatch;
+          }
+      }
+      return "DES";
   }
 
   /**
@@ -57,4 +73,4 @@ export class Matcher {
     return new Match(text, 1, 0);
   }
 
-};
+}

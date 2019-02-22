@@ -175,7 +175,7 @@
             },
             {
                 "command": "rech.editor.internal.preprocess8",
-                "title": "Rech: PREPROC - [8] - Mostrando warning de truncamento em MOVE (-wop=w074)"
+                "title": "Rech: PREPROC - [8] - Mostrando warning de truncamento em MOVE  (-wop=w074)"
             },
             {
                 "command": "rech.editor.internal.wm",
@@ -363,11 +363,13 @@
             },
             {
                 "command": "rech.editor.internal.copyLine",
-                "key": "F10"
+                "key": "F10",
+                "when": "!inDebugMode"
             },
             {
                 "command": "rech.editor.internal.pasteLine",
-                "key": "F11"
+                "key": "F11",
+                "when": "!inDebugMode"
             },
             {
                 "command": "rech.editor.internal.replaceLine",

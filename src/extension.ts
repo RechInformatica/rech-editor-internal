@@ -3,7 +3,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { commands } from 'vscode';
-import { Editor, Executor, Compiler, GeradorCobol, cobolDiagnosticFilter} from 'rech-editor-cobol';
+import { Editor, Executor, Compiler, GeradorCobol, cobolDiagnosticFilter, Path} from 'rech-editor-cobol';
 import { WorkingCopy } from './wc/WorkingCopy';
 import { VSCodeSaver } from './save/VSCodeSaver';
 import { FonGrep } from './fongrep/fongrep';
@@ -12,6 +12,8 @@ import { Preproc } from './preproc/preproc';
 import { OpenWFPF } from './open/OpenWFPF';
 import { SourcePreprocessor } from './preproc/SourcePreprocessor';
 import { CommentPuller } from './comment/CommentPuller';
+import { ReadOnlyControll } from './readonly/ReadOnlyControll';
+import { Matcher } from './open/Matcher';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -31,11 +33,12 @@ export function activate(_context: any) {
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.fonGrep', () => {
         var editor = new Editor();
         var fongrep = new FonGrep();
+        var version = new Matcher().getVersionFromLine(editor.getCurrentFileDirectory());
         var text = editor.getSelectionBuffer()[0];
         if (text === '') {
             text = editor.getCurrentWord();
         }
-        fongrep.fonGrep(text);
+        fongrep.fonGrep(text, version);
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.RechWindowDesigner', async () => {
         let FileName = new Editor().getCurrentFileBaseName();
@@ -60,8 +63,14 @@ export function activate(_context: any) {
         new Editor().showInformationMessage("Executando Commit...");
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\Commit.bat");
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.checkout', () => {
-        WorkingCopy.checkoutFonte(new Editor().getCurrentFileBaseName());
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.checkout', (file?) => {
+        let fileName: string;
+        if (file) {
+            fileName = new Path(file).baseName();
+        } else {
+            fileName = new Editor().getCurrentFileBaseName();
+        }
+        WorkingCopy.checkoutFonte(fileName);
     }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.checkoutdic', () => {
         new Editor().showInformationMessage("Executando checkout do dicionário...");
@@ -230,6 +239,9 @@ export function activate(_context: any) {
     }));
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
+    vscode.workspace.onDidChangeTextDocument((change) => {
+        ReadOnlyControll.check(change.document.uri.fsPath);
+    });
     defineSourceExpander();
     definePreprocessor();
     defineDianosticConfigs();
@@ -249,7 +261,7 @@ function defineSourceExpander() {
  */
 function definePreprocessor() {
     var preproc = new Preproc();
-    preproc.setOptions(["-cpn", "-spn", "-sco", "-msi", "-scc", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
+    preproc.setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
     Editor.setPreprocessor(preproc);
 }
 

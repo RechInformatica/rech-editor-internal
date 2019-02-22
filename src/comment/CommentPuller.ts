@@ -1,4 +1,4 @@
-import { CobolWordFinder, Path, Editor, RechPosition, ElementDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, CobolDeclarationFinder, VariableUtils } from 'rech-editor-cobol';
+import { CobolWordFinder, Path, Editor, RechPosition, ElementDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, CobolDeclarationFinder, VariableUtils, ExpandedSourceManager } from 'rech-editor-cobol';
 
 /**
  * Class for extracting and pulling comment from Cobol paragraphs and variables
@@ -123,10 +123,13 @@ export class CommentPuller {
      */
     private handleDeclarationComment(bufferLines: string[], cursor: RechPosition, buffer: string, currentFileName: string): void {
         let word = new CobolWordFinder().findWordAt(bufferLines[cursor.line], cursor.column);
+        if (!ExpandedSourceManager.hasSourceExpander()) {
+            ExpandedSourceManager.setSourceExpander((word: string, file: string) => {
+                return this.fireSourceExpander(word, file, ExpandedSourceManager.buildExpandedSourceFileName(file));
+            });
+        }
         new CobolDeclarationFinder(buffer)
-            .findDeclaration(word, currentFileName, (cacheFileName: string) => {
-                return this.fireSourceExpander(word, currentFileName, cacheFileName);
-            })
+            .findDeclaration(word, currentFileName)
             .then((position: RechPosition) => {
                 let comment = this.extractCommentFromDefinition(position, bufferLines);
                 this.handleCommentPulling(comment, cursor, bufferLines);
