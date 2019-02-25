@@ -43,7 +43,7 @@ export class SourcePreprocessor {
     let resultFile = this.buildResultFileName(fileName);
     new Preproc().setOptions(options).setPath(currentFile).execOnOutputChannel(resultFile).then(() => {
       new Editor().showInformationMessage("Pré-processamento finalizado com sucesso.");
-      new Editor().openFile(resultFile);
+      new Editor().openFileInsensitive(resultFile);
     });
   }
 
