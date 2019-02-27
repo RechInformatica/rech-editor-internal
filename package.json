@@ -66,6 +66,11 @@
                 "rech.editor.internal.diagnosticfilter": {
                     "type": "array",
                     "description": "Filter of warnings that should not be considered in diagnostic"
+                },
+                "rech.editor.internal.lockReadOnlyFiles": {
+                    "type": "boolean",
+                    "description": "Whether the read-only files editing lock is enabled",
+                    "default": "true"
                 }
             }
         },
