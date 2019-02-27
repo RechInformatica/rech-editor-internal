@@ -286,7 +286,7 @@ function showOpenDialog(defaultDir: string) {
     var editor = new Editor();
     editor.showOpenDialog(
         defaultDir,
-        (currentFile) => { editor.openFile(currentFile); },
+        (currentFile) => { editor.openFileInsensitive(currentFile); },
     );
 }
 

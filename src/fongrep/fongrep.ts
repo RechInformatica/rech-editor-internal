@@ -1,7 +1,8 @@
 import { Executor } from 'rech-editor-cobol';
 import { Editor } from 'rech-editor-cobol';
 import * as fs from 'fs';
- /**
+
+/**
  * Class to execute FonGrep from within VSCode
  */
 export class FonGrep {
@@ -66,7 +67,7 @@ export class FonGrep {
     private openResultIfNeeded(resultFile: string, inputSearch: string) {
         if (fs.existsSync(resultFile)) {
             new Editor().showInformationMessage("FonGrep executado com sucesso.");
-            new Editor().openFile(resultFile);
+            new Editor().openFileInsensitive(resultFile);
         } else {
             new Editor().showWarningMessage("Nenhum resultado encontrado no FonGrep com a busca '" + inputSearch + "'.");
         }
