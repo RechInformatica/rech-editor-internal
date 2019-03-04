@@ -23,6 +23,9 @@ export function activate(_context: any) {
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.openFontesTrunk', () => {
         showOpenDialog('F:\\FONTES\\');
     }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.openCurrentSource', () => {
+        showOpenDialog(new Editor().getCurrentFileName());
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.openScripts', () => {
         showOpenDialog('F:\\BAT\\');
     }));
