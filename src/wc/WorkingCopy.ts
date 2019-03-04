@@ -54,7 +54,7 @@ export class WorkingCopy {
         // Parse file path checked out from executor's output
         let fonte = process.getStdout().match("F:/SIGER/WC/.*");
         if (fonte !== null) {
-          new Editor().openFile(fonte[0], () => {
+          new Editor().openFileInsensitive(fonte[0], () => {
             new Editor().setCursors(cursors);
           });
         }

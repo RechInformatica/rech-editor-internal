@@ -1,5 +1,5 @@
 import { Editor, Path } from "rech-editor-cobol";
-import {window, commands} from 'vscode';
+import {window, commands, workspace} from 'vscode';
 
 /**
  * Class to controll read-only files
@@ -13,7 +13,10 @@ export class ReadOnlyControll {
      */
     public static check(uri: string) {
         let editor = new Editor();
-        if (editor.getCurrentFileName() === uri && editor.isReadOnly() && this.isCobolFileExtension()) {
+        if (!workspace.getConfiguration("rech.editor.internal").get("lockReadOnlyFiles")) {
+            return;
+        }
+        if (this.isCobolFileExtension() && editor.getCurrentFileName() === uri && editor.isReadOnly()) {
             window.showInformationMessage("Cannot edit in read-only file", "Make checkout", "Make writable").then(async (chose) => {
                 await commands.executeCommand("undo");
                 switch(chose) {

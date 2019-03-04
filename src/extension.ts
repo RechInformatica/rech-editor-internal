@@ -22,6 +22,9 @@ export function activate(_context: any) {
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.openFontesTrunk', () => {
         showOpenDialog('F:\\FONTES\\');
     }));
+    context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.openCurrentSource', () => {
+        showOpenDialog(new Editor().getCurrentFileName());
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.openScripts', () => {
         showOpenDialog('F:\\BAT\\');
     }));
@@ -286,7 +289,7 @@ function showOpenDialog(defaultDir: string) {
     var editor = new Editor();
     editor.showOpenDialog(
         defaultDir,
-        (currentFile) => { editor.openFile(currentFile); },
+        (currentFile) => { editor.openFileInsensitive(currentFile); },
     );
 }
 

@@ -72,7 +72,7 @@ export class FileOpener {
     if (matches && matches.length > resultIndex) {
       var match = matches[resultIndex];
       let resolvedPath = this.resolvePathForFile(match.file);
-      new Editor().openFile(resolvedPath, () => {
+      new Editor().openFileInsensitive(resolvedPath, () => {
         new Editor().setCursor(match.row - 1, match.column);
       });
     }

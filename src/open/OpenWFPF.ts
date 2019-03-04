@@ -42,7 +42,7 @@ export class OpenWFPF {
                     new File(cobolFile).loadBuffer().then((buffer) => {
                         /** Search for the name of the function in the Cobol File and then position it on the respective line */
                         new Scan(buffer).scan(new RegExp((<string[]>resultFunction)[1], 'gi'), (iterator: any) => {
-                            new Editor().openFile(cobolFile, () => {
+                            new Editor().openFileInsensitive(cobolFile, () => {
                                 new Editor().setCursor(iterator.row, iterator.column);
                             });
                             iterator.stop();

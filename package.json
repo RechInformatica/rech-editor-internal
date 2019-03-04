@@ -66,6 +66,11 @@
                 "rech.editor.internal.diagnosticfilter": {
                     "type": "array",
                     "description": "Filter of warnings that should not be considered in diagnostic"
+                },
+                "rech.editor.internal.lockReadOnlyFiles": {
+                    "type": "boolean",
+                    "description": "Whether the read-only files editing lock is enabled",
+                    "default": "true"
                 }
             }
         },
@@ -80,6 +85,10 @@
             {
                 "command": "rech.editor.internal.openFontesTrunk",
                 "title": "Rech: Abrir no diretório do F:\\Fontes"
+            },
+            {
+                "command": "rech.editor.internal.openCurrentSource",
+                "title": "Rech: Abrir no diretório corrente sugerindo o nome do próprio fonte"
             },
             {
                 "command": "rech.editor.internal.openScripts",

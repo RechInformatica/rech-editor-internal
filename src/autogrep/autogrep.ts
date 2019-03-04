@@ -1,4 +1,4 @@
-import { Executor, Process, File, Path } from 'rech-editor-cobol';
+import { Executor, Process, Path } from 'rech-editor-cobol';
 
  /**
  * Class to find use of copys
@@ -24,6 +24,8 @@ export class Autogrep {
         } else {
           reject();
         }
+      }).catch(() => {
+        reject();
       });
     });
   }
@@ -32,14 +34,14 @@ export class Autogrep {
    * Call the autogrep
    */
   private callAutogrep(): Promise<Process> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       let commandline = this.buildCommandLine();
       if (commandline) {
         new Executor().runAsync(commandline, (process: Process) => {
           resolve(process);
         });
       } else {
-        resolve();
+        reject();
       }
     });
   }
