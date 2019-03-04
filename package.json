@@ -240,11 +240,15 @@
             },
             {
                 "command": "rech.editor.internal.findNextBlankLine",
-                "title": "findNextBlankLine"
+                "title": "Rech Internal: Encontra próxima linha em branco"
             },
             {
                 "command": "rech.editor.internal.findPreviousBlankLine",
-                "title": "findPreviousBlankLine"
+                "title": "Rech Internal: Encontra linha em branco anterior"
+            },
+            {
+                "command": "rech.editor.internal.convertToLowerCase",
+                "title": "Rech Internal: Coverte trecho selecionado para COBOL minúsculo"
             }
         ],
         "keybindings": [
