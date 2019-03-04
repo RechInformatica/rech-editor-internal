@@ -87,6 +87,10 @@
                 "title": "Rech: Abrir no diretório do F:\\Fontes"
             },
             {
+                "command": "rech.editor.internal.openCurrentSource",
+                "title": "Rech: Abrir no diretório corrente sugerindo o nome do próprio fonte"
+            },
+            {
                 "command": "rech.editor.internal.openScripts",
                 "title": "Rech: Abrir no diretório do F:\\Bat"
             },
