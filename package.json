@@ -419,6 +419,11 @@
             {
                 "command": "editor.action.transformToUppercase",
                 "key": "ctrl+alt+u"
+            },
+            {
+                "command": "rech.editor.internal.convertToLowerCase",
+                "key": "shift+alt+l",
+                "when": "editorLangId == COBOL"
             }
         ]
     },
