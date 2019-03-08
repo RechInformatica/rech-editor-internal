@@ -14,6 +14,7 @@ import { SourcePreprocessor } from './preproc/SourcePreprocessor';
 import { CommentPuller } from './comment/CommentPuller';
 import { ReadOnlyControll } from './readonly/ReadOnlyControll';
 import { Matcher } from './open/Matcher';
+import { CobolLowercaseConverter } from './editor/CobolLowerCaseConverter';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -239,6 +240,11 @@ export function activate(_context: any) {
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.replaceLine', () => {
         commands.executeCommand("editor.action.deleteLines");
         new GeradorCobol().pasteLine();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.convertToLowerCase', () => {
+        let editor = new Editor();
+        editor.selectWholeLines();
+        editor.replaceSelection(CobolLowercaseConverter.convert(editor.getSelectionBuffer()));
     }));
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
