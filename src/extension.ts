@@ -15,6 +15,7 @@ import { CommentPuller } from './comment/CommentPuller';
 import { ReadOnlyControll } from './readonly/ReadOnlyControll';
 import { Matcher } from './open/Matcher';
 import { CobolLowercaseConverter } from './editor/CobolLowerCaseConverter';
+import { UpdateNotification } from './notification/UpdateNotification';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -254,6 +255,7 @@ export function activate(_context: any) {
     defineSourceExpander();
     definePreprocessor();
     defineDianosticConfigs();
+    UpdateNotification.showUpdateMessageIfNeed();
 }
 
 /**

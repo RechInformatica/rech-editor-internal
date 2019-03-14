@@ -2,7 +2,7 @@
     "name": "rech-editor-internal",
     "displayName": "Rech Internal",
     "description": "Package for using Rech's extensions with Visual Studio Code in Rech's intranet",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "rechinformatica",
     "engines": {
         "vscode": "^1.26.0"
@@ -424,7 +424,7 @@
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
-        "package": "vsce package --out f:/div/VSCode/extension/rech-editor-internal/rech-editor-internal.vsix",
+        "package": "vsce package --out F:/DIV/VSCode/extension/market/rech-editor-internal/rech-editor-internal.vsix",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
