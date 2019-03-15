@@ -71,7 +71,7 @@ export function activate(_context: any) {
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.checkout', (file?) => {
         let fileName: string;
         if (file) {
-            fileName = new Path(file).baseName();
+            fileName = new Path(file).fileName();
         } else {
             fileName = new Editor().getCurrentFileBaseName();
         }
