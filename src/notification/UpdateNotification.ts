@@ -1,30 +1,50 @@
 import { File, Path, Executor } from "rech-editor-cobol";
-import { commands } from 'vscode';
 import * as path from "path";
 import { Notification } from "./Notification";
 
+/** packages names */
+const COBOL_PACKAGE = "Rech-Editor-Cobol";
+const INTERNAL_PACKAGE = "Rech-Editor-Internal";
+const BATCH_PACKAGE = "Rech-Editor-Batch";
+
 export class UpdateNotification {
+
+
+  /** Pending updates */
+  private static pendingUpdates: string[] = [];
 
   /**
    * Check if has updates and informs the user
    */
   public static showUpdateMessageIfNeed() {
-    this.showUpdateMessage(this.getLocalCobolPackageVersion(), this.getCobolPackageOnNetworkVersion(), "Rech-Editor-Cobol")
+    this.showUpdateMessage(this.getLocalCobolPackageVersion(), this.getCobolPackageOnNetworkVersion(), COBOL_PACKAGE)
     .then((selectedOption) => {
       if (selectedOption === "Update") {
-        new Executor().runAsyncOutputChannel("update", "cmd /c VscodeUpdate.bat -package rech-editor-cobol -rede -new", () => {this.showReloadMessage();});
+        UpdateNotification.pendingUpdates.push(COBOL_PACKAGE);
+        new Executor().runAsyncOutputChannel("update", "cmd /c VscodeUpdate.bat -package rech-editor-cobol -rede -new", () => {
+          UpdateNotification.pendingUpdates.splice(UpdateNotification.pendingUpdates.indexOf(COBOL_PACKAGE), 1);
+          this.showReloadMessage();
+        });
       }
     }).catch(() => {});
-    this.showUpdateMessage(this.getLocalInternalPackageVersion(), this.getInternalPackageOnNetworkVersion(), "Rech-Editor-Internal")
+    this.showUpdateMessage(this.getLocalInternalPackageVersion(), this.getInternalPackageOnNetworkVersion(), INTERNAL_PACKAGE)
     .then((selectedOption) => {
       if (selectedOption === "Update") {
-        new Executor().runAsyncOutputChannel("update", "cmd /c VscodeUpdate.bat -package rech-editor-internal -rede -new", () => {this.showReloadMessage();});
+        UpdateNotification.pendingUpdates.push(INTERNAL_PACKAGE);
+        new Executor().runAsyncOutputChannel("update", "cmd /c VscodeUpdate.bat -package rech-editor-internal -rede -new", () => {
+          UpdateNotification.pendingUpdates.splice(UpdateNotification.pendingUpdates.indexOf(INTERNAL_PACKAGE), 1);
+          this.showReloadMessage();
+        });
       }
     }).catch(() => {});
-    this.showUpdateMessage(this.getLocalBatchPackageVersion(), this.getBatchPackageOnNetworkVersion(), "Rech-Editor-Batch")
+    this.showUpdateMessage(this.getLocalBatchPackageVersion(), this.getBatchPackageOnNetworkVersion(), BATCH_PACKAGE)
     .then((selectedOption) => {
       if (selectedOption === "Update") {
-        new Executor().runAsyncOutputChannel("update", "cmd /c VscodeUpdate.bat -package rech-editor-batch -rede -new", () => {this.showReloadMessage();});
+        UpdateNotification.pendingUpdates.push(BATCH_PACKAGE);
+        new Executor().runAsyncOutputChannel("update", "cmd /c VscodeUpdate.bat -package rech-editor-batch -rede -new", () => {
+          UpdateNotification.pendingUpdates.splice(UpdateNotification.pendingUpdates.indexOf(BATCH_PACKAGE), 1);
+          this.showReloadMessage();
+        });
       }
     }).catch(() => {});
   }
@@ -54,16 +74,23 @@ export class UpdateNotification {
   }
 
   /**
-   * Show the update message
+   * Show message to reload the editor
    *
-   * @param localVerion
-   * @param onNetworkVersion
    * @param packageName
    */
   private static showReloadMessage() {
-      new Notification(`Reload the editor to active the extension!`)
-      .addButton("Ok")
-      .show();
+    if (this.hasPendingUpdates()) {
+      return;
+    }
+    new Notification("Restart the editor to consider the updates!")
+    .show();
+  }
+
+  /**
+   * Returns true if has any pending update
+   */
+  private static hasPendingUpdates() {
+    return UpdateNotification.pendingUpdates.length > 0;
   }
 
   /**
