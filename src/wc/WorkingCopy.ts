@@ -1,4 +1,4 @@
-import { Executor, Process, Editor, RechPosition } from "rech-editor-cobol";
+import { Executor, Process, Editor, RechPosition, File } from "rech-editor-cobol";
 /**
  * Class for returning Working-Copy general information
  */
@@ -49,15 +49,17 @@ export class WorkingCopy {
     editor.showInformationMessage("Executando Checkout de " + baseName + "...");
     editor.closeActiveEditor();
     new Executor().runAsync(
-      "cmd.exe /c F:\\BAT\\Checkout.bat /noopen /show /nodic " + baseName,
-      process => {
-        // Parse file path checked out from executor's output
-        let fonte = process.getStdout().match("F:/SIGER/WC/.*");
-        if (fonte !== null) {
-          new Editor().openFileInsensitive(fonte[0], () => {
-            new Editor().setCursors(cursors);
-          });
-        }
+      "cmd.exe /c F:\\BAT\\Checkout.bat /noopen /nodic " + baseName,
+      _process => {
+        WorkingCopy.current().then((wc) => {
+          let targetFilename = wc.getSourcesDir() + baseName;
+          let wcFile = new File(targetFilename);
+          if (wcFile.exists()) {
+            new Editor().openFileInsensitive(targetFilename, () => {
+              new Editor().setCursors(cursors);
+            });
+          }
+        });
       }
     );
   }
