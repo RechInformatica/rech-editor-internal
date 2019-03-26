@@ -252,9 +252,15 @@ export function activate(_context: any) {
     vscode.workspace.onDidChangeTextDocument((change) => {
         ReadOnlyControll.check(change.document.uri.fsPath);
     });
-    defineSourceExpander();
-    definePreprocessor();
-    defineDianosticConfigs();
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.configureSourceExpander', () => {
+        return defineSourceExpander();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.configurePreprocessor', () => {
+        return definePreprocessor();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.configureDianosticProperties', () => {
+        return defineDianosticConfigs();
+    }));
     UpdateNotification.showUpdateMessageIfNeed();
 }
 
@@ -263,8 +269,7 @@ export function activate(_context: any) {
  */
 function defineSourceExpander() {
     var preproc = new Preproc();
-    preproc.setOptions(["-scc", "-as="]);
-    Editor.setSourceExpander(preproc);
+    return preproc.setOptions(["-scc", "-as="]);
 }
 
 /**
@@ -272,8 +277,7 @@ function defineSourceExpander() {
  */
 function definePreprocessor() {
     var preproc = new Preproc();
-    preproc.setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
-    Editor.setPreprocessor(preproc);
+    return preproc.setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
 }
 
 /**
@@ -285,6 +289,7 @@ function defineDianosticConfigs() {
         cobolDiagnosticFilter.setAutoDiagnostic(autodiagnostic);
         let noShowWarnings = <string[]> vscode.workspace.getConfiguration("rech.editor.internal").get("diagnosticfilter");
         cobolDiagnosticFilter.setNoShowWarnings(noShowWarnings);
+        return cobolDiagnosticFilter;
     }
 }
 
