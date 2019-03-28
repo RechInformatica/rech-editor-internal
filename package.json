@@ -2,7 +2,7 @@
     "name": "rech-editor-internal",
     "displayName": "Rech Internal",
     "description": "Package for using Rech's extensions with Visual Studio Code in Rech's intranet",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "rechinformatica",
     "engines": {
         "vscode": "^1.26.0"
@@ -240,7 +240,7 @@
             },
             {
                 "command": "rech.editor.internal.pullComment",
-                "title": "Rech: PUXA COMENTÁRIO - Puxa o comentário do elemento (parágrafo/variável) onde está o cursor"
+                "title": "Rech: PUXA COMENTÞRIO - Puxa o comentário do elemento (parágrafo/variável) onde está o cursor"
             },
             {
                 "command": "rech.editor.internal.findNextBlankLine",
