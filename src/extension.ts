@@ -261,6 +261,9 @@ export function activate(_context: any) {
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.configureDianosticProperties', () => {
         return defineDianosticConfigs();
     }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.configureCopyHierarchyFunction', () => {
+        return defineCopyHierarchyFunction();
+    }));
     UpdateNotification.showUpdateMessageIfNeed();
 }
 
@@ -278,6 +281,14 @@ function defineSourceExpander() {
 function definePreprocessor() {
     var preproc = new Preproc();
     return preproc.setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
+}
+
+/**
+ * Sets the global funtion to return the copy hierarchy of source
+ */
+function defineCopyHierarchyFunction() {
+    var preproc = new Preproc();
+    return preproc.setOptions(["-hc"]);
 }
 
 /**
