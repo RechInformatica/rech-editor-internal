@@ -15,6 +15,7 @@ import { CommentPuller } from './comment/CommentPuller';
 import { ReadOnlyControll } from './readonly/ReadOnlyControll';
 import { Matcher } from './open/Matcher';
 import { CobolLowercaseConverter } from './editor/CobolLowerCaseConverter';
+import { UpdateNotification } from './notification/UpdateNotification';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -70,7 +71,7 @@ export function activate(_context: any) {
     context.subscriptions.push(vscode.commands.registerCommand('rech.editor.internal.checkout', (file?) => {
         let fileName: string;
         if (file) {
-            fileName = new Path(file).baseName();
+            fileName = new Path(file).fileName();
         } else {
             fileName = new Editor().getCurrentFileBaseName();
         }
@@ -251,9 +252,19 @@ export function activate(_context: any) {
     vscode.workspace.onDidChangeTextDocument((change) => {
         ReadOnlyControll.check(change.document.uri.fsPath);
     });
-    defineSourceExpander();
-    definePreprocessor();
-    defineDianosticConfigs();
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.configureSourceExpander', () => {
+        return defineSourceExpander();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.configurePreprocessor', () => {
+        return definePreprocessor();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.configureDianosticProperties', () => {
+        return defineDianosticConfigs();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.configureCopyHierarchyFunction', () => {
+        return defineCopyHierarchyFunction();
+    }));
+    UpdateNotification.showUpdateMessageIfNeed();
 }
 
 /**
@@ -261,8 +272,7 @@ export function activate(_context: any) {
  */
 function defineSourceExpander() {
     var preproc = new Preproc();
-    preproc.setOptions(["-scc", "-as="]);
-    Editor.setSourceExpander(preproc);
+    return preproc.setOptions(["-scc", "-as="]);
 }
 
 /**
@@ -270,8 +280,15 @@ function defineSourceExpander() {
  */
 function definePreprocessor() {
     var preproc = new Preproc();
-    preproc.setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
-    Editor.setPreprocessor(preproc);
+    return preproc.setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
+}
+
+/**
+ * Sets the global funtion to return the copy hierarchy of source
+ */
+function defineCopyHierarchyFunction() {
+    var preproc = new Preproc();
+    return preproc.setOptions(["-hc"]);
 }
 
 /**
@@ -283,6 +300,7 @@ function defineDianosticConfigs() {
         cobolDiagnosticFilter.setAutoDiagnostic(autodiagnostic);
         let noShowWarnings = <string[]> vscode.workspace.getConfiguration("rech.editor.internal").get("diagnosticfilter");
         cobolDiagnosticFilter.setNoShowWarnings(noShowWarnings);
+        return cobolDiagnosticFilter;
     }
 }
 

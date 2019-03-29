@@ -1,4 +1,4 @@
-import { Executor } from 'rech-editor-cobol';
+import { Executor, BufferSplitter } from 'rech-editor-cobol';
 import { Editor } from 'rech-editor-cobol';
 import * as fs from 'fs';
 
@@ -35,7 +35,7 @@ export class FonGrep {
      * @param output FonGrep output
      */
     private handleResult(inputSearch: string, output: string) {
-        var lines = output.split("\n");
+        var lines = BufferSplitter.split(output);
         var resultFile = this.extractResultFileFromOutput(lines);
         this.openResultIfNeeded(resultFile, inputSearch);
     }

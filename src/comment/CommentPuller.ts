@@ -1,4 +1,4 @@
-import { CobolWordFinder, Path, Editor, RechPosition, ElementDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, CobolDeclarationFinder, VariableUtils, ExpandedSourceManager } from 'rech-editor-cobol';
+import { CobolWordFinder, Path, Editor, RechPosition, ElementDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, CobolDeclarationFinder, VariableUtils, ExpandedSourceManager, BufferSplitter } from 'rech-editor-cobol';
 
 /**
  * Class for extracting and pulling comment from Cobol paragraphs and variables
@@ -12,7 +12,7 @@ export class CommentPuller {
         let editor = new Editor();
         let cursor = editor.getCursors()[0];
         let buffer = editor.getEditorBuffer();
-        let bufferLines = buffer.split("\r\n");
+        let bufferLines = BufferSplitter.split(buffer);
         let currentFileName = editor.getCurrentFileName();
         let currentLineText = bufferLines[cursor.line];
         switch(true) {
@@ -80,7 +80,7 @@ export class CommentPuller {
             file = new File("F:\\Fontes\\" + new Path(file.fileName).fileName());
         }
         if (file.exists()) {
-            let copyBuffer = file.loadBufferSync("latin1").split("\n");
+            let copyBuffer = BufferSplitter.split(file.loadBufferSync("latin1"));
             if (copyBuffer.length > 0) {
                 comment = copyBuffer[1];
                 if (this.isWorkingFd(copyFileName)) {
@@ -204,7 +204,7 @@ export class CommentPuller {
         let buffer: string[] = [];
         // If the delcaration was found on an external file
         if (location.file) {
-            buffer = new File(location.file).loadBufferSync("latin1").split("\n");
+            buffer = BufferSplitter.split(new File(location.file).loadBufferSync("latin1"));
         } else {
             buffer = bufferLines;
         }
