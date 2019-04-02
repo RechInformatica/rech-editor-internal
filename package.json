@@ -285,7 +285,7 @@
             {
                 "command": "rech.editor.internal.checkout",
                 "key": "alt+f5",
-                "when": "editorLangId == COBOL"
+                "when": "editorLangId == COBOL && !textCompareEditorVisible"
             },
             {
                 "command": "rech.editor.internal.compile",
