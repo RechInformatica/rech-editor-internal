@@ -1,5 +1,5 @@
 'use babel';
-import { Executor, Path, Process, GenericExecutor, File } from 'rech-editor-cobol';
+import { Executor, Path, Process, GenericExecutor, File, Log } from 'rech-editor-cobol';
 import { Autogrep } from '../autogrep/autogrep';
 import { WorkingCopy } from '../wc/WorkingCopy';
 
@@ -59,6 +59,7 @@ export class Preproc implements GenericExecutor {
    * Run preprocessor
    */
   public exec(file?: string) {
+    Log.get().info("Preproc - Exec() was caled. File: " + file);
     return new Promise((resolve, reject) => {
       if (file) {
         let directory = new File(new Path(file).directory());
@@ -66,6 +67,7 @@ export class Preproc implements GenericExecutor {
           directory.mkdir();
         }
       }
+      Log.get().info("Preproc - Exec() was caled. File to process in promise: " + file);
       if (file && file.match(/.*\.(CPY|CPB)/gi)) {
         new Autogrep([new Path(this.path).fileName()]).find().then((cblFiles) => {
           let cblFile = cblFiles[0];
@@ -74,18 +76,23 @@ export class Preproc implements GenericExecutor {
             this.execPreproc(file).then((process) => {
               resolve(process);
             }).catch(() => {
+              Log.get().error("Preproc - rejected! Error in execPreproc() if is a COPY file");
               reject();
             });
           } else {
+            Log.get().error("Preproc - rejected! cblFile was undefined");
             reject();
           }
         }).catch(() => {
+          Log.get().error("Preproc - rejected! Error in Autogrep.find()");
           reject();
         });
       } else {
         this.execPreproc(file).then((process) => {
+          Log.get().info("Preproc - Ok. File: " + file);
           resolve(process);
         }).catch(() => {
+          Log.get().error("Preproc - rejected! Error in execPreproc()");
           reject();
         });
       }
@@ -114,6 +121,7 @@ export class Preproc implements GenericExecutor {
   private execPreproc(file?: string) {
     return new Promise((resolve) => {
       let commandLine = this.buildCommandLine(file);
+      Log.get().info("Preproc - execPreproc() commandLine: " + commandLine);
       new Executor().runAsync(commandLine, (process: Process) => {
         resolve(process);
       }, "win1252");
@@ -126,6 +134,7 @@ export class Preproc implements GenericExecutor {
   public execOnOutputChannel(file: string) {
     return new Promise((resolve) => {
       let commandLine = this.buildCommandLine(file);
+      Log.get().info("Preproc - execOnOutputChannel() commandLine: " + commandLine);
       new Executor().runAsyncOutputChannel("preproc", commandLine, (errorlevel: number) => {
         resolve(errorlevel);
       });
@@ -145,6 +154,7 @@ export class Preproc implements GenericExecutor {
     finalCmd = finalCmd + " -is"; // Only isCobol sources
     finalCmd = finalCmd + " " + this.injectDirectoriesWithinAsParameter();
     finalCmd = finalCmd.replace(/\//g, "\\");
+    Log.get().info("Preproc - commandLine to call: " + finalCmd);
     return finalCmd;
   }
 
