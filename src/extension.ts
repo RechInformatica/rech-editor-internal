@@ -247,6 +247,14 @@ export function activate(_context: any) {
         editor.selectWholeLines();
         editor.replaceSelection(CobolLowercaseConverter.convert(editor.getSelectionBuffer()));
     }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.runTest', async () => {
+        await commands.executeCommand('workbench.output.action.clearOutput');
+        const editor = new Editor();
+        editor.showInformationMessage("Executando teste unitário...")
+        new Executor().runAsyncOutputChannel("test", "cmd.exe /c F:\\BAT\\Tst.bat " + new Editor().getCurrentFileBaseName(), () => {
+            editor.showInformationMessage("Teste unitário finalizado.")
+        });
+    }));
     vscode.workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     vscode.workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
     vscode.workspace.onDidChangeTextDocument((change) => {

@@ -253,6 +253,10 @@
             {
                 "command": "rech.editor.internal.convertToLowerCase",
                 "title": "Rech Internal: Coverte trecho selecionado para COBOL minúsculo"
+            },
+            {
+                "command": "rech.editor.internal.runTest",
+                "title": "Rech Internal: Run Cobol unit test"
             }
         ],
         "keybindings": [
