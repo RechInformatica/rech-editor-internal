@@ -20,8 +20,8 @@ export class ReadOnlyControll {
             window.showInformationMessage("Cannot edit in read-only file", "Make checkout", "Make writable").then(async (chose) => {
                 await commands.executeCommand("undo");
                 switch(chose) {
-                    case "Make checkout": this.makeCheckout(uri); break;
-                    case "Make writable": this.makeWritable(); break;
+                    case "Make checkout": this.makeCheckout(uri).then().catch(); break;
+                    case "Make writable": this.makeWritable().then().catch(); break;
                 }
             });
         }

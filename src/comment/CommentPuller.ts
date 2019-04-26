@@ -165,7 +165,7 @@ export class CommentPuller {
         } else {
             let previousLine = bufferLines[cursor.line - 1];
             if (!this.isPreviousCommentEqual(previousLine, comments)) {
-                this.insertCommentsInEditor(comments, cursor);
+                this.insertCommentsInEditor(comments, cursor).then().catch();
             }
         }
     }

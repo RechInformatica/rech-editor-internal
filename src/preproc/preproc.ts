@@ -132,11 +132,15 @@ export class Preproc implements GenericExecutor {
    * Run preprocessor redirecting the output to the output channel
    */
   public execOnOutputChannel(file: string) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       let commandLine = this.buildCommandLine(file);
       Log.get().info("Preproc - execOnOutputChannel() commandLine: " + commandLine);
       new Executor().runAsyncOutputChannel("preproc", commandLine, (errorlevel: number) => {
-        resolve(errorlevel);
+        if (errorlevel === 0) {
+          resolve(errorlevel);
+        } else {
+          reject(errorlevel);
+        }
       });
     });
   }

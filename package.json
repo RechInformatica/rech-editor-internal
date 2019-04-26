@@ -434,11 +434,12 @@
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "package": "vsce package --out F:/DIV/VSCode/extension/market/rech-editor-internal/rech-editor-internal.vsix",
-        "compile": "tsc -p ./",
+        "compile": "npm run tslint && tsc -p ./",
         "watch": "tsc -watch -p ./",
         "preinstall": "npm install ../rech-editor-cobol/",
         "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && mocha -r ts-node/register ./src/test/**/*.test.ts"
+        "test": "npm run compile && mocha -r ts-node/register ./src/test/**/*.test.ts",
+        "tslint": "tslint --project tsconfig.json --config tslint.json"
     },
     "dependencies": {
         "@types/chai": "^4.1.6",
