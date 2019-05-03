@@ -15,11 +15,15 @@ import { ReadOnlyControll } from './readonly/ReadOnlyControll';
 import { Matcher } from './open/Matcher';
 import { CobolLowercaseConverter } from './editor/CobolLowerCaseConverter';
 import { UpdateNotification } from './notification/UpdateNotification';
+import { PreprocStatusBar } from './preproc/PreprocStatusBar';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(_context: any) {
-    let context = <ExtensionContext>_context;
+    const context = <ExtensionContext>_context;
+    // Build the status bar from preproc
+    PreprocStatusBar.buildStatusBar();
+    // Register extension commands
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.openFontesTrunk', () => {
         showOpenDialog('F:\\FONTES\\');
     }));
@@ -37,22 +41,22 @@ export function activate(_context: any) {
         });
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.fonGrep', () => {
-        var editor = new Editor();
-        var fongrep = new FonGrep();
-        var version = new Matcher().getVersionFromLine(editor.getCurrentFileDirectory());
-        var text = editor.getSelectionBuffer()[0];
+        const editor = new Editor();
+        const fongrep = new FonGrep();
+        const version = new Matcher().getVersionFromLine(editor.getCurrentFileDirectory());
+        let text = editor.getSelectionBuffer()[0];
         if (text === '') {
             text = editor.getCurrentWord();
         }
         fongrep.fonGrep(text, version);
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.RechWindowDesigner', async () => {
-        let FileName = new Editor().getCurrentFileBaseName();
+        const FileName = new Editor().getCurrentFileBaseName();
         await commands.executeCommand('workbench.action.terminal.focus');
         await commands.executeCommand('workbench.action.terminal.sendSequence', { text: `RWD ${FileName} \u000d`});
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.openThis', () => {
-        var fileOpener = new FileOpener();
+        const fileOpener = new FileOpener();
         fileOpener.addPathForFileSearching("F:\\FONTES\\");
         fileOpener.addPathForFileSearching("F:\\BAT\\");
         fileOpener.addPathForFileSearching("F:\\");
@@ -127,52 +131,52 @@ export function activate(_context: any) {
         new SourcePreprocessor().runPreprocOnCurrentSource("8");
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.wm', () => {
-        let fileName = new Editor().getCurrentFileBaseNameWithoutExtension();
+        const fileName = new Editor().getCurrentFileBaseNameWithoutExtension();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\WM.bat " + fileName);
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.fcw_bet', () => {
-        let fileName = new Editor().getCurrentFileBaseName();
+        const fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat BET " + fileName);
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.fcw_ofi', () => {
-        let fileName = new Editor().getCurrentFileBaseName();
+        const fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat OFI " + fileName);
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.fcw_est', () => {
-        let fileName = new Editor().getCurrentFileBaseName();
+        const fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat EST " + fileName);
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.fcw_versao', () => {
-        let editor = new Editor();
+        const editor = new Editor();
         editor.showInputBox("Informe a versão a ser realizado o FCW", "FCW", (info) => {
-            let fileName = editor.getCurrentFileBaseName();
+            const fileName = editor.getCurrentFileBaseName();
             new Executor().runAsync("start cmd.exe /c F:\\BAT\\FCW.bat " + info + " " + fileName);
         });
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.fonlbrlog', () => {
-        let fileName = new Editor().getCurrentFileBaseName();
+        const fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FONLBRLOG.bat " + fileName);
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.fonteslog', () => {
-        let fileName = new Editor().getCurrentFileBaseName();
+        const fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FONTESLOG.bat " + fileName);
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.lis', () => {
-        let editor = new Editor();
-        let fileName = editor.getCurrentFileBaseNameWithoutExtension();
-        let directory = editor.getCurrentFileDirectory();
+        const editor = new Editor();
+        const fileName = editor.getCurrentFileBaseNameWithoutExtension();
+        const directory = editor.getCurrentFileDirectory();
         new Executor().runAsync('start cmd.exe /c F:\\BAT\\PSPADLIS.bat ' + directory + fileName + '*');
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.lisbk', () => {
-        let editor = new Editor();
-        let fileName = editor.getCurrentFileBaseNameWithoutExtension();
-        let extension = editor.getCurrentFileBaseNameExtension();
-        let directory = editor.getCurrentFileDirectory();
+        const editor = new Editor();
+        const fileName = editor.getCurrentFileBaseNameWithoutExtension();
+        const extension = editor.getCurrentFileBaseNameExtension();
+        const directory = editor.getCurrentFileDirectory();
         new Executor().runAsync('start cmd.exe /c F:\\BAT\\PSPADLISBK.bat ' + directory + ' ' + fileName + ' ' + extension);
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.listbk', () => {
-        let editor = new Editor();
-        let fileName = editor.getCurrentFileBaseName();
+        const editor = new Editor();
+        const fileName = editor.getCurrentFileBaseName();
         editor.showInputBox("Informe o fonte a realizar o LISTBK", "LISTBK", (info) => {
             if (info !== undefined && info.length > 0){
                 new Executor().runAsync('start cmd.exe /c F:\\BAT\\LISTBK.bat ' + ' ' + info);
@@ -182,8 +186,8 @@ export function activate(_context: any) {
         }, fileName);
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.blame', () => {
-        let editor = new Editor();
-        let fileName = editor.getCurrentFileBaseName();
+        const editor = new Editor();
+        const fileName = editor.getCurrentFileBaseName();
         editor.showInputBox("Informe o fonte a realizar o BLAME", "BLAME", (info) => {
             if (info !== undefined && info.length > 0){
                 new Executor().runAsync('start cmd.exe /c F:\\BAT\\BLAME.bat ' + ' ' + info);
@@ -244,7 +248,7 @@ export function activate(_context: any) {
         new GeradorCobol().pasteLine().then().catch();
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.convertToLowerCase', () => {
-        let editor = new Editor();
+        const editor = new Editor();
         editor.selectWholeLines();
         editor.replaceSelection(CobolLowercaseConverter.convert(editor.getSelectionBuffer()));
     }));
@@ -280,7 +284,7 @@ export function activate(_context: any) {
  * Sets the global source expander which is responsible for executing Cobol Preprocessor
  */
 function defineSourceExpander() {
-    var preproc = new Preproc();
+    const preproc = new Preproc();
     return preproc.setOptions(["-scc", "-as="]);
 }
 
@@ -288,7 +292,7 @@ function defineSourceExpander() {
  * Sets the global source compile which is responsible for executing Cobol Compile
  */
 function definePreprocessor() {
-    var preproc = new Preproc();
+    const preproc = new Preproc();
     return preproc.setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
 }
 
@@ -296,7 +300,7 @@ function definePreprocessor() {
  * Sets the global funtion to return the copy hierarchy of source
  */
 function defineCopyHierarchyFunction() {
-    var preproc = new Preproc();
+    const preproc = new Preproc();
     return preproc.setOptions(["-hc"]);
 }
 
@@ -304,11 +308,11 @@ function defineCopyHierarchyFunction() {
  * Sets configurations for Cobol source diagnostic
  */
 function defineDianosticConfigs() {
-    let autodiagnostic = <"onChange" | "onSave" | boolean> workspace.getConfiguration("rech.editor.internal").get("autodiagnostic");
+    const autodiagnostic = <"onChange" | "onSave" | boolean> workspace.getConfiguration("rech.editor.internal").get("autodiagnostic");
     if (autodiagnostic) {
-        let diagnosticFilter = new CobolDiagnosticFilter();
+        const diagnosticFilter = new CobolDiagnosticFilter();
         diagnosticFilter.setAutoDiagnostic(autodiagnostic);
-        let noShowWarnings = <string[]> workspace.getConfiguration("rech.editor.internal").get("diagnosticfilter");
+        const noShowWarnings = <string[]> workspace.getConfiguration("rech.editor.internal").get("diagnosticfilter");
         diagnosticFilter.setNoShowWarnings(noShowWarnings);
         return diagnosticFilter;
     }
@@ -320,7 +324,7 @@ function defineDianosticConfigs() {
  * @param defaultDir default directory
  */
 function showOpenDialog(defaultDir: string) {
-    var editor = new Editor();
+    const editor = new Editor();
     editor.showOpenDialog(
         defaultDir,
         (currentFile) => { editor.openFileInsensitive(currentFile); },
