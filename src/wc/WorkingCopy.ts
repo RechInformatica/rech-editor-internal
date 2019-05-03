@@ -22,10 +22,14 @@ export class WorkingCopy {
    * Returns an instance of the current WorkingCopy
    */
   public static current() {
-    return new Promise<WorkingCopy>(resolve => {
+    return new Promise<WorkingCopy>((resolve, reject) => {
       new Executor().runAsync("cmd.exe /C F:\\BAT\\WC.bat /show", process => {
         var wc = WorkingCopy.createWcFromProcessOutput(process);
-        resolve(wc);
+        if (wc !== undefined) {
+          resolve(wc);
+        } else {
+          reject();
+        }
       });
     });
   }
@@ -59,6 +63,8 @@ export class WorkingCopy {
               new Editor().setCursors(cursors);
             });
           }
+        }).catch(() => {
+          new Editor().showWarningMessage("Unexpected problem detecting working-copy which prevents making checkout");
         });
       }
     );

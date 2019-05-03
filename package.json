@@ -2,7 +2,7 @@
     "name": "rech-editor-internal",
     "displayName": "Rech Internal",
     "description": "Package for using Rech's extensions with Visual Studio Code in Rech's intranet",
-    "version": "0.0.4",
+    "version": "0.0.6",
     "publisher": "rechinformatica",
     "engines": {
         "vscode": "^1.26.0"
@@ -253,6 +253,10 @@
             {
                 "command": "rech.editor.internal.convertToLowerCase",
                 "title": "Rech Internal: Coverte trecho selecionado para COBOL minúsculo"
+            },
+            {
+                "command": "rech.editor.internal.runTest",
+                "title": "Rech Internal: Run Cobol unit test"
             }
         ],
         "keybindings": [
@@ -285,7 +289,7 @@
             {
                 "command": "rech.editor.internal.checkout",
                 "key": "alt+f5",
-                "when": "editorLangId == COBOL"
+                "when": "editorLangId == COBOL && !textCompareEditorVisible"
             },
             {
                 "command": "rech.editor.internal.compile",
@@ -430,11 +434,12 @@
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "package": "vsce package --out F:/DIV/VSCode/extension/market/rech-editor-internal/rech-editor-internal.vsix",
-        "compile": "tsc -p ./",
+        "compile": "npm run tslint && tsc -p ./",
         "watch": "tsc -watch -p ./",
         "preinstall": "npm install ../rech-editor-cobol/",
         "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && mocha -r ts-node/register ./src/test/**/*.test.ts"
+        "test": "npm run compile && mocha -r ts-node/register ./src/test/**/*.test.ts",
+        "tslint": "tslint --project tsconfig.json --config tslint.json"
     },
     "dependencies": {
         "@types/chai": "^4.1.6",

@@ -82,8 +82,7 @@ export class UpdateNotification {
     if (this.hasPendingUpdates()) {
       return;
     }
-    new Notification("Restart the editor to consider the updates!")
-    .show();
+    new Notification("Restart the editor to consider the updates!").show().then().catch();
   }
 
   /**

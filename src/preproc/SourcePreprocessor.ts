@@ -44,6 +44,8 @@ export class SourcePreprocessor {
     new Preproc().setOptions(options).setPath(currentFile).execOnOutputChannel(resultFile).then(() => {
       new Editor().showInformationMessage("Pré-processamento finalizado com sucesso.");
       new Editor().openFileInsensitive(resultFile);
+    }).catch((errorlevel) => {
+      new Editor().showWarningMessage("Unexpected error thrown while source preprocess. Errorlevel: " + errorlevel);
     });
   }
 

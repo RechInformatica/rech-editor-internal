@@ -8,9 +8,9 @@ export class CobolLowercaseConverter {
    * @param buffer
    */
   public static convert(buffer: string[]): string {
-    let fileToProcess = CobolLowercaseConverter.buildFileProcess(buffer);
-    let outputFile = new File(`${fileToProcess.fileName}.conv`);
-    let errorFile = new File(`${fileToProcess.fileName}.XerrX`);
+    const fileToProcess = CobolLowercaseConverter.buildFileProcess(buffer);
+    const outputFile = new File(`${fileToProcess.fileName}.conv`);
+    const errorFile = new File(`${fileToProcess.fileName}.XerrX`);
     new Executor().runSync(CobolLowercaseConverter.buildCommandLine(fileToProcess, outputFile));
     if (errorFile.exists()) {
       new Editor().showWarningMessage("Error to convert the buffer to lowercase");

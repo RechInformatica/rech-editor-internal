@@ -1,5 +1,4 @@
-import { Executor, BufferSplitter } from 'rech-editor-cobol';
-import { Editor } from 'rech-editor-cobol';
+import { Editor, Executor, BufferSplitter } from 'rech-editor-cobol';
 import * as fs from 'fs';
 
 /**

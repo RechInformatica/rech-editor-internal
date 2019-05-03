@@ -47,6 +47,8 @@ export class OpenWFPF {
                             });
                             iterator.stop();
                         });
+                    }).catch(() => {
+                        this.editor.showWarningMessage("Could not load locate target file for opening WF/PF");
                     });
                 }
             });
