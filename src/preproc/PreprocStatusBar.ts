@@ -18,12 +18,17 @@ export class PreprocStatusBar {
     /**
      * Show the statusBar from preproc
      */
-    public static show() {
+    public static show(file?: string) {
         if (PreprocStatusBar.isVisible) {
             return;
         }
         PreprocStatusBar.isVisible = true;
         if (PreprocStatusBar.preprocStatusBar) {
+            if (file) {
+                PreprocStatusBar.preprocStatusBar.tooltip = file;
+            } else {
+                PreprocStatusBar.preprocStatusBar.tooltip = undefined;
+            }
             PreprocStatusBar.preprocStatusBar.show();
         }
     }

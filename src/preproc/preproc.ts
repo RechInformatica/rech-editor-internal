@@ -61,7 +61,7 @@ export class Preproc implements GenericExecutor {
    */
   public exec(file?: string) {
     return new Promise((resolve, reject) => {
-      PreprocStatusBar.show();
+      PreprocStatusBar.show(this.path);
       this.execPreprocessorFromSource(file).then((result) => {
         PreprocStatusBar.hide();
         resolve(result);
