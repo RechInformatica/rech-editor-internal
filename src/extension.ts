@@ -256,9 +256,10 @@ export function activate(_context: any) {
         await commands.executeCommand('workbench.output.action.clearOutput');
         const editor = new Editor();
         editor.showInformationMessage("Executando teste unitário...")
-        new Executor().runAsyncOutputChannel("test", "cmd.exe /c F:\\BAT\\Tst.bat " + new Editor().getCurrentFileBaseName(), () => {
-            editor.showInformationMessage("Teste unitário finalizado.")
-        });
+        const FileName = new Editor().getCurrentFileBaseName();
+        await commands.executeCommand('workbench.action.terminal.focus');
+        await commands.executeCommand('workbench.action.terminal.sendSequence', { text: `F:\\BAT\\Tst.bat ${FileName}  \u000d`});
+        await commands.executeCommand('workbench.action.focusActiveEditorGroup');
     }));
     workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
