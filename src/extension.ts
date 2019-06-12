@@ -196,6 +196,15 @@ export function activate(_context: any) {
             }
         }, fileName);
     }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.clearprog', async () => {
+        await commands.executeCommand('workbench.output.action.clearOutput');
+        const editor = new Editor();
+        editor.showInformationMessage("Executando teste unitário...")
+        const FileName = new Editor().getCurrentFileBaseName();
+        await commands.executeCommand('workbench.action.terminal.focus');
+        await commands.executeCommand('workbench.action.terminal.sendSequence', { text: `F:\\BAT\\ClearProg.bat ${FileName} Y  \u000d`});
+        await commands.executeCommand('workbench.action.focusActiveEditorGroup');
+    }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.aplicaspd', () => {
         new Executor().runAsync('start cmd.exe /c F:\\BAT\\APLICASPD.bat ');
     }));
