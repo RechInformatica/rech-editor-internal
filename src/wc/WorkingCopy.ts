@@ -24,7 +24,7 @@ export class WorkingCopy {
   public static current() {
     return new Promise<WorkingCopy>((resolve, reject) => {
       new Executor().runAsync("cmd.exe /C F:\\BAT\\WC.bat /show", process => {
-        var wc = WorkingCopy.createWcFromProcessOutput(process);
+        const wc = WorkingCopy.createWcFromProcessOutput(process);
         if (wc !== undefined) {
           resolve(wc);
         } else {
@@ -38,8 +38,8 @@ export class WorkingCopy {
    * Returns an instance of the current WorkingCopy
    */
   public static currentSync() {
-    let process = new Executor().runSync("cmd.exe /C F:\\BAT\\WC.bat /show");
-    var wc = WorkingCopy.createWcFromProcessOutput(process);
+    const process = new Executor().runSync("cmd.exe /C F:\\BAT\\WC.bat /show");
+    const wc = WorkingCopy.createWcFromProcessOutput(process);
     return wc;
   }
 

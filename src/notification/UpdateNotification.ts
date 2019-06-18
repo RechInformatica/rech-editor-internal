@@ -1,6 +1,7 @@
 import { File, Path, Executor } from "rech-editor-cobol";
 import * as path from "path";
 import { Notification } from "./Notification";
+import { window } from "vscode";
 
 /** packages names */
 const COBOL_PACKAGE = "Rech-Editor-Cobol";
@@ -96,8 +97,8 @@ export class UpdateNotification {
    * Returns the version of teh local cobol package
    */
   private static getLocalCobolPackageVersion(): string {
-    let json = new File(new Path(path.resolve(__dirname) + "/../../../rech-editor-cobol/package.json").fullPath()).loadBufferSync("UTF8");
-    let version = this.getVersionOfPackageJson(json);
+    const json = new File(new Path(path.resolve(__dirname) + "/../../../rech-editor-cobol/package.json").fullPath()).loadBufferSync("UTF8");
+    const version = this.getVersionOfPackageJson(json);
     return version;
   }
 
@@ -105,17 +106,15 @@ export class UpdateNotification {
    * Returns the version of teh cobol package in the Network
    */
   private static getCobolPackageOnNetworkVersion(): string {
-    let json = new File("F:/DIV/VSCode/extension/rech-editor-cobol/package.json").loadBufferSync("UTF8");
-    let version = this.getVersionOfPackageJson(json);
-    return version;
+    return new Executor().runSync("cmd /c VscodeUpdate.bat -package rech-editor-cobol -v").trim();
   }
 
   /**
    * Returns the version of teh local internal package
    */
   private static getLocalInternalPackageVersion(): string {
-    let json = new File(new Path(path.resolve(__dirname) + "/../../package.json").fullPath()).loadBufferSync("UTF8");
-    let version = this.getVersionOfPackageJson(json);
+    const json = new File(new Path(path.resolve(__dirname) + "/../../package.json").fullPath()).loadBufferSync("UTF8");
+    const version = this.getVersionOfPackageJson(json);
     return version;
   }
 
@@ -123,17 +122,15 @@ export class UpdateNotification {
    * Returns the version of teh internal package in the Network
    */
   private static getInternalPackageOnNetworkVersion(): string {
-    let json = new File("F:/DIV/VSCode/extension/rech-editor-internal/package.json").loadBufferSync("UTF8");
-    let version = this.getVersionOfPackageJson(json);
-    return version;
+    return new Executor().runSync("cmd /c VscodeUpdate.bat -package rech-editor-internal -v").trim();
   }
 
   /**
    * Returns the version of teh local batch package
    */
   private static getLocalBatchPackageVersion(): string {
-    let json = new File(new Path(path.resolve(__dirname) + "/../../../rech-editor-batch/package.json").fullPath()).loadBufferSync("UTF8");
-    let version = this.getVersionOfPackageJson(json);
+    const json = new File(new Path(path.resolve(__dirname) + "/../../../rech-editor-batch/package.json").fullPath()).loadBufferSync("UTF8");
+    const version = this.getVersionOfPackageJson(json);
     return version;
   }
 
@@ -141,9 +138,7 @@ export class UpdateNotification {
    * Returns the version of teh batch package in the Network
    */
   private static getBatchPackageOnNetworkVersion(): string {
-    let json = new File("F:/DIV/VSCode/extension/rech-editor-batch/package.json").loadBufferSync("UTF8");
-    let version = this.getVersionOfPackageJson(json);
-    return version;
+    return new Executor().runSync("cmd /c VscodeUpdate.bat -package rech-editor-batch -v").trim();
   }
 
   /**
@@ -152,7 +147,7 @@ export class UpdateNotification {
    * @param json
    */
   private static getVersionOfPackageJson(json: string): string {
-    let objJson = JSON.parse(json);
+    const objJson = JSON.parse(json);
     return objJson["version"];
   }
 

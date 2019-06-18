@@ -2,7 +2,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import { commands, workspace, ExtensionContext } from 'vscode';
-import { Editor, Executor, Compiler, GeradorCobol, cobolDiagnosticFilter, Path, CobolDiagnosticFilter} from 'rech-editor-cobol';
+import { Editor, Executor, GeradorCobol, Path, CobolDiagnosticFilter} from 'rech-editor-cobol';
+import { Compiler } from './compiler/compiler';
 import { WorkingCopy } from './wc/WorkingCopy';
 import { VSCodeSaver } from './save/VSCodeSaver';
 import { FonGrep } from './fongrep/fongrep';
