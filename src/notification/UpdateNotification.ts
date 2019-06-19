@@ -59,7 +59,7 @@ export class UpdateNotification {
    */
   private static showUpdateMessage(localVerion: string, onNetworkVersion: string, packageName: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      if (onNetworkVersion > localVerion) {
+      if (onNetworkVersion > localVerion || onNetworkVersion.length > localVerion.length) {
         new Notification(`There are updates to the ${packageName} package. Do you want to upgrade to version ${onNetworkVersion}?`)
         .addButton(`Update ${packageName}`)
         .addButton("Cancel")
