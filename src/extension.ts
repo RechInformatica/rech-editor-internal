@@ -51,7 +51,7 @@ export function activate(_context: any) {
         fongrep.fonGrep(text, version);
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.RechWindowDesigner', async () => {
-        const FileName = new Editor().getCurrentFileBaseName();
+        const FileName = new Editor().getCurrentFileName();
         await commands.executeCommand('workbench.action.terminal.focus');
         await commands.executeCommand('workbench.action.terminal.sendSequence', { text: `RWD ${FileName} \u000d`});
     }));
