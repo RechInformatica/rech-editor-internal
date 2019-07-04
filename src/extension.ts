@@ -2,7 +2,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import { commands, workspace, ExtensionContext } from 'vscode';
-import { Editor, Executor, Compiler, GeradorCobol, cobolDiagnosticFilter, Path, CobolDiagnosticFilter} from 'rech-editor-cobol';
+import { Editor, Executor, GeradorCobol, Path, CobolDiagnosticFilter} from 'rech-editor-cobol';
+import { Compiler } from './compiler/compiler';
 import { WorkingCopy } from './wc/WorkingCopy';
 import { VSCodeSaver } from './save/VSCodeSaver';
 import { FonGrep } from './fongrep/fongrep';
@@ -195,6 +196,15 @@ export function activate(_context: any) {
                 editor.showInformationMessage("Não foi informada o fonte a executar!");
             }
         }, fileName);
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.clearprog', async () => {
+        await commands.executeCommand('workbench.output.action.clearOutput');
+        const editor = new Editor();
+        editor.showInformationMessage("Executando teste unitário...")
+        const FileName = new Editor().getCurrentFileBaseName();
+        await commands.executeCommand('workbench.action.terminal.focus');
+        await commands.executeCommand('workbench.action.terminal.sendSequence', { text: `F:\\BAT\\ClearProg.bat ${FileName} Y  \u000d`});
+        await commands.executeCommand('workbench.action.focusActiveEditorGroup');
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.aplicaspd', () => {
         new Executor().runAsync('start cmd.exe /c F:\\BAT\\APLICASPD.bat ');

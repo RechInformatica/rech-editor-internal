@@ -5,7 +5,7 @@
     "version": "0.0.10",
     "publisher": "rechinformatica",
     "engines": {
-        "vscode": "^1.26.0"
+        "vscode": "^1.35.0"
     },
     "icon": "images/rech.png",
     "categories": [
@@ -257,6 +257,10 @@
             {
                 "command": "rech.editor.internal.runTest",
                 "title": "Rech Internal: Run Cobol unit test"
+            },
+            {
+                "command": "rech.editor.internal.clearprog",
+                "title": "Rech Internal: ClearProg - Remove programa do Working-copy"
             }
         ],
         "keybindings": [
