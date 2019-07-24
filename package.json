@@ -2,7 +2,7 @@
     "name": "rech-editor-internal",
     "displayName": "Rech Internal",
     "description": "Package for using Rech's extensions with Visual Studio Code in Rech's intranet",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "publisher": "rechinformatica",
     "engines": {
         "vscode": "^1.35.0"
@@ -71,6 +71,14 @@
                     "type": "boolean",
                     "description": "Whether the read-only files editing lock is enabled",
                     "default": "true"
+                },
+                "rech.editor.internal.IntelligentReplaceProcessor": {
+                    "type": "string",
+                    "description": "Command line to call the intelligent replace processor"
+                },
+                "rech.editor.internal.IntelligentReplaceFileBuffer": {
+                    "type": "string",
+                    "description": "File to use in intelligent replace process to work with the source buffer"
                 }
             }
         },
@@ -125,6 +133,10 @@
             {
                 "command": "rech.editor.internal.cleardic",
                 "title": "Rech: Cleardic - Limpa dicionário do diretório por programador"
+            },
+            {
+                "command": "rech.editor.internal.intelligentReplace",
+                "title": "Rech: Chama script configurado para realizar a substituição inteligente"
             },
             {
                 "command": "rech.editor.internal.compile",

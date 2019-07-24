@@ -17,6 +17,7 @@ import { Matcher } from './open/Matcher';
 import { CobolLowercaseConverter } from './editor/CobolLowerCaseConverter';
 import { UpdateNotification } from './notification/UpdateNotification';
 import { PreprocStatusBar } from './preproc/PreprocStatusBar';
+import { IntelligentReplace } from './codeProcess/IntelligentReplace';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -94,7 +95,6 @@ export function activate(_context: any) {
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.compile', () => {
         new Compiler().compileCurrentFile().then().catch();
     }));
-
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.indent', () => {
         new Editor().indent("N").then().catch();
     }));
@@ -157,6 +157,13 @@ export function activate(_context: any) {
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.fonlbrlog', () => {
         const fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FONLBRLOG.bat " + fileName);
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.intelligentReplace', () => {
+        const command = workspace.getConfiguration("rech.editor.internal").get<string>("IntelligentReplaceProcessor")
+        const file = workspace.getConfiguration("rech.editor.internal").get<string>("IntelligentReplaceFileBuffer")
+        if (command && file) {
+            IntelligentReplace.run(command, file)
+        }
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.fonteslog', () => {
         const fileName = new Editor().getCurrentFileBaseName();
