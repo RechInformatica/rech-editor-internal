@@ -129,7 +129,7 @@ export class CommentPuller {
             });
         }
         new CobolDeclarationFinder(buffer)
-            .findDeclaration(word, currentFileName, cursor.line)
+            .findDeclaration(word, currentFileName, cursor.line, cursor.column)
             .then((position: RechPosition) => {
                 const comment = this.extractCommentFromDefinition(position, bufferLines);
                 this.handleCommentPulling(comment, cursor, bufferLines);
