@@ -30,7 +30,7 @@ export class ExternalScriptValidator implements GenericExecutor {
    */
   public exec(_file?: string) {
     return new Promise<any>((resolve) => {
-      new Executor().runAsync("cmd.exe /c F:\\BAT\\Ruby.bat VeOpenLinux.rb /source:" + this.path, (process: Process) => {
+      new Executor().runAsync("cmd.exe /c F:\\BAT\\Ruby.bat VSCodeDiagnostic.rb /source:" + this.path, (process: Process) => {
         resolve(process.getStdout());
       }, "win1252");
     });
