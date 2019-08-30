@@ -95,6 +95,10 @@
                 "title": "Rech: Abrir no diretório do F:\\Fontes"
             },
             {
+                "command": "rech.editor.internal.quickOpen",
+                "title": "Rech: Abrir rápido"
+            },
+            {
                 "command": "rech.editor.internal.openCurrentSource",
                 "title": "Rech: Abrir no diretório corrente sugerindo o nome do próprio fonte"
             },
@@ -285,6 +289,10 @@
             {
                 "command": "rech.editor.internal.openFontesTrunk",
                 "key": "ctrl+shift+o"
+            },
+            {
+                "command": "rech.editor.internal.quickOpen",
+                "key": "alt+shift+o"
             },
             {
                 "command": "rech.editor.internal.openScripts",

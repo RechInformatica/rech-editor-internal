@@ -18,6 +18,7 @@ import { CobolLowercaseConverter } from './editor/CobolLowerCaseConverter';
 import { UpdateNotification } from './notification/UpdateNotification';
 import { PreprocStatusBar } from './preproc/PreprocStatusBar';
 import { IntelligentReplace } from './codeProcess/IntelligentReplace';
+import { QuickOpen } from './open/QuickOpen';
 import { ExternalScriptValidator } from './preproc/ExternalScriptValidator';
 import { ExecutorWrapper } from './preproc/ExecutorWrapper';
 
@@ -42,6 +43,14 @@ export function activate(_context: any) {
             showOpenDialog(wc.getSourcesDir());
         }).catch(() => {
             new Editor().showWarningMessage("Working-copy not found");
+        });
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.quickOpen', () => {
+        const editor = new Editor();
+        editor.showInformationMessage("Carregando versões...");
+        QuickOpen.build().then((quickOpen) => {
+            quickOpen.showOpenDialog();
+        }).catch(() => {
         });
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.fonGrep', () => {
