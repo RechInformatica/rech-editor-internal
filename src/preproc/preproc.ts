@@ -136,12 +136,16 @@ export class Preproc implements GenericExecutor {
    * @param file
    */
   private execPreproc(file?: string) {
-    return new Promise((resolve) => {
-      const commandLine = this.buildCommandLine(file);
-      Log.get().info("Preproc - execPreproc() commandLine: " + commandLine);
-      new Executor().runAsync(commandLine, (process: Process) => {
-        resolve(process);
-      }, "win1252");
+    return new Promise((resolve, reject) => {
+      try {
+        const commandLine = this.buildCommandLine(file);
+        Log.get().info("Preproc - execPreproc() commandLine: " + commandLine);
+        new Executor().runAsync(commandLine, (process: Process) => {
+          resolve(process.getStdout());
+        }, "win1252");
+      } catch {
+        reject();
+      }
     });
   }
 

@@ -18,6 +18,8 @@ import { CobolLowercaseConverter } from './editor/CobolLowerCaseConverter';
 import { UpdateNotification } from './notification/UpdateNotification';
 import { PreprocStatusBar } from './preproc/PreprocStatusBar';
 import { IntelligentReplace } from './codeProcess/IntelligentReplace';
+import { ExternalScriptValidator } from './preproc/ExternalScriptValidator';
+import { ExecutorWrapper } from './preproc/ExecutorWrapper';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -310,8 +312,10 @@ function defineSourceExpander() {
  * Sets the global source compile which is responsible for executing Cobol Compile
  */
 function definePreprocessor() {
-    const preproc = new Preproc();
-    return preproc.setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
+    const executorList = new ExecutorWrapper();
+    executorList.addExecutor(new Preproc().setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]));
+    executorList.addExecutor(new ExternalScriptValidator());
+    return executorList;
 }
 
 /**
