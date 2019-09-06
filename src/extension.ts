@@ -21,6 +21,7 @@ import { IntelligentReplace } from './codeProcess/IntelligentReplace';
 import { QuickOpen } from './open/QuickOpen';
 import { ExternalScriptValidator } from './preproc/ExternalScriptValidator';
 import { ExecutorWrapper } from './preproc/ExecutorWrapper';
+import { SpecialClassPuller } from './specialClassPuller/SpecialClassPuller';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -306,6 +307,9 @@ export function activate(_context: any) {
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.configureCopyHierarchyFunction', () => {
         return defineCopyHierarchyFunction();
     }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.configureSpecialClassPullerFunction', () => {
+        return defineSpecialClassPullerFunction();
+    }));
     UpdateNotification.showUpdateMessageIfNeed();
 }
 
@@ -333,6 +337,13 @@ function definePreprocessor() {
 function defineCopyHierarchyFunction() {
     const preproc = new Preproc();
     return preproc.setOptions(["-hc"]);
+}
+
+/**
+ * Sets the global funtion to return the copy hierarchy of source
+ */
+function defineSpecialClassPullerFunction() {
+    return new SpecialClassPuller();
 }
 
 /**
