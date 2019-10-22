@@ -15,6 +15,8 @@ export class QuickOpen {
 	private package: string;
 	/** QuickPick from windows */
 	private static quickPick: QuickPick<QuickPickItem>;
+	/** Cache do output do vs.bat */
+	private static vsCache: string;
 
 	constructor(version: string, _package: string) {
 		this.version = version;
@@ -86,6 +88,8 @@ export class QuickOpen {
 		return new Promise((resolve, reject) => {
 			this.quickPick = window.createQuickPick();
 			this.quickPick.title = "Versão"
+			this.quickPick.matchOnDescription = true;
+			this.quickPick.matchOnDetail = true;
 			this.parserVersion().then((items) => {
 				this.quickPick.items = items;
 				this.quickPick.activeItems = [];
@@ -110,26 +114,45 @@ export class QuickOpen {
 	 */
 	private static parserVersion(): Promise<Array<QuickPickItem>> {
 		return new Promise((resolve, reject) => {
-			const items = new Array<QuickPickItem>();
-			new Executor().runAsync("F:\\bat\\vs.bat", (process) => {
-				const lines = process.getStdout().split("\n");
-				lines.forEach((line) => {
-					const versionPosition = 1;
-					const aliasPosition = 2;
-					const match = line.match(/(\d\d\.\d\d\w).+(ALF|DES|BET|OFI|OLD|EST)/)
-					if (match) {
-						items.push({
-							label: match[aliasPosition],
-							description: match[versionPosition]
-						});
-					}
-				});
-				if (items.length > 0) {
-					resolve(items);
-				} else {
+			if (QuickOpen.vsCache) {
+				this.parserOutput(QuickOpen.vsCache).then((result) => {
+					resolve(result);
+				}).catch(() => {
 					reject();
+				})
+			} else {
+				new Executor().runAsync("F:\\bat\\vs.bat", (process) => {
+					QuickOpen.vsCache = process.getStdout();
+					this.parserOutput(process.getStdout()).then((result) => {
+						resolve(result);
+					}).catch(() => {
+						reject();
+					});
+				});
+			}
+		});
+	}
+
+	private static parserOutput(vs: string): Promise<Array<QuickPickItem>> {
+		return new Promise((resolve, reject) => {
+			const items = new Array<QuickPickItem>();
+			const lines = vs.split("\n");
+			lines.forEach((line) => {
+				const versionPosition = 1;
+				const aliasPosition = 2;
+				const match = line.match(/(\d\d\.\d\d\w).+(ALF|DES|BET|OFI|OLD|EST)/)
+				if (match) {
+					items.push({
+						label: match[aliasPosition],
+						description: match[versionPosition]
+					});
 				}
 			});
+			if (items.length > 0) {
+				resolve(items);
+			} else {
+				reject();
+			}
 		});
 	}
 
