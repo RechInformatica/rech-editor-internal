@@ -223,10 +223,14 @@ export class Preproc implements GenericExecutor {
 
   private injectDirectoriesWithinAsParameter() {
     const myWc = this.wc;
-    let dc = " -dc=.\\;" + new Path(this.path).directory() + ";" + myWc.getSourcesDir() + ";" + "F:\\FONTES";
+    let dc = " -dc=";
     this.extraCopyDirectories.forEach((extraDir) => {
       dc += ";" + extraDir;
     })
+    if (this.extraCopyDirectories.length != 0) {
+      dc += ".\\;"
+    }
+    dc += new Path(this.path).directory() + ";" + myWc.getSourcesDir() + ";" + "F:\\FONTES"
     return dc;
   }
 
