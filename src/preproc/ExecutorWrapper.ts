@@ -29,11 +29,21 @@ export class ExecutorWrapper implements GenericExecutor {
     }
 
     /**
+     * Define the extra params
+     */
+    public setExtraParams(params: string[]): GenericExecutor {
+        this.executorList.forEach((executor) => {
+            executor.setExtraParams(params);
+        });
+        return this;
+    }
+
+    /**
      * Run decorated executors
      */
     public exec(file?: string) {
         return new Promise<any>((resolve, reject) => {
-            let executionPromises:Array<Promise<any>> = new Array;
+            const executionPromises:Array<Promise<any>> = new Array;
             this.executorList.forEach((executor) => {
                 executionPromises.push(executor.exec(file));
             });

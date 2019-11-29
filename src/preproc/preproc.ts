@@ -17,6 +17,8 @@ export class Preproc implements GenericExecutor {
   private wc: WorkingCopy;
   /** Versão */
   private versao: string;
+  /** Extra copy Directory */
+  private extraCopyDirectories: string[];
 
   /** Constructor of preprocessor */
   constructor(versao?: string, wc?: WorkingCopy) {
@@ -32,6 +34,7 @@ export class Preproc implements GenericExecutor {
     } else {
       this.versao = "DES";
     }
+    this.extraCopyDirectories = [];
   }
 
   /**
@@ -43,6 +46,14 @@ export class Preproc implements GenericExecutor {
     } else {
       this.path = new Path(path).fullPathWin();
     }
+    return this;
+  }
+
+  /**
+   * Set extra params
+   */
+  setExtraParams(params: string[]): Preproc {
+    this.extraCopyDirectories = params;
     return this;
   }
 
@@ -212,7 +223,11 @@ export class Preproc implements GenericExecutor {
 
   private injectDirectoriesWithinAsParameter() {
     const myWc = this.wc;
-    return " -dc=.\\;" + new Path(this.path).directory() + ";" + myWc.getSourcesDir() + ";" + "F:\\FONTES";
+    let dc = " -dc=.\\;" + new Path(this.path).directory() + ";" + myWc.getSourcesDir() + ";" + "F:\\FONTES";
+    this.extraCopyDirectories.forEach((extraDir) => {
+      dc += ";" + extraDir;
+    })
+    return dc;
   }
 
   /**

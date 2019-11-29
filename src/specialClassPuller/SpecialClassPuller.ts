@@ -19,6 +19,10 @@ export class SpecialClassPuller implements GenericExecutor {
           return this;
     }
 
+    public setExtraParams(_params: string[]): GenericExecutor {
+        throw new Error("SpecialClassPuller.setExtraParams not Implemented");
+    }
+
     exec(_file?: string | undefined): Promise<any> {
         return new Promise<string>((resolve, reject) => {
             const file = new File(this.getEtcPath());

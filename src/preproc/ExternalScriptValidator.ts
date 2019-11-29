@@ -8,9 +8,12 @@ export class ExternalScriptValidator implements GenericExecutor {
 
   /** File path */
   private path: string;
+  /** Extra copy directory */
+  private extraCopyDirectory: string;
 
   constructor() {
     this.path = "";
+    this.extraCopyDirectory = "";
   }
 
   /**
@@ -26,11 +29,22 @@ export class ExternalScriptValidator implements GenericExecutor {
   }
 
   /**
+   * Set the extra params to exec the VSCodeDiagnostic
+   *
+   * @param params
+   */
+  public setExtraParams(params: string[]): ExternalScriptValidator {
+    this.extraCopyDirectory = params[0];
+    return this;
+  }
+
+  /**
    * Run validations
    */
   public exec(_file?: string) {
     return new Promise<any>((resolve) => {
-      new Executor().runAsync("cmd.exe /c F:\\BAT\\Ruby.bat VSCodeDiagnostic.rb /source:" + this.path, (process: Process) => {
+      const extraArgs = this.extraCopyDirectory != "" ? "/extraCopyDirectory:" + this.extraCopyDirectory : "";
+      new Executor().runAsync("cmd.exe /c F:\\BAT\\Ruby.bat VSCodeDiagnostic.rb /source:" + this.path + extraArgs, (process: Process) => {
         resolve(process.getStdout());
       }, "win1252");
     });
