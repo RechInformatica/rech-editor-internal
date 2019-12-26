@@ -1,7 +1,7 @@
 'use strict';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { commands, workspace, ExtensionContext } from 'vscode';
+import { commands, workspace, ExtensionContext, TextDocument, window } from 'vscode';
 import { Editor, Executor, GeradorCobol, Path, CobolDiagnosticFilter} from 'rech-editor-cobol';
 import { Compiler } from './compiler/compiler';
 import { WorkingCopy } from './wc/WorkingCopy';
@@ -22,6 +22,7 @@ import { QuickOpen } from './open/QuickOpen';
 import { ExternalScriptValidator } from './preproc/ExternalScriptValidator';
 import { ExecutorWrapper } from './preproc/ExecutorWrapper';
 import { SpecialClassPuller } from './specialClassPuller/SpecialClassPuller';
+import { open } from 'fs';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -310,7 +311,52 @@ export function activate(_context: any) {
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.configureSpecialClassPullerFunction', () => {
         return defineSpecialClassPullerFunction();
     }));
+    workspace.onDidOpenTextDocument((textDocument: TextDocument) => {
+        checkRubyFileEncoding(textDocument);
+    })
+    workspace.onDidSaveTextDocument((textDocument: TextDocument) => {
+        checkRubyFileEncoding(textDocument);
+    })
     UpdateNotification.showUpdateMessageIfNeed();
+}
+
+/**
+ * Checks if the encoding rules for ruby ​​programs have been respected
+ */
+function checkRubyFileEncoding(textDocument: TextDocument) {
+    if (isRubyFile(new Path(textDocument.uri))) {
+        if (isUTF8rubyFile(textDocument.getText())) {
+            textDocument
+            const optionButton = "Alterar Encoding";
+            window.showWarningMessage("Atenção o arquivo que você está editando está configurado para ser utf-8!\nCosidere alterar o encoding do arquivo caso não esteja aberto corretamente.", optionButton).then((option) => {
+                if (option == optionButton) {
+                    commands.executeCommand("workbench.action.editor.changeEncoding");
+                }
+            })
+        }
+    }
+}
+
+/**
+ * Returns true if the path represents a ruby file
+ *
+ * @param path
+ */
+function isRubyFile(path: Path): boolean {
+    return path.extension() == ".rb";
+}
+
+/**
+ * Returns true if the buffer represents a ruby file in UTF8
+ *
+ * @param buffer
+ */
+function isUTF8rubyFile(buffer: String): boolean {
+    const match = buffer.match(/#\s+encoding\:(.*)/i);
+    if (match && match[1]) {
+        return match[1].trim().toLowerCase() == "utf-8";
+    }
+    return false;
 }
 
 /**
