@@ -9,7 +9,6 @@ import { VSCodeSaver } from './save/VSCodeSaver';
 import { FonGrep } from './fongrep/fongrep';
 import { FileOpener } from './open/FileOpener';
 import { Preproc } from './preproc/preproc';
-import { OpenWFPF } from './open/OpenWFPF';
 import { SourcePreprocessor } from './preproc/SourcePreprocessor';
 import { CommentPuller } from './comment/CommentPuller';
 import { ReadOnlyControll } from './readonly/ReadOnlyControll';
@@ -22,7 +21,7 @@ import { QuickOpen } from './open/QuickOpen';
 import { ExternalScriptValidator } from './preproc/ExternalScriptValidator';
 import { ExecutorWrapper } from './preproc/ExecutorWrapper';
 import { SpecialClassPuller } from './specialClassPuller/SpecialClassPuller';
-import { open } from 'fs';
+import { OpenSuffixedFiles } from './open/OpenSuffixedFiles';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -78,7 +77,12 @@ export function activate(_context: any) {
         fileOpener.openFromCurrentLine();
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.OpenWFPF', () => {
-        new OpenWFPF().open().then().catch();
+        const suffixes: string[] = ["WF.CPY", "PF.CPY"];
+        new OpenSuffixedFiles().open(suffixes);
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.OpenGuiFiles', () => {
+        const suffixes: string[] = ["WT.CPY", "PT.CPY", "GW.CPB", "GP.CPB"];
+        new OpenSuffixedFiles().open(suffixes);
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.update', () => {
         new Editor().showInformationMessage("Executando Update...");

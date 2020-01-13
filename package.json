@@ -2,7 +2,7 @@
     "name": "rech-editor-internal",
     "displayName": "Rech Internal",
     "description": "Package for using Rech's extensions with Visual Studio Code in Rech's intranet",
-    "version": "0.0.27",
+    "version": "0.0.28",
     "publisher": "rechinformatica",
     "engines": {
         "vscode": "^1.35.0"
@@ -124,7 +124,11 @@
             },
             {
                 "command": "rech.editor.internal.OpenWFPF",
-                "title": "Rech Internal: Abre os copys WF/PF do fonte atual"
+                "title": "Rech Internal: Abre os copys WF/PF do fonte atual ou o próprio CBL"
+            },
+            {
+                "command": "rech.editor.internal.OpenGuiFiles",
+                "title": "Rech Internal: Abre os copys WT/PT/GW/GP do fonte atual ou o próprio CBL"
             },
             {
                 "command": "rech.editor.internal.checkout",
