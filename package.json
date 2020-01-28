@@ -115,6 +115,10 @@
                 "title": "Rech Internal: FonGrep"
             },
             {
+                "command": "rech.editor.internal.batGrep",
+                "title": "Rech Internal: 'Fongrep' em scripts"
+            },
+            {
                 "command": "rech.editor.internal.openThis",
                 "title": "Rech Internal: Abre fonte da linha corrente"
             },
@@ -309,6 +313,10 @@
             {
                 "command": "rech.editor.internal.fonGrep",
                 "key": "ctrl+l"
+            },
+            {
+                "command": "rech.editor.internal.batGrep",
+                "key": "ctrl+shift+l"
             },
             {
                 "command": "rech.editor.internal.openThis",

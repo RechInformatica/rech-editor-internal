@@ -22,6 +22,7 @@ import { ExternalScriptValidator } from './preproc/ExternalScriptValidator';
 import { ExecutorWrapper } from './preproc/ExecutorWrapper';
 import { SpecialClassPuller } from './specialClassPuller/SpecialClassPuller';
 import { OpenSuffixedFiles } from './open/OpenSuffixedFiles';
+import { BatGrep } from './fongrep/BatGrep';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -63,6 +64,15 @@ export function activate(_context: any) {
             text = editor.getCurrentWord();
         }
         fongrep.fonGrep(text, version);
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.batGrep', () => {
+        const editor = new Editor();
+        const batGrep = new BatGrep();
+        let text = editor.getSelectionBuffer()[0];
+        if (text === '') {
+            text = editor.getCurrentWord();
+        }
+        batGrep.batGrep(text);
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.RechWindowDesigner', async () => {
         const FileName = new Editor().getCurrentFileName();
