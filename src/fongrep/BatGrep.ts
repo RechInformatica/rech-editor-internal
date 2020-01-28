@@ -2,19 +2,19 @@ import { Editor, Executor, BufferSplitter } from 'rech-editor-cobol';
 import * as fs from 'fs';
 
 /**
- * Class to execute batGrep from within VSCode
+ * Class to execute BatGrep from within VSCode
  */
 export class BatGrep {
      /**
-     * Executes batGrep opening the result file on the editor
+     * Executes BatGrep opening the result file on the editor
      */
     public batGrep(word: string) {
-        new Editor().showInputBox("Argumento a ser pesquisado pelo batGrep", "batGrep", (info) => {
+        new Editor().showInputBox("Argumento a ser pesquisado pelo BatGrep", "BatGrep", (info) => {
             this.runBatGrep(info);
         }, word);
     }
      /**
-     * Executes the batGrep command itself and handles the result file
+     * Executes the BatGrep command itself and handles the result file
      */
     runBatGrep(info: string | undefined) {
         if (info !== undefined && info.length > 0) {
