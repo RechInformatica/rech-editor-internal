@@ -2,7 +2,7 @@
     "name": "rech-editor-internal",
     "displayName": "Rech Internal",
     "description": "Package for using Rech's extensions with Visual Studio Code in Rech's intranet",
-    "version": "0.0.30",
+    "version": "0.0.31",
     "publisher": "rechinformatica",
     "engines": {
         "vscode": "^1.35.0"
@@ -362,7 +362,7 @@
                 "when": "textInputFocus && !editorReadonly"
             },
             {
-                "command": "changePeekFocus",
+                "command": "togglePeekWidgetFocus",
                 "key": "F2",
                 "when": "inReferenceSearchEditor || referenceSearchVisible"
             },
