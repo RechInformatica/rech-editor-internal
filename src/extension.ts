@@ -1,14 +1,14 @@
 'use strict';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { commands, workspace, ExtensionContext } from 'vscode';
-import { Editor, Executor, Compiler, GeradorCobol, cobolDiagnosticFilter, Path, CobolDiagnosticFilter} from 'rech-editor-cobol';
+import { commands, workspace, ExtensionContext, TextDocument, window } from 'vscode';
+import { Editor, Executor, GeradorCobol, Path, CobolDiagnosticFilter} from 'rech-editor-cobol';
+import { Compiler } from './compiler/compiler';
 import { WorkingCopy } from './wc/WorkingCopy';
 import { VSCodeSaver } from './save/VSCodeSaver';
 import { FonGrep } from './fongrep/fongrep';
 import { FileOpener } from './open/FileOpener';
 import { Preproc } from './preproc/preproc';
-import { OpenWFPF } from './open/OpenWFPF';
 import { SourcePreprocessor } from './preproc/SourcePreprocessor';
 import { CommentPuller } from './comment/CommentPuller';
 import { ReadOnlyControll } from './readonly/ReadOnlyControll';
@@ -16,6 +16,13 @@ import { Matcher } from './open/Matcher';
 import { CobolLowercaseConverter } from './editor/CobolLowerCaseConverter';
 import { UpdateNotification } from './notification/UpdateNotification';
 import { PreprocStatusBar } from './preproc/PreprocStatusBar';
+import { IntelligentReplace } from './codeProcess/IntelligentReplace';
+import { QuickOpen } from './open/QuickOpen';
+import { ExternalScriptValidator } from './preproc/ExternalScriptValidator';
+import { ExecutorWrapper } from './preproc/ExecutorWrapper';
+import { SpecialClassPuller } from './specialClassPuller/SpecialClassPuller';
+import { OpenSuffixedFiles } from './open/OpenSuffixedFiles';
+import { BatGrep } from './fongrep/BatGrep';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -40,6 +47,14 @@ export function activate(_context: any) {
             new Editor().showWarningMessage("Working-copy not found");
         });
     }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.quickOpen', () => {
+        const editor = new Editor();
+        editor.showInformationMessage("Carregando versões...");
+        QuickOpen.build().then((quickOpen) => {
+            quickOpen.showOpenDialog();
+        }).catch(() => {
+        });
+    }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.fonGrep', () => {
         const editor = new Editor();
         const fongrep = new FonGrep();
@@ -50,8 +65,17 @@ export function activate(_context: any) {
         }
         fongrep.fonGrep(text, version);
     }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.batGrep', () => {
+        const editor = new Editor();
+        const batGrep = new BatGrep();
+        let text = editor.getSelectionBuffer()[0];
+        if (text === '') {
+            text = editor.getCurrentWord();
+        }
+        batGrep.batGrep(text);
+    }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.RechWindowDesigner', async () => {
-        const FileName = new Editor().getCurrentFileBaseName();
+        const FileName = new Editor().getCurrentFileName();
         await commands.executeCommand('workbench.action.terminal.focus');
         await commands.executeCommand('workbench.action.terminal.sendSequence', { text: `RWD ${FileName} \u000d`});
     }));
@@ -63,7 +87,12 @@ export function activate(_context: any) {
         fileOpener.openFromCurrentLine();
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.OpenWFPF', () => {
-        new OpenWFPF().open().then().catch();
+        const suffixes: string[] = ["WF.CPY", "PF.CPY"];
+        new OpenSuffixedFiles().open(suffixes);
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.OpenGuiFiles', () => {
+        const suffixes: string[] = ["WT.CPY", "PT.CPY", "GW.CPB", "GP.CPB"];
+        new OpenSuffixedFiles().open(suffixes);
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.update', () => {
         new Editor().showInformationMessage("Executando Update...");
@@ -93,7 +122,6 @@ export function activate(_context: any) {
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.compile', () => {
         new Compiler().compileCurrentFile().then().catch();
     }));
-
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.indent', () => {
         new Editor().indent("N").then().catch();
     }));
@@ -157,6 +185,13 @@ export function activate(_context: any) {
         const fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FONLBRLOG.bat " + fileName);
     }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.intelligentReplace', () => {
+        const command = workspace.getConfiguration("rech.editor.internal").get<string>("IntelligentReplaceProcessor")
+        const file = workspace.getConfiguration("rech.editor.internal").get<string>("IntelligentReplaceFileBuffer")
+        if (command && file) {
+            IntelligentReplace.run(command, file)
+        }
+    }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.fonteslog', () => {
         const fileName = new Editor().getCurrentFileBaseName();
         new Executor().runAsync("start cmd.exe /c F:\\BAT\\FONTESLOG.bat " + fileName);
@@ -195,6 +230,15 @@ export function activate(_context: any) {
                 editor.showInformationMessage("Não foi informada o fonte a executar!");
             }
         }, fileName);
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.clearprog', async () => {
+        await commands.executeCommand('workbench.output.action.clearOutput');
+        const editor = new Editor();
+        editor.showInformationMessage("Executando teste unitário...")
+        const FileName = new Editor().getCurrentFileBaseName();
+        await commands.executeCommand('workbench.action.terminal.focus');
+        await commands.executeCommand('workbench.action.terminal.sendSequence', { text: `F:\\BAT\\ClearProg.bat ${FileName} Y  \u000d`});
+        await commands.executeCommand('workbench.action.focusActiveEditorGroup');
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.aplicaspd', () => {
         new Executor().runAsync('start cmd.exe /c F:\\BAT\\APLICASPD.bat ');
@@ -256,9 +300,10 @@ export function activate(_context: any) {
         await commands.executeCommand('workbench.output.action.clearOutput');
         const editor = new Editor();
         editor.showInformationMessage("Executando teste unitário...")
-        new Executor().runAsyncOutputChannel("test", "cmd.exe /c F:\\BAT\\Tst.bat " + new Editor().getCurrentFileBaseName(), () => {
-            editor.showInformationMessage("Teste unitário finalizado.")
-        });
+        const FileName = new Editor().getCurrentFileBaseName();
+        await commands.executeCommand('workbench.action.terminal.focus');
+        await commands.executeCommand('workbench.action.terminal.sendSequence', { text: `F:\\BAT\\Tst.bat ${FileName}  \u000d`});
+        await commands.executeCommand('workbench.action.focusActiveEditorGroup');
     }));
     workspace.onWillSaveTextDocument(() => new VSCodeSaver().onBeforeSave());
     workspace.onDidSaveTextDocument(() => new VSCodeSaver().onAfterSave());
@@ -277,7 +322,55 @@ export function activate(_context: any) {
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.configureCopyHierarchyFunction', () => {
         return defineCopyHierarchyFunction();
     }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.configureSpecialClassPullerFunction', () => {
+        return defineSpecialClassPullerFunction();
+    }));
+    workspace.onDidOpenTextDocument((textDocument: TextDocument) => {
+        checkRubyFileEncoding(textDocument);
+    })
+    workspace.onDidSaveTextDocument((textDocument: TextDocument) => {
+        checkRubyFileEncoding(textDocument);
+    })
     UpdateNotification.showUpdateMessageIfNeed();
+}
+
+/**
+ * Checks if the encoding rules for ruby ​​programs have been respected
+ */
+function checkRubyFileEncoding(textDocument: TextDocument) {
+    if (isRubyFile(new Path(textDocument.uri))) {
+        if (isUTF8rubyFile(textDocument.getText())) {
+            textDocument
+            const optionButton = "Alterar Encoding";
+            window.showWarningMessage("Atenção o arquivo que você está editando está configurado para ser utf-8!\nCosidere alterar o encoding do arquivo caso não esteja aberto corretamente.", optionButton).then((option) => {
+                if (option == optionButton) {
+                    commands.executeCommand("workbench.action.editor.changeEncoding");
+                }
+            })
+        }
+    }
+}
+
+/**
+ * Returns true if the path represents a ruby file
+ *
+ * @param path
+ */
+function isRubyFile(path: Path): boolean {
+    return path.extension() == ".rb";
+}
+
+/**
+ * Returns true if the buffer represents a ruby file in UTF8
+ *
+ * @param buffer
+ */
+function isUTF8rubyFile(buffer: String): boolean {
+    const match = buffer.match(/#\s+encoding\:(.*)/i);
+    if (match && match[1]) {
+        return match[1].trim().toLowerCase() == "utf-8";
+    }
+    return false;
 }
 
 /**
@@ -292,8 +385,10 @@ function defineSourceExpander() {
  * Sets the global source compile which is responsible for executing Cobol Compile
  */
 function definePreprocessor() {
-    const preproc = new Preproc();
-    return preproc.setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]);
+    const executorList = new ExecutorWrapper();
+    executorList.addExecutor(new Preproc().setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]));
+    executorList.addExecutor(new ExternalScriptValidator());
+    return executorList;
 }
 
 /**
@@ -302,6 +397,13 @@ function definePreprocessor() {
 function defineCopyHierarchyFunction() {
     const preproc = new Preproc();
     return preproc.setOptions(["-hc"]);
+}
+
+/**
+ * Sets the global funtion to return the copy hierarchy of source
+ */
+function defineSpecialClassPullerFunction() {
+    return new SpecialClassPuller();
 }
 
 /**

@@ -24,7 +24,7 @@ export class WorkingCopy {
   public static current() {
     return new Promise<WorkingCopy>((resolve, reject) => {
       new Executor().runAsync("cmd.exe /C F:\\BAT\\WC.bat /show", process => {
-        var wc = WorkingCopy.createWcFromProcessOutput(process);
+        const wc = WorkingCopy.createWcFromProcessOutput(process);
         if (wc !== undefined) {
           resolve(wc);
         } else {
@@ -38,8 +38,8 @@ export class WorkingCopy {
    * Returns an instance of the current WorkingCopy
    */
   public static currentSync() {
-    let process = new Executor().runSync("cmd.exe /C F:\\BAT\\WC.bat /show");
-    var wc = WorkingCopy.createWcFromProcessOutput(process);
+    const process = new Executor().runSync("cmd.exe /C F:\\BAT\\WC.bat /show");
+    const wc = WorkingCopy.createWcFromProcessOutput(process);
     return wc;
   }
 
@@ -48,16 +48,16 @@ export class WorkingCopy {
    * @param baseName
    */
   public static checkoutFonte(baseName: String) {
-    let editor = new Editor();
-    let cursors: RechPosition[] = editor.getCursors();
+    const editor = new Editor();
+    const cursors: RechPosition[] = editor.getCursors();
     editor.showInformationMessage("Executando Checkout de " + baseName + "...");
     editor.closeActiveEditor();
     new Executor().runAsync(
       "cmd.exe /c F:\\BAT\\Checkout.bat /noopen /nodic " + baseName,
       _process => {
         WorkingCopy.current().then((wc) => {
-          let targetFilename = wc.getSourcesDir() + baseName;
-          let wcFile = new File(targetFilename);
+          const targetFilename = wc.getSourcesDir() + baseName;
+          const wcFile = new File(targetFilename);
           if (wcFile.exists()) {
             new Editor().openFileInsensitive(targetFilename, () => {
               new Editor().setCursors(cursors);
@@ -82,7 +82,7 @@ export class WorkingCopy {
     } else {
       outputProcess = process;
     }
-    var parts = WorkingCopy.getWorkingCopyString(outputProcess).split(
+    const parts = WorkingCopy.getWorkingCopyString(outputProcess).split(
       " "
     );
     var currentName = "";
@@ -102,7 +102,7 @@ export class WorkingCopy {
    * Returns a String representation of the current user's Working Copy
    */
   private static getWorkingCopyString(output: string) {
-    var match = /USE_VALRET=(.*)/g.exec(output);
+    const match = /USE_VALRET=(.*)/g.exec(output);
     if (match !== null) {
       return match[1];
     } else {

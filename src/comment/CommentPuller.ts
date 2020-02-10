@@ -9,12 +9,12 @@ export class CommentPuller {
      * Pulls the comment from the element located on the cursor
      */
     public pullCommentFromCursor(): void {
-        let editor = new Editor();
-        let cursor = editor.getCursors()[0];
-        let buffer = editor.getEditorBuffer();
-        let bufferLines = BufferSplitter.split(buffer);
-        let currentFileName = editor.getCurrentFileName();
-        let currentLineText = bufferLines[cursor.line];
+        const editor = new Editor();
+        const cursor = editor.getCursors()[0];
+        const buffer = editor.getEditorBuffer();
+        const bufferLines = BufferSplitter.split(buffer);
+        const currentFileName = editor.getCurrentFileName();
+        const currentLineText = bufferLines[cursor.line];
         switch(true) {
             case this.isCopyDeclaration(currentLineText): {
                 this.handleCopyComment(currentLineText, editor.getCurrentFileDirectory(), cursor, bufferLines);
@@ -48,9 +48,9 @@ export class CommentPuller {
      * @param bufferLines buffer lines
      */
     private handleCopyComment(lineText: string, currentFileDirectory: string, cursor: RechPosition, bufferLines: string[]): void {
-        let copyFileName = this.extractCopyNameFromCurrentLine(lineText);
+        const copyFileName = this.extractCopyNameFromCurrentLine(lineText);
         if (copyFileName !== "") {
-            let comment = this.extractCommentFromCopy(currentFileDirectory + copyFileName);
+            const comment = this.extractCommentFromCopy(currentFileDirectory + copyFileName);
             this.handleCommentPulling(comment, cursor, bufferLines);
         }
     }
@@ -61,7 +61,7 @@ export class CommentPuller {
      * @param currentLineText current line text
      */
     private extractCopyNameFromCurrentLine(currentLineText: string): string {
-        let splittedLine = currentLineText.trim().split(/[ |.]+/);
+        const splittedLine = currentLineText.trim().split(/[ |.]+/);
         if (splittedLine.length > 3 && splittedLine[0].toUpperCase() === "COPY") {
             return splittedLine[1] + "." + splittedLine[2];
         }
@@ -80,7 +80,7 @@ export class CommentPuller {
             file = new File("F:\\Fontes\\" + new Path(file.fileName).fileName());
         }
         if (file.exists()) {
-            let copyBuffer = BufferSplitter.split(file.loadBufferSync("latin1"));
+            const copyBuffer = BufferSplitter.split(file.loadBufferSync("latin1"));
             if (copyBuffer.length > 0) {
                 comment = copyBuffer[1];
                 if (this.isWorkingFd(copyFileName)) {
@@ -106,7 +106,7 @@ export class CommentPuller {
      * @param comment comment extracted from the Working FD header
      */
     private buildWorkingFdComment(comment: string): string {
-        let description = /Descrição:(.*)/.exec(comment);
+        const description = /Descrição:(.*)/.exec(comment);
         if (description && description[1]) {
             return "      *>-> Registro de Working do arquivo de " + description[1].replace("<*", "").trim();
         }
@@ -122,16 +122,16 @@ export class CommentPuller {
      * @param currentFileName current file name
      */
     private handleDeclarationComment(bufferLines: string[], cursor: RechPosition, buffer: string, currentFileName: string): void {
-        let word = new CobolWordFinder().findWordAt(bufferLines[cursor.line], cursor.column);
+        const word = new CobolWordFinder().findWordAt(bufferLines[cursor.line], cursor.column);
         if (!ExpandedSourceManager.hasSourceExpander()) {
             ExpandedSourceManager.setSourceExpander((word: string, file: string) => {
                 return this.fireSourceExpander(word, file, ExpandedSourceManager.buildExpandedSourceFileName(file));
             });
         }
         new CobolDeclarationFinder(buffer)
-            .findDeclaration(word, currentFileName)
+            .findDeclaration(word, currentFileName, cursor.line, cursor.column)
             .then((position: RechPosition) => {
-                let comment = this.extractCommentFromDefinition(position, bufferLines);
+                const comment = this.extractCommentFromDefinition(position, bufferLines);
                 this.handleCommentPulling(comment, cursor, bufferLines);
             })
             .catch(() => {
@@ -147,7 +147,7 @@ export class CommentPuller {
      * @param cacheFileName cache file name
      */
     private fireSourceExpander(word: string, file: string, cacheFileName: string): Promise<string> {
-        let fileName = new Path(file).fileName();
+        const fileName = new Path(file).fileName();
         new Editor().showInformationMessage("Pré-processando " + fileName + " para buscar o comentário de '" + word + "'...");
         return new SourceExpander().createExpanderExecutionPromise([file, cacheFileName]);
     }
@@ -163,7 +163,7 @@ export class CommentPuller {
         if (comments.length === 0) {
             new Editor().showWarningMessage("Sem comentário vinculado.");
         } else {
-            let previousLine = bufferLines[cursor.line - 1];
+            const previousLine = bufferLines[cursor.line - 1];
             if (!this.isPreviousCommentEqual(previousLine, comments)) {
                 this.insertCommentsInEditor(comments, cursor).then().catch();
             }
@@ -177,7 +177,7 @@ export class CommentPuller {
      * @param comments comments to be inserted
      */
     private isPreviousCommentEqual(previousLine: string,  comments: string[]): boolean {
-        let previousComment = new CobolDocParser().parseSingleLineCobolDoc(previousLine).comment;
+        const previousComment = new CobolDocParser().parseSingleLineCobolDoc(previousLine).comment;
         return previousComment.length > 0 && previousComment[previousComment.length - 1].trim() === comments[comments.length - 1].trim();
     }
 
@@ -208,8 +208,8 @@ export class CommentPuller {
         } else {
             buffer = bufferLines;
         }
-        let docArray = VariableUtils.findVariableDocArray(buffer, location.line);
-        let doc = new CobolDocParser().parseCobolDoc(docArray);
+        const docArray = VariableUtils.findVariableDocArray(buffer, location.line);
+        const doc = new CobolDocParser().parseCobolDoc(docArray);
         return doc.comment;
     }
 

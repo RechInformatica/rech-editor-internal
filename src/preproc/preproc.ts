@@ -17,6 +17,8 @@ export class Preproc implements GenericExecutor {
   private wc: WorkingCopy;
   /** Versão */
   private versao: string;
+  /** Extra copy Directory */
+  private extraCopyDirectories: string[];
 
   /** Constructor of preprocessor */
   constructor(versao?: string, wc?: WorkingCopy) {
@@ -32,6 +34,7 @@ export class Preproc implements GenericExecutor {
     } else {
       this.versao = "DES";
     }
+    this.extraCopyDirectories = [];
   }
 
   /**
@@ -43,6 +46,14 @@ export class Preproc implements GenericExecutor {
     } else {
       this.path = new Path(path).fullPathWin();
     }
+    return this;
+  }
+
+  /**
+   * Set extra params
+   */
+  setExtraParams(params: string[]): Preproc {
+    this.extraCopyDirectories = params;
     return this;
   }
 
@@ -61,7 +72,7 @@ export class Preproc implements GenericExecutor {
    */
   public exec(file?: string) {
     return new Promise((resolve, reject) => {
-      PreprocStatusBar.show();
+      PreprocStatusBar.show(`File: ${this.path} - Options ${this.options}`);
       this.execPreprocessorFromSource(file).then((result) => {
         PreprocStatusBar.hide();
         resolve(result);
@@ -136,12 +147,16 @@ export class Preproc implements GenericExecutor {
    * @param file
    */
   private execPreproc(file?: string) {
-    return new Promise((resolve) => {
-      const commandLine = this.buildCommandLine(file);
-      Log.get().info("Preproc - execPreproc() commandLine: " + commandLine);
-      new Executor().runAsync(commandLine, (process: Process) => {
-        resolve(process);
-      }, "win1252");
+    return new Promise((resolve, reject) => {
+      try {
+        const commandLine = this.buildCommandLine(file);
+        Log.get().info("Preproc - execPreproc() commandLine: " + commandLine);
+        new Executor().runAsync(commandLine, (process: Process) => {
+          resolve(process.getStdout());
+        }, "win1252");
+      } catch {
+        reject();
+      }
     });
   }
 
@@ -160,6 +175,15 @@ export class Preproc implements GenericExecutor {
         }
       });
     });
+  }
+
+  /**
+   * Run preprocessor redirecting the output to the output channel
+   */
+  public execOnTerminal(file: string) {
+    const commandLine = this.buildCommandLine(file);
+    Log.get().info("Preproc - execOnOutputChannel() commandLine: " + commandLine);
+    new Executor().runAsyncTerminal("preproc", commandLine);
   }
 
   /**
@@ -199,7 +223,15 @@ export class Preproc implements GenericExecutor {
 
   private injectDirectoriesWithinAsParameter() {
     const myWc = this.wc;
-    return " -dc=.\\;" + new Path(this.path).directory() + ";" + myWc.getSourcesDir() + ";" + "F:\\FONTES";
+    let dc = " -dc=";
+    this.extraCopyDirectories.forEach((extraDir) => {
+      dc += ";" + extraDir;
+    })
+    if (this.extraCopyDirectories.length != 0) {
+      dc += ".\\;"
+    }
+    dc += new Path(this.path).directory() + ";" + myWc.getSourcesDir() + ";" + "F:\\FONTES"
+    return dc;
   }
 
   /**

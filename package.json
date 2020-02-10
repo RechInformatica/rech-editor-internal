@@ -2,10 +2,10 @@
     "name": "rech-editor-internal",
     "displayName": "Rech Internal",
     "description": "Package for using Rech's extensions with Visual Studio Code in Rech's intranet",
-    "version": "0.0.6",
+    "version": "0.0.32",
     "publisher": "rechinformatica",
     "engines": {
-        "vscode": "^1.26.0"
+        "vscode": "^1.35.0"
     },
     "icon": "images/rech.png",
     "categories": [
@@ -71,6 +71,14 @@
                     "type": "boolean",
                     "description": "Whether the read-only files editing lock is enabled",
                     "default": "true"
+                },
+                "rech.editor.internal.IntelligentReplaceProcessor": {
+                    "type": "string",
+                    "description": "Command line to call the intelligent replace processor"
+                },
+                "rech.editor.internal.IntelligentReplaceFileBuffer": {
+                    "type": "string",
+                    "description": "File to use in intelligent replace process to work with the source buffer"
                 }
             }
         },
@@ -84,163 +92,179 @@
         "commands": [
             {
                 "command": "rech.editor.internal.openFontesTrunk",
-                "title": "Rech: Abrir no diretório do F:\\Fontes"
+                "title": "Rech Internal: Abrir no diretório do F:\\Fontes"
+            },
+            {
+                "command": "rech.editor.internal.quickOpen",
+                "title": "Rech Internal: Abrir rápido"
             },
             {
                 "command": "rech.editor.internal.openCurrentSource",
-                "title": "Rech: Abrir no diretório corrente sugerindo o nome do próprio fonte"
+                "title": "Rech Internal: Abrir no diretório corrente sugerindo o nome do próprio fonte"
             },
             {
                 "command": "rech.editor.internal.openScripts",
-                "title": "Rech: Abrir no diretório do F:\\Bat"
+                "title": "Rech Internal: Abrir no diretório do F:\\Bat"
             },
             {
                 "command": "rech.editor.internal.openWc",
-                "title": "Rech: Abrir no diretório do working-copy"
+                "title": "Rech Internal: Abrir no diretório do working-copy"
             },
             {
                 "command": "rech.editor.internal.fonGrep",
-                "title": "Rech: FonGrep"
+                "title": "Rech Internal: FonGrep"
+            },
+            {
+                "command": "rech.editor.internal.batGrep",
+                "title": "Rech Internal: 'Fongrep' em scripts"
             },
             {
                 "command": "rech.editor.internal.openThis",
-                "title": "Rech: Abre fonte da linha corrente"
+                "title": "Rech Internal: Abre fonte da linha corrente"
             },
             {
                 "command": "rech.editor.internal.RechWindowDesigner",
-                "title": "Rech: Abre o RechWindowDesigner (RWD) do fonte atual"
+                "title": "Rech Internal: Abre o RechWindowDesigner (RWD) do fonte atual"
             },
             {
                 "command": "rech.editor.internal.OpenWFPF",
-                "title": "Rech: Abre os copys WF/PF do fonte atual"
+                "title": "Rech Internal: Abre os copys WF/PF do fonte atual ou o próprio CBL"
+            },
+            {
+                "command": "rech.editor.internal.OpenGuiFiles",
+                "title": "Rech Internal: Abre os copys WT/PT/GW/GP do fonte atual ou o próprio CBL"
             },
             {
                 "command": "rech.editor.internal.checkout",
-                "title": "Rech: Checkout do fonte atual para o working copy"
+                "title": "Rech Internal: Checkout do fonte atual para o working copy"
             },
             {
                 "command": "rech.editor.internal.checkoutdic",
-                "title": "Rech: Checkoutdic - Atualiza dicionário do diretório por programador"
+                "title": "Rech Internal: Checkoutdic - Atualiza dicionário do diretório por programador"
             },
             {
                 "command": "rech.editor.internal.cleardic",
-                "title": "Rech: Cleardic - Limpa dicionário do diretório por programador"
+                "title": "Rech Internal: Cleardic - Limpa dicionário do diretório por programador"
+            },
+            {
+                "command": "rech.editor.internal.intelligentReplace",
+                "title": "Rech Internal: Chama script configurado para realizar a substituição inteligente"
             },
             {
                 "command": "rech.editor.internal.compile",
-                "title": "Rech: Compilar fonte COBOL"
+                "title": "Rech Internal: Compilar fonte COBOL"
             },
             {
                 "command": "rech.editor.internal.update",
-                "title": "Rech: Update working-copy"
+                "title": "Rech Internal: Update working-copy"
             },
             {
                 "command": "rech.editor.internal.commit",
-                "title": "Rech: Commit working-copy"
+                "title": "Rech Internal: Commit working-copy"
             },
             {
                 "command": "rech.editor.internal.indent",
-                "title": "Rech: Indenta mantendo nível atual"
+                "title": "Rech Internal: Indenta mantendo nível atual"
             },
             {
                 "command": "rech.editor.internal.indentLeft",
-                "title": "Rech: Indenta para esquerda"
+                "title": "Rech Internal: Indenta para esquerda"
             },
             {
                 "command": "rech.editor.internal.indentRight",
-                "title": "Rech: Indenta para direita"
+                "title": "Rech Internal: Indenta para direita"
             },
             {
                 "command": "rech.editor.internal.preprocess0",
-                "title": "Rech: PREPROC - [0] Sem opções extras"
+                "title": "Rech Internal: PREPROC - [0] Sem opções extras"
             },
             {
                 "command": "rech.editor.internal.preprocess1",
-                "title": "Rech: PREPROC - [1] - Mostrando hierarquia dos copys (-hc)"
+                "title": "Rech Internal: PREPROC - [1] - Mostrando hierarquia dos copys (-hc)"
             },
             {
                 "command": "rech.editor.internal.preprocess2",
-                "title": "Rech: PREPROC - [2] - Mostrando o uso de copys pelo programa (-lc)"
+                "title": "Rech Internal: PREPROC - [2] - Mostrando o uso de copys pelo programa (-lc)"
             },
             {
                 "command": "rech.editor.internal.preprocess3",
-                "title": "Rech: PREPROC - [3] - Mostrando os parágrafos (-lsp)"
+                "title": "Rech Internal: PREPROC - [3] - Mostrando os parágrafos (-lsp)"
             },
             {
                 "command": "rech.editor.internal.preprocess4",
-                "title": "Rech: PREPROC - [4] - Mostrando os parágrafos do programa (-lpp)"
+                "title": "Rech Internal: PREPROC - [4] - Mostrando os parágrafos do programa (-lpp)"
             },
             {
                 "command": "rech.editor.internal.preprocess5",
-                "title": "Rech: PREPROC - [5] - Mostrando warnings normais e estendidos (-war -wes)"
+                "title": "Rech Internal: PREPROC - [5] - Mostrando warnings normais e estendidos (-war -wes)"
             },
             {
                 "command": "rech.editor.internal.preprocess6",
-                "title": "Rech: PREPROC - [6] - Mostrando variáveis não usadas no programa (-vnp)"
+                "title": "Rech Internal: PREPROC - [6] - Mostrando variáveis não usadas no programa (-vnp)"
             },
             {
                 "command": "rech.editor.internal.preprocess7",
-                "title": "Rech: PREPROC - [7] - Mostrando variáveis não usadas no programa e nos copys (-vnu)"
+                "title": "Rech Internal: PREPROC - [7] - Mostrando variáveis não usadas no programa e nos copys (-vnu)"
             },
             {
                 "command": "rech.editor.internal.preprocess8",
-                "title": "Rech: PREPROC - [8] - Mostrando warning de truncamento em MOVE  (-wop=w074)"
+                "title": "Rech Internal: PREPROC - [8] - Mostrando warning de truncamento em MOVE  (-wop=w074)"
             },
             {
                 "command": "rech.editor.internal.wm",
-                "title": "Rech: WM - Compara o fonte atual com o trunk"
+                "title": "Rech Internal: WM - Compara o fonte atual com o trunk"
             },
             {
                 "command": "rech.editor.internal.fcw_bet",
-                "title": "Rech: FCW BET - Compara o fonte atual com a beta"
+                "title": "Rech Internal: FCW BET - Compara o fonte atual com a beta"
             },
             {
                 "command": "rech.editor.internal.fcw_ofi",
-                "title": "Rech: FCW OFI - Compara o fonte atual com a oficial"
+                "title": "Rech Internal: FCW OFI - Compara o fonte atual com a oficial"
             },
             {
                 "command": "rech.editor.internal.fcw_est",
-                "title": "Rech: FCW EST - Compara o fonte atual com a estendida"
+                "title": "Rech Internal: FCW EST - Compara o fonte atual com a estendida"
             },
             {
                 "command": "rech.editor.internal.fcw_versao",
-                "title": "Rech: FCW - Compara o fonte atual com a versão informada pelo usuário"
+                "title": "Rech Internal: FCW - Compara o fonte atual com a versão informada pelo usuário"
             },
             {
                 "command": "rech.editor.internal.fonlbrlog",
-                "title": "Rech: FONLBRLOG - Visualiza alterações no SVN para fontes da versão Beta do SIGER"
+                "title": "Rech Internal: FONLBRLOG - Visualiza alterações no SVN para fontes da versão Beta do SIGER"
             },
             {
                 "command": "rech.editor.internal.fonteslog",
-                "title": "Rech: FONTESLOG - Visualiza alterações no SVN para fontes da versão Desenvolvimento do SIGER"
+                "title": "Rech Internal: FONTESLOG - Visualiza alterações no SVN para fontes da versão Desenvolvimento do SIGER"
             },
             {
                 "command": "rech.editor.internal.lis",
-                "title": "Rech: LIS - Lista as alterações no fonte"
+                "title": "Rech Internal: LIS - Lista as alterações no fonte"
             },
             {
                 "command": "rech.editor.internal.lisbk",
-                "title": "Rech: LISBK - Lista as alterações no fonte salvas em backup"
+                "title": "Rech Internal: LISBK - Lista as alterações no fonte salvas em backup"
             },
             {
                 "command": "rech.editor.internal.listbk",
-                "title": "Rech: LISTBK - Ferramenta de comparação de fontes"
+                "title": "Rech Internal: LISTBK - Ferramenta de comparação de fontes"
             },
             {
                 "command": "rech.editor.internal.blame",
-                "title": "Rech: BLAME - Visualiza alterações no SVN para fontes da versão Desenvolvimento do SIGER"
+                "title": "Rech Internal: BLAME - Visualiza alterações no SVN para fontes da versão Desenvolvimento do SIGER"
             },
             {
                 "command": "rech.editor.internal.aplicaspd",
-                "title": "Rech: APLICASPD - Executa ferramenta de aplicação de SPD"
+                "title": "Rech Internal: APLICASPD - Executa ferramenta de aplicação de SPD"
             },
             {
                 "command": "rech.editor.internal.autogrep",
-                "title": "Rech: AUTOGREP - Executa ferramenta de busca de utilização de COPY"
+                "title": "Rech Internal: AUTOGREP - Executa ferramenta de busca de utilização de COPY"
             },
             {
                 "command": "rech.editor.internal.pullComment",
-                "title": "Rech: PUXA COMENTÞRIO - Puxa o comentário do elemento (parágrafo/variável) onde está o cursor"
+                "title": "Rech Internal: PUXA COMENTÞRIO - Puxa o comentário do elemento (parágrafo/variável) onde está o cursor"
             },
             {
                 "command": "rech.editor.internal.findNextBlankLine",
@@ -257,6 +281,10 @@
             {
                 "command": "rech.editor.internal.runTest",
                 "title": "Rech Internal: Run Cobol unit test"
+            },
+            {
+                "command": "rech.editor.internal.clearprog",
+                "title": "Rech Internal: ClearProg - Remove programa do Working-copy"
             }
         ],
         "keybindings": [
@@ -271,6 +299,10 @@
                 "key": "ctrl+shift+o"
             },
             {
+                "command": "rech.editor.internal.quickOpen",
+                "key": "alt+shift+o"
+            },
+            {
                 "command": "rech.editor.internal.openScripts",
                 "key": "ctrl+shift+y"
             },
@@ -281,6 +313,10 @@
             {
                 "command": "rech.editor.internal.fonGrep",
                 "key": "ctrl+l"
+            },
+            {
+                "command": "rech.editor.internal.batGrep",
+                "key": "ctrl+shift+l"
             },
             {
                 "command": "rech.editor.internal.openThis",
@@ -324,6 +360,11 @@
                 "command": "deleteWordRight",
                 "key": "alt+w",
                 "when": "textInputFocus && !editorReadonly"
+            },
+            {
+                "command": "togglePeekWidgetFocus",
+                "key": "F2",
+                "when": "inReferenceSearchEditor || referenceSearchVisible"
             },
             {
                 "command": "editor.action.nextMatchFindAction",
@@ -442,13 +483,15 @@
         "tslint": "tslint --project tsconfig.json --config tslint.json"
     },
     "dependencies": {
-        "@types/chai": "^4.1.6",
+        "@types/chai": "4.1.6",
         "@types/iconv-lite": "0.0.1",
         "@types/mocha": "^2.2.48",
         "@types/node": "^7.0.43",
-        "chai": "^4.2.0",
+        "@types/q": "^1.0.0",
+        "chai": "4.2.0",
         "iconv-lite": "^0.4.24",
         "mocha": "^5.2.0",
+        "q": "^1.4.1",
         "rech-editor-cobol": "file:../rech-editor-cobol",
         "ts-node": "^7.0.1",
         "tslint": "^5.8.0",

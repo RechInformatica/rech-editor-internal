@@ -18,7 +18,10 @@ export class ReadOnlyControll {
         }
         if (this.isCobolFileExtension() && editor.getCurrentFileName() === uri && editor.isReadOnly()) {
             window.showInformationMessage("Cannot edit in read-only file", "Make checkout", "Make writable").then(async (chose) => {
-                await commands.executeCommand("undo");
+                const currentFileName = new Editor().getCurrentFileName();
+                if (currentFileName === uri) {
+                    await commands.executeCommand("undo");
+                }
                 switch(chose) {
                     case "Make checkout": this.makeCheckout(uri).then().catch(); break;
                     case "Make writable": this.makeWritable().then().catch(); break;

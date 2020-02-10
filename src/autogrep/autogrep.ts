@@ -18,7 +18,7 @@ export class Autogrep {
   public find(): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.callAutogrep().then((process: Process) => {
-        let cblFiles = process.getStdout().match(/.*\.CBL /gi);
+        let cblFiles = process.getStdout().match(/.*\.(CBL|COB) /gi);
         if (cblFiles) {
           resolve(this.sortResultsAccordingSourceName(cblFiles));
         } else {

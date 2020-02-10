@@ -53,11 +53,34 @@ export class FileOpener {
    * Opens file from current line
    */
   openFromCurrentLine() {
-    var text = this.retrieveTargetText();
-    this.openRegexFromCurrentLine(text, /([A-Z]:)?([^:\s\*\?\"\'\<\>\|]+\.\w+)(:\d+|,\sline\s=\s\d+)?(,\scol\s\d+)?/gi, 0);
-    this.openRegexFromCurrentLine(text, / *CALL +"([^"]+)"/gi, 1);
-    this.openRegexFromCurrentLine(text, / *CANCEL +\"([^"]+)\"/gi, 1);
-    this.openRegexFromCurrentLine(text, / *INVOKE +([^ ]+)/gi, 1);
+    const editor = new Editor();
+    const lineText = editor.getCurrentLine();
+    const column = editor.getCurrentColumn();
+    let opened = this.openFromText(this.getCurrentFileFromCursor(lineText, column));
+    if (!opened) {
+      this.openFromText(this.retrieveSelectionOrFullLine());
+    }
+  }
+
+  /**
+   * Tries to open file from the specified text
+   *
+   * @param text text to try to find a valid file
+   */
+  private openFromText(text: string): boolean {
+    if (this.openRegexFromCurrentLine(text, /([A-Z]:)?([^:\s\*\?\"\(\'\<\>\|]+\.\w+)(:\d+|,\sline\s=\s\d+)?(,\scol\s\d+)?/gi, 0)) {
+      return true;
+    }
+    if (this.openRegexFromCurrentLine(text, / *CALL +"([^"]+)"/gi, 1)) {
+      return true;
+    }
+    if (this.openRegexFromCurrentLine(text, / *CANCEL +\"([^"]+)\"/gi, 1)) {
+      return true;
+    }
+    if (this.openRegexFromCurrentLine(text, / *INVOKE +([^ ]+)/gi, 1)) {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -67,21 +90,65 @@ export class FileOpener {
    * @param regex regular expression to be executed
    * @param resultIndex regular expression result index
    */
-  private openRegexFromCurrentLine(text: string, regex: RegExp, resultIndex: number) {
+  private openRegexFromCurrentLine(text: string, regex: RegExp, resultIndex: number): boolean {
     var matches = this.matcher.getFilePathsFromLine(text, regex);
     if (matches && matches.length > resultIndex) {
       var match = matches[resultIndex];
       let resolvedPath = this.resolvePathForFile(match.file);
-      new Editor().openFileInsensitive(resolvedPath, () => {
-        new Editor().setCursor(match.row - 1, match.column);
-      });
+      if (resolvedPath !== "") {
+        new Editor().openFileInsensitive(resolvedPath, () => {
+          new Editor().setCursor(match.row - 1, match.column);
+        });
+        return true;
+      }
     }
+    return false;
   }
 
   /**
-   * Retrieves the target text for the filename extraction
+   * Retrieves filename from location where cursor is positioned
    */
-  private retrieveTargetText() {
+  public getCurrentFileFromCursor(lineText: string, column: number): string {
+    const delimiters = [" ", "<", ">", "&", "'", "(", ")", ";", ","];
+    let fileName = "";
+    let leftSideDelimiter = 0;
+    for (let i = 0; i < column; i++) {
+      const currentChar = lineText.charAt(i);
+      if (this.containsAnyDelimiter(currentChar, delimiters)) {
+        leftSideDelimiter = i + 1;
+      }
+    }
+    let rightSideDelimiter;
+    for (rightSideDelimiter = column; rightSideDelimiter < lineText.length; rightSideDelimiter++) {
+      const currentChar = lineText.charAt(rightSideDelimiter);
+      if (this.containsAnyDelimiter(currentChar, delimiters)) {
+        break;
+      }
+    }
+    fileName = lineText.substring(leftSideDelimiter, rightSideDelimiter);
+    return fileName;
+  }
+
+  /**
+   * Returns true if the current character of the line is a delimiter
+   *
+   * @param char current line character
+   * @param delimiters delimiters array
+   */
+  private containsAnyDelimiter(char: string, delimiters: string[]): boolean {
+    for (var i = 0; i != delimiters.length; i++) {
+      var currentDelimiter = delimiters[i];
+      if (char === currentDelimiter) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Retrieves the selected text or the full line text if nothing is selected
+   */
+  private retrieveSelectionOrFullLine() {
     var editor = new Editor();
     var selection = editor.getSelectionBuffer();
     if (selection && selection.length > 0 && selection[0] !== "") {
