@@ -1,4 +1,4 @@
-import { Editor, File, Scan, Path } from "rech-editor-cobol";
+import { Editor, File, Path } from "rech-editor-cobol";
 import { WorkingCopy } from "../wc/WorkingCopy";
 
 /**

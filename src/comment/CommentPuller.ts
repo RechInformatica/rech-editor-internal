@@ -1,4 +1,5 @@
-import { CobolWordFinder, Path, Editor, RechPosition, ElementDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, CobolDeclarationFinder, VariableUtils, ExpandedSourceManager, BufferSplitter } from 'rech-editor-cobol';
+import { CobolWordFinder, Path, Editor, RechPosition, ElementDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, CobolDeclarationFinder, VariableUtils, ExpandedSourceManager } from 'rech-editor-cobol';
+import { BufferSplitter } from "rech-ts-commons";
 
 /**
  * Class for extracting and pulling comment from Cobol paragraphs and variables

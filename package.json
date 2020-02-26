@@ -2,7 +2,7 @@
     "name": "rech-editor-internal",
     "displayName": "Rech Internal",
     "description": "Package for using Rech's extensions with Visual Studio Code in Rech's intranet",
-    "version": "0.0.35",
+    "version": "0.0.36",
     "publisher": "rechinformatica",
     "engines": {
         "vscode": "^1.35.0"
@@ -472,11 +472,13 @@
         "mocha": "^5.2.0",
         "q": "^1.4.1",
         "rech-editor-cobol": "file:../rech-editor-cobol",
+        "rech-ts-commons": "^1.0.0",
         "ts-node": "^7.0.1",
-        "tslint": "^5.8.0",
-        "typescript": "^2.6.1",
+        "tslint": "^5.14.0",
         "vsce": "^1.53.0",
         "vscode": "^1.1.22"
     },
-    "devDependencies": {}
+    "devDependencies": {
+        "typescript": "^3.0.0"
+    }
 }
