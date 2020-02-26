@@ -313,7 +313,7 @@
             {
                 "command": "rech.editor.internal.checkout",
                 "key": "alt+f5",
-                "when": "editorLangId == COBOL && !textCompareEditorVisible"
+                "when": "!textCompareEditorVisible"
             },
             {
                 "command": "rech.editor.internal.compile",

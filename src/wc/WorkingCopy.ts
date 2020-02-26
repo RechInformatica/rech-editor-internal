@@ -1,4 +1,5 @@
 import { Executor, Process, Editor, RechPosition, File } from "rech-editor-cobol";
+import { basename } from "path";
 /**
  * Class for returning Working-Copy general information
  */
@@ -56,7 +57,7 @@ export class WorkingCopy {
       "cmd.exe /c F:\\BAT\\Checkout.bat /noopen /nodic " + baseName,
       _process => {
         WorkingCopy.current().then((wc) => {
-          const targetFilename = wc.getSourcesDir() + baseName;
+          const targetFilename = this.getTargetFileName(baseName, wc)
           const wcFile = new File(targetFilename);
           if (wcFile.exists()) {
             new Editor().openFileInsensitive(targetFilename, () => {
@@ -69,6 +70,23 @@ export class WorkingCopy {
       }
     );
   }
+
+  /**
+   * Returns the target file name
+   */
+  private static getTargetFileName(baseName : String, wc: WorkingCopy){
+    if (baseName.endsWith(".properties")){
+      return wc.getEtcDir() + baseName;
+    }
+    if (baseName.endsWith(".DAT")){
+      return wc.getDatDir() + baseName;
+    }
+    if (baseName.endsWith(".CBL") || baseName.endsWith(".CPY")){
+      return wc.getFonDir() + baseName;
+    }
+    return wc.getFonDir() + baseName;
+  }
+
 
   /**
    * Creates a WorkingCopy instance from the 'wc' execution output
@@ -111,9 +129,29 @@ export class WorkingCopy {
   }
 
   /**
-   * Returns the directory where Cobol files are located
+   * Returns the "mod" directory from wc
    */
-  public getSourcesDir() {
+  public getDatDir() {
+    return "F:\\SIGER\\wc\\" + this.version + "\\" + this.name + "\\mod\\";
+  }
+  /**
+   * Returns the "mod" directory from wc
+   */
+  public getModDir() {
+    return "F:\\SIGER\\wc\\" + this.version + "\\" + this.name + "\\mod\\";
+  }
+
+  /**
+   * Returns the "etc" directory from wc
+   */
+  public getEtcDir() {
+    return "F:\\SIGER\\wc\\" + this.version + "\\" + this.name + "\\etc\\";
+  }
+
+  /**
+   * Returns the "fon" directory from wc
+   */
+  public getFonDir() {
     return "F:\\SIGER\\wc\\" + this.version + "\\" + this.name + "\\fon\\";
   }
 }

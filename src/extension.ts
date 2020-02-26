@@ -42,7 +42,7 @@ export function activate(_context: any) {
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.openWc', () => {
         WorkingCopy.current().then((wc) => {
-            showOpenDialog(wc.getSourcesDir());
+            showOpenDialog(wc.getFonDir());
         }).catch(() => {
             new Editor().showWarningMessage("Working-copy not found");
         });
