@@ -87,7 +87,6 @@ export class WorkingCopy {
     return wc.getFonDir() + baseName;
   }
 
-
   /**
    * Creates a WorkingCopy instance from the 'wc' execution output
    *
