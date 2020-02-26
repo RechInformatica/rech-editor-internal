@@ -230,7 +230,7 @@ export class Preproc implements GenericExecutor {
     if (this.extraCopyDirectories.length != 0) {
       dc += ".\\;"
     }
-    dc += new Path(this.path).directory() + ";" + myWc.getSourcesDir() + ";" + "F:\\FONTES"
+    dc += new Path(this.path).directory() + ";" + myWc.getFonDir() + ";" + "F:\\FONTES"
     return dc;
   }
 

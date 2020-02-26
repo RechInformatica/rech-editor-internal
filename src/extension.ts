@@ -42,7 +42,7 @@ export function activate(_context: any) {
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.openWc', () => {
         WorkingCopy.current().then((wc) => {
-            showOpenDialog(wc.getSourcesDir());
+            showOpenDialog(wc.getFonDir());
         }).catch(() => {
             new Editor().showWarningMessage("Working-copy not found");
         });
@@ -121,15 +121,6 @@ export function activate(_context: any) {
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.compile', () => {
         new Compiler().compileCurrentFile().then().catch();
-    }));
-    context.subscriptions.push(commands.registerCommand('rech.editor.internal.indent', () => {
-        new Editor().indent("N").then().catch();
-    }));
-    context.subscriptions.push(commands.registerCommand('rech.editor.internal.indentLeft', () => {
-        new Editor().indent("E").then().catch();
-    }));
-    context.subscriptions.push(commands.registerCommand('rech.editor.internal.indentRight', () => {
-        new Editor().indent("D").then().catch();
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.preprocess0', () => {
         new SourcePreprocessor().runPreprocOnCurrentSource("0");

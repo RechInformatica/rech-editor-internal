@@ -73,7 +73,7 @@ export class OpenSuffixedFiles {
      */
     private resolvePath(fileName: string, wc: WorkingCopy): string {
         const path = new Path(fileName);
-        let result = wc.getSourcesDir() + path.fileName();
+        let result = wc.getFonDir() + path.fileName();
         if (!new File(result).exists()) {
             result = "F:\\Fontes\\" + path.fileName();
         }

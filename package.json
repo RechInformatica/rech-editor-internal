@@ -2,7 +2,7 @@
     "name": "rech-editor-internal",
     "displayName": "Rech Internal",
     "description": "Package for using Rech's extensions with Visual Studio Code in Rech's intranet",
-    "version": "0.0.32",
+    "version": "0.0.35",
     "publisher": "rechinformatica",
     "engines": {
         "vscode": "^1.35.0"
@@ -163,18 +163,6 @@
                 "title": "Rech Internal: Commit working-copy"
             },
             {
-                "command": "rech.editor.internal.indent",
-                "title": "Rech Internal: Indenta mantendo nível atual"
-            },
-            {
-                "command": "rech.editor.internal.indentLeft",
-                "title": "Rech Internal: Indenta para esquerda"
-            },
-            {
-                "command": "rech.editor.internal.indentRight",
-                "title": "Rech Internal: Indenta para direita"
-            },
-            {
                 "command": "rech.editor.internal.preprocess0",
                 "title": "Rech Internal: PREPROC - [0] Sem opções extras"
             },
@@ -325,7 +313,7 @@
             {
                 "command": "rech.editor.internal.checkout",
                 "key": "alt+f5",
-                "when": "editorLangId == COBOL && !textCompareEditorVisible"
+                "when": "!textCompareEditorVisible"
             },
             {
                 "command": "rech.editor.internal.compile",
@@ -333,18 +321,8 @@
                 "when": "editorLangId == COBOL"
             },
             {
-                "command": "rech.editor.internal.indent",
+                "command": "rech.editor.cobol.indent",
                 "key": "ctrl+p",
-                "when": "editorLangId == COBOL"
-            },
-            {
-                "command": "rech.editor.internal.indentLeft",
-                "key": "alt+shift+left",
-                "when": "editorLangId == COBOL"
-            },
-            {
-                "command": "rech.editor.internal.indentRight",
-                "key": "alt+shift+right",
                 "when": "editorLangId == COBOL"
             },
             {
@@ -431,7 +409,8 @@
             },
             {
                 "command": "rech.editor.internal.replaceLine",
-                "key": "shift+F11"
+                "key": "shift+F11",
+                "when": "!inDebugMode"
             },
             {
                 "command": "editor.action.copyLinesUpAction",
