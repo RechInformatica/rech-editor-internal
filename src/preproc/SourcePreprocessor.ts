@@ -11,28 +11,28 @@ export class SourcePreprocessor {
   /**
    * Runs preproc based on the option previously selected from the user in VSCode UI
    * @param option selected option
-   *               [0] - Pré-processamento sem opções extras
+   *               [0] - PrÃ©-processamento sem opÃ§Ãµes extras
    *               [1] - Mostrando hierarquia dos copys (-hc)
    *               [2] - Mostrando o uso de copys pelo programa (-lc)
-   *               [3] - Mostrando os parágrafos (-lsp)
-   *               [4] - Mostrando os parágrafos do programa (-lpp)
+   *               [3] - Mostrando os parÃ¡grafos (-lsp)
+   *               [4] - Mostrando os parÃ¡grafos do programa (-lpp)
    *               [5] - Mostrando warnings normais e estendidos (-war -wes)
-   *               [6] - Mostrando variáveis não usadas no programa (-vnp)
-   *               [7] - Mostrando variáveis não usadas no programa e nos copys (-vnu)
+   *               [6] - Mostrando variÃ¡veis nÃ£o usadas no programa (-vnp)
+   *               [7] - Mostrando variÃ¡veis nÃ£o usadas no programa e nos copys (-vnu)
    *               [8] - Mostrando warning de truncamento em MOVE (-wop=w074)
    */
   public runPreprocOnCurrentSource(selected: string | undefined) {
     const specificPreprocOptions = this.getSpecificOptions(selected);
     if (specificPreprocOptions) {
       const preprocOptions = this.buildPreprocOptions(specificPreprocOptions);
-      if (selected == "7") {
+      if (selected == "3" || selected == "7") {
         const currentFile = new Editor().getCurrentFileName();
         new Preproc().setOptions(preprocOptions).setPath(currentFile).execOnTerminal(this.buildResultFileName(new Path(currentFile).fileName()));
       } else {
         this.firePreprocExecution(preprocOptions);
       }
     } else {
-      new Editor().showWarningMessage("Nenhuma opção válida selecionada para pré-processamento.");
+      new Editor().showWarningMessage("Nenhuma opÃ§Ã£o vÃ¡lida selecionada para prÃ©-processamento.");
     }
   }
 
@@ -47,7 +47,7 @@ export class SourcePreprocessor {
     new Editor().showInformationMessage("PrÃ©-processando fonte " + fileName + "...");
     const resultFile = this.buildResultFileName(fileName);
     new Preproc().setOptions(options).setPath(currentFile).execOnOutputChannel(resultFile).then(() => {
-      new Editor().showInformationMessage("Pré-processamento finalizado com sucesso.");
+      new Editor().showInformationMessage("PrÃ©-processamento finalizado com sucesso.");
       new Editor().openFileInsensitive(resultFile);
     }).catch((errorlevel) => {
       new Editor().showWarningMessage("Unexpected error thrown while source preprocess. Errorlevel: " + errorlevel);
@@ -71,6 +71,9 @@ export class SourcePreprocessor {
    * @param specificPreprocOptions specific preproc parameters for the previously selected option
    */
   private buildPreprocOptions(specificPreprocOptions: string[]): string[] {
+    if (specificPreprocOptions.length == 0) {
+      return specificPreprocOptions;
+    }
     let preprocOptions = ["-cpn", "-msi"];
     preprocOptions = preprocOptions.concat(specificPreprocOptions);
     preprocOptions = preprocOptions.concat("-as=");

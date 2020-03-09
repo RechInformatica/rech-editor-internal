@@ -196,7 +196,6 @@ export class Preproc implements GenericExecutor {
     finalCmd = finalCmd + this.path + " ";
     finalCmd = finalCmd + this.injectFileWithinAsParameter(file).join(" ");
     finalCmd = finalCmd.replace(/,/g, " ");
-    finalCmd = finalCmd + " -is"; // Only isCobol sources
     finalCmd = finalCmd + " " + this.injectDirectoriesWithinAsParameter();
     finalCmd = finalCmd.replace(/\//g, "\\");
     Log.get().info("Preproc - commandLine to call: " + finalCmd);
@@ -213,6 +212,9 @@ export class Preproc implements GenericExecutor {
     // If file is defined, updates the 'as' parameter adding the result filename.
     if (file) {
       const AsParameterPosition = optionsWithFile.indexOf("-as=");
+      if (AsParameterPosition < 0) {
+        return optionsWithFile;
+      }
       let asParameter = optionsWithFile[AsParameterPosition];
       asParameter = asParameter + file;
       optionsWithFile[AsParameterPosition] = asParameter;
