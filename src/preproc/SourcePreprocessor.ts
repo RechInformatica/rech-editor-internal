@@ -60,8 +60,7 @@ export class SourcePreprocessor {
    * @param sourceFile target source file which will be preprocessed
    */
   private buildResultFileName(sourceFile: string) {
-    let resultFile = "C:\\TMP\\PREPROC\\" + require("os").userInfo().username.toLowerCase() + "\\" + sourceFile;
-    resultFile = resultFile.replace(".CBL", ".LSR");
+    const resultFile = "C:\\TMP\\PREPROC\\" + require("os").userInfo().username.toLowerCase() + "\\" + sourceFile;
     return resultFile;
   }
 
