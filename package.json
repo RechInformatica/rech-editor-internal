@@ -135,6 +135,10 @@
                 "title": "Rech Internal: Abre os copys WT/PT/GW/GP do fonte atual ou o próprio CBL"
             },
             {
+                "command": "rech.editor.internal.OpenDebugSource",
+                "title": "Rech Internal: Abre o fonte de debug do fonte atual"
+            },
+            {
                 "command": "rech.editor.internal.checkout",
                 "title": "Rech Internal: Checkout do fonte atual para o working copy"
             },

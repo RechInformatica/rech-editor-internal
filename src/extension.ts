@@ -23,6 +23,7 @@ import { ExecutorWrapper } from './preproc/ExecutorWrapper';
 import { SpecialClassPuller } from './specialClassPuller/SpecialClassPuller';
 import { OpenSuffixedFiles } from './open/OpenSuffixedFiles';
 import { BatGrep } from './fongrep/BatGrep';
+import { OpenDebugSource } from './open/OpenDebugSource';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -85,6 +86,9 @@ export function activate(_context: any) {
         fileOpener.addPathForFileSearching("F:\\BAT\\");
         fileOpener.addPathForFileSearching("F:\\");
         fileOpener.openFromCurrentLine();
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.OpenDebugSource', () => {
+        new OpenDebugSource().open();
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.OpenWFPF', () => {
         const suffixes: string[] = ["WF.CPY", "PF.CPY"];

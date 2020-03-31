@@ -11,10 +11,16 @@
             "presentation": {
                 "reveal": "never"
             },
+            "group": "build"
+        },
+        {
+            "type": "npm",
+            "script": "compile",
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+            },
+            "problemMatcher": []
         }
     ]
 }
