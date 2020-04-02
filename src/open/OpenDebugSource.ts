@@ -2,6 +2,7 @@
 import { Matcher } from "./Matcher";
 import { Editor } from "rech-editor-cobol";
 import { Scan } from "rech-ts-commons";
+import * as fs from 'fs';
 
 /**
  * Class for opening the debug version of a file
@@ -12,8 +13,8 @@ export class OpenDebugSource {
   /* Source file name */
   private fileName: string;
 
-  constructor(){
-    this.currentDir =  new Editor().getCurrentFileDirectory()
+  constructor() {
+    this.currentDir = new Editor().getCurrentFileDirectory()
     this.fileName = new Editor().getCurrentFileBaseName()
   }
 
@@ -21,14 +22,16 @@ export class OpenDebugSource {
    * Open the debug source and set cursor to the same line
    *
    */
-  public open(){
+  public open() {
     let originalLine = new Editor().getCurrentRow() + 1
     var debugFile = this.currentDir + this.getDebugDirectory() + this.fileName;
-    var debugLine;
-    new Editor().openFile(debugFile, () => {
-      new Editor().setCursor(this.getDebugLine(originalLine, new Editor().getEditorBuffer()), 120)
-    })
-    new Editor().setCursor
+    if (fs.existsSync(debugFile)) {
+      new Editor().openFile(debugFile, () => {
+        new Editor().setCursor(this.getDebugLine(originalLine, new Editor().getEditorBuffer()), 120);
+      })
+    } else {
+      new Editor().showWarningMessage("Fonte de debug não encontrado");
+    }
   }
 
   /**
@@ -37,9 +40,9 @@ export class OpenDebugSource {
    */
   private getDebugDirectory(): string {
     if (this.currentDir.toLowerCase().includes("f:\\fontes")) {
-      return "..\\SIGER\\DES\\src\\isCOBOL\\debug\\"
+      return "..\\SIGER\\DES\\src\\isCOBOL\\debug\\";
     }
-    return "..\\src\\isCOBOL\\debug\\"
+    return "..\\src\\isCOBOL\\debug\\";
   }
 
   /**
@@ -48,13 +51,13 @@ export class OpenDebugSource {
    * @param line Current line
    * @param buffer Current source buffer
    */
-  private getDebugLine(line: number, buffer: string) : number{
+  private getDebugLine(line: number, buffer: string): number {
     let regexp = new RegExp('\\*\\>\\s+\\d+\\s+(' + line + ')\\s+$', 'gm');
     let currentLine = 0;
     new Scan(buffer).scan(regexp, (iterator: any) => {
       currentLine = iterator.row;
       iterator.stop();
-      });
-      return currentLine;
+    });
+    return currentLine;
   }
 }
