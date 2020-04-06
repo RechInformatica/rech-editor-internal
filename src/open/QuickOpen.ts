@@ -140,7 +140,7 @@ export class QuickOpen {
 			lines.forEach((line) => {
 				const versionPosition = 1;
 				const aliasPosition = 2;
-				const match = line.match(/(\d\d\.\d\d\w).+(ALF|DES|BET|OFI|OLD|EST)/)
+				const match = line.match(/(\d\d\.\d\d\w).+(ALF|DES|LAB|BET|OFI|OLD|EST)/)
 				if (match) {
 					items.push({
 						label: match[aliasPosition],
