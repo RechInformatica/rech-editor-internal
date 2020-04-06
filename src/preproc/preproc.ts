@@ -72,6 +72,9 @@ export class Preproc implements GenericExecutor {
    */
   public exec(file?: string) {
     return new Promise((resolve, reject) => {
+      if (this.shouldIgnoreExtension(file)) {
+        return resolve("");
+      }
       PreprocStatusBar.show(`File: ${this.path} - Options ${this.options}`);
       this.execPreprocessorFromSource(file).then((result) => {
         PreprocStatusBar.hide();
@@ -83,7 +86,18 @@ export class Preproc implements GenericExecutor {
     });
   }
 
-/**
+  /**
+   * Returns true whether the preprocessor should ignore file because
+   * of it's extension
+   */
+  private shouldIgnoreExtension(file?: string): boolean {
+    if (file && file.toLowerCase().endsWith(".tpl")) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * Run preprocessor from source
    */
   public execPreprocessorFromSource(file?: string) {
