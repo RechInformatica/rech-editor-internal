@@ -211,8 +211,21 @@ export class CommentPuller {
         }
         const docArray = VariableUtils.findVariableDocArray(buffer, location.line);
         const doc = new CobolDocParser().parseCobolDoc(docArray);
-        return doc.comment;
+        const finalArray = doc.comment;
+        return this.removeLastEmptyCommentIfNeeded(finalArray);
     }
 
+    /**
+     * Returns the array without the last comment if and only if the last comment
+     * represents an empty string.
+     */
+    private removeLastEmptyCommentIfNeeded(comment: string[]): string[] {
+        // Removes the last comment in case of being empty
+        if (comment.length > 0 && comment[comment.length - 1] === "") {
+            const filteredComment = comment.slice(0, comment.length - 1);
+            return filteredComment;
+        }
+        return comment;
+    }
 
 }
