@@ -3,7 +3,7 @@ import { Matcher } from "./Matcher";
 import { Editor } from "rech-editor-cobol";
 import { Scan } from "rech-ts-commons";
 import * as fs from 'fs';
-
+import path from "path";
 /**
  * Class for opening the debug version of a file
  */
@@ -12,10 +12,13 @@ export class OpenDebugSource {
   private currentDir: string;
   /* Source file name */
   private fileName: string;
+  /* Source extension */
+  private extension: string;
 
   constructor() {
     this.currentDir = new Editor().getCurrentFileDirectory()
     this.fileName = new Editor().getCurrentFileBaseName()
+    this.extension = new Editor().getCurrentFileBaseNameExtension()
   }
 
   /**
@@ -24,13 +27,17 @@ export class OpenDebugSource {
    */
   public open() {
     let originalLine = new Editor().getCurrentRow() + 1
-    var debugFile = this.currentDir + this.getDebugDirectory() + this.fileName;
+    var debugFile = path.normalize(this.currentDir + this.getDebugDirectory() + this.fileName);
     if (fs.existsSync(debugFile)) {
       new Editor().openFile(debugFile, () => {
         new Editor().setCursor(this.getDebugLine(originalLine, new Editor().getEditorBuffer()), 120);
       })
     } else {
-      new Editor().showWarningMessage("Fonte de debug não encontrado");
+      if (this.extension.toUpperCase() == "CPY" || this.extension.toUpperCase() == "CPB") {
+        new Editor().showWarningMessage("Não é possivel utilizar o comando em copy. Utilize no programa onde o copy está declarado.");
+      } else {
+        new Editor().showWarningMessage("Fonte de debug não encontrado. Tente recompilar o programa.");
+      }
     }
   }
 
@@ -43,6 +50,8 @@ export class OpenDebugSource {
       return "..\\SIGER\\DES\\src\\isCOBOL\\debug\\";
     }
     return "..\\src\\isCOBOL\\debug\\";
+
+
   }
 
   /**
