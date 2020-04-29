@@ -2,7 +2,7 @@
     "name": "rech-editor-internal",
     "displayName": "Rech Internal",
     "description": "Package for using Rech's extensions with Visual Studio Code in Rech's intranet",
-    "version": "0.0.44",
+    "version": "0.0.45",
     "publisher": "rechinformatica",
     "engines": {
         "vscode": "^1.35.0"
@@ -322,11 +322,6 @@
             {
                 "command": "rech.editor.internal.compile",
                 "key": "ctrl+f9",
-                "when": "editorLangId == COBOL"
-            },
-            {
-                "command": "rech.editor.cobol.indent",
-                "key": "ctrl+p",
                 "when": "editorLangId == COBOL"
             },
             {
