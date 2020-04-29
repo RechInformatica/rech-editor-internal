@@ -3,6 +3,7 @@ import { Executor, Path, Process, GenericExecutor, File, Log } from 'rech-editor
 import { Autogrep } from '../autogrep/autogrep';
 import { WorkingCopy } from '../wc/WorkingCopy';
 import { PreprocStatusBar } from './PreprocStatusBar';
+import { debug } from "vscode";
 
 /**
  * Cobol source preprocessor
@@ -87,14 +88,15 @@ export class Preproc implements GenericExecutor {
   }
 
   /**
-   * Returns true whether the preprocessor should ignore file because
-   * of it's extension
+   * Returns true whether the preprocessor should ignore file
    */
   private shouldIgnoreExtension(file?: string): boolean {
+    // No warning should appear for COBOL template files
     if (file && file.toLowerCase().endsWith(".tpl")) {
       return true;
     }
-    return false;
+    // No warning should appear while debugging
+    return debug.activeDebugSession != undefined;
   }
 
   /**
