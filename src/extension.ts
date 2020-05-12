@@ -24,6 +24,7 @@ import { SpecialClassPuller } from './specialClassPuller/SpecialClassPuller';
 import { OpenSuffixedFiles } from './open/OpenSuffixedFiles';
 import { BatGrep } from './fongrep/BatGrep';
 import { OpenDebugSource } from './open/OpenDebugSource';
+import { CodeCommentator } from './editor/CodeCommentator';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -290,6 +291,9 @@ export function activate(_context: any) {
         const editor = new Editor();
         editor.selectWholeLines();
         editor.replaceSelection(CobolLowercaseConverter.convert(editor.getSelectionBuffer()));
+    }));
+    context.subscriptions.push(commands.registerCommand('rech.editor.internal.commentLine', () => {
+        CodeCommentator.applyInSelectedSource();
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.runTest', async () => {
         await commands.executeCommand('workbench.output.action.clearOutput');

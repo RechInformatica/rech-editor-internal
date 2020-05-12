@@ -277,12 +277,15 @@
             {
                 "command": "rech.editor.internal.clearprog",
                 "title": "Rech Internal: ClearProg - Remove programa do Working-copy"
+            },
+            {
+                "command": "rech.editor.internal.commentLine",
+                "title": "Rech Internal: Comenta/Descomenta bloco de código"
             }
         ],
         "keybindings": [
             {
-                "comment": "Ainda não é a rotina ideal... Mas por enquanto quebra um galho",
-                "command": "editor.action.commentLine",
+                "command": "rech.editor.internal.commentLine",
                 "key": "alt+=",
                 "when": "editorLangId == COBOL"
             },
