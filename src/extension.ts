@@ -1,5 +1,5 @@
 'use strict';
-// The module 'vscode' contains the VS Code extensibility API
+// The module 'vscode' contains  the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import { commands, workspace, ExtensionContext, TextDocument, window } from 'vscode';
 import { Editor, Executor, GeradorCobol, Path, CobolDiagnosticFilter} from 'rech-editor-cobol';
