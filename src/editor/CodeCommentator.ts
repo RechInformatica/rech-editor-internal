@@ -2,6 +2,8 @@ import { Editor } from "rech-editor-cobol";
 
 /** Rech comment pattern */
 const RECH_COMMENTS = "*>->"
+/** Start of code separator line */
+const START_OF_CODE_SEPARATOR_LINE = "*>----"
 /** Cobol comment pattern */
 const COBOL_COMMENTS = "*>"
 /** Cobol concat term */
@@ -12,6 +14,10 @@ const COBOL_CONDITIONAL_COMPILATION_TERM = "$"
 const NUMBER_OF_INITIAL_SPACES = 6
 /** Inicial position of commented trim line with concat term*/
 const INITIAL_POSITION_COMMENTED_LINE_WITH_CONCAT_TERM = COBOL_COMMENTS.length + COBOL_CONCAT_TERM.length;
+/** Regex for commented variable 77, 01 or 78 declaration */
+const COMMENTED_VARIABLE_DECLARATION_REGEX = /\*\>\d\d/
+/** Regex for commented paragraph declaration */
+const COMMENTED_PARAGRAPH_DECLARATION_REGEX = /\*\>[A-Za-z0-9\-]+/
 
 export class CodeCommentator {
 
@@ -40,7 +46,7 @@ export class CodeCommentator {
   private static mustComment(lines: string[]): boolean {
     for (let index = 0; index < lines.length; index++) {
       const line = lines[index];
-      if (line.trim().startsWith(RECH_COMMENTS)) {
+      if (this.isRechCommentsOrBlankLine(line.trim())) {
         continue;
       }
       if (line.trim().startsWith(COBOL_COMMENTS)) {
@@ -120,6 +126,8 @@ export class CodeCommentator {
         uncommentedLine += codeLine.substr(1, codeLine.length);
       } else if (codeLine.startsWith(COBOL_CONDITIONAL_COMPILATION_TERM)) {
         uncommentedLine += codeLine;
+      } else if (this.isCommentedVariableOrParagraphDeclaration(trimLine)) {
+        uncommentedLine += " " + codeLine;
       } else {
         uncommentedLine = this.addSpacesOnLine(uncommentedLine, COBOL_COMMENTS.length);
         uncommentedLine += codeLine;
@@ -130,12 +138,21 @@ export class CodeCommentator {
   }
 
   /**
+   * Returns true if is a commented variable or paragraph declaration line
+   *
+   * @param line
+   */
+  private static isCommentedVariableOrParagraphDeclaration(line: string): boolean {
+    return COMMENTED_VARIABLE_DECLARATION_REGEX.test(line.substr(0, 4)) || COMMENTED_PARAGRAPH_DECLARATION_REGEX.test(line);
+  }
+
+  /**
    * Returns true if is a rech comments line ou blank line
    *
    * @param line
    */
   private static isRechCommentsOrBlankLine(line: string): boolean {
-    return line.startsWith(RECH_COMMENTS) || line == "";
+    return line.startsWith(RECH_COMMENTS) || line.startsWith(START_OF_CODE_SEPARATOR_LINE) || line == "";
   }
 
 }
