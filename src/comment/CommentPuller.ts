@@ -1,4 +1,4 @@
-import { CobolWordFinder, Path, Editor, RechPosition, ElementDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, CobolDeclarationFinder, VariableUtils, ExpandedSourceManager } from 'rech-editor-cobol';
+import { CobolWordFinder, Path, Editor, RechPosition, ElementDocumentationExtractor, CobolDocParser, File, SourceExpander, GeradorCobol, CobolDeclarationFinder, VariableUtils, ExpandedSourceManager, FindParameters } from 'rech-editor-cobol';
 import { BufferSplitter } from "rech-ts-commons";
 
 /**
@@ -129,15 +129,14 @@ export class CommentPuller {
                 return this.fireSourceExpander(word, file, ExpandedSourceManager.buildExpandedSourceFileName(file));
             });
         }
+        const params: FindParameters = {term: word, uri: currentFileName, lineIndex: cursor.line, columnIndex: cursor.column};
         new CobolDeclarationFinder(buffer)
-            .findDeclaration(word, currentFileName, cursor.line, cursor.column)
+            .findDeclaration(params)
             .then((position: RechPosition) => {
                 const comment = this.extractCommentFromDefinition(position, bufferLines);
                 this.handleCommentPulling(comment, cursor, bufferLines);
             })
-            .catch(() => {
-                new Editor().showWarningMessage("Declaração de '" + word + "' não encontrada. Não é possível buscar o comentário.");
-            });
+            .catch(() => new Editor().showWarningMessage("Declaração de '" + word + "' não encontrada. Não é possível buscar o comentário."));
     }
 
     /**
