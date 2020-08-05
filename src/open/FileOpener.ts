@@ -196,7 +196,6 @@ export class FileOpener {
    * @param file target file
    */
   private resolvePathForFile(file: string) {
-    file = file.replace(/\./g, "\\")
     var resolvedPath = "";
     this.paths.forEach((currentPath) => {
       if (resolvedPath === "") {
@@ -204,6 +203,12 @@ export class FileOpener {
           var currentFile: File = new File(currentPath + file + extension);
           if (currentFile.exists()) {
             resolvedPath = currentFile.fileName;
+          } else {
+            let fileWithBars = file.replace(/\./g, "\\")
+            var currentFile: File = new File(currentPath + fileWithBars + extension);
+            if (currentFile.exists()) {
+              resolvedPath = currentFile.fileName;
+            }
           }
         });
       }
