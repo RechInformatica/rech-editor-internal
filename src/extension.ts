@@ -90,6 +90,10 @@ export function activate(_context: any) {
         fileOpener.addPathForFileSearching("C:\\FONTES\\java\\des\\JRISigerWS\\src\\main\\java\\");
         fileOpener.addPathForFileSearching("C:\\FONTES\\java\\des\\JRIRechApplicationServer\\src\\main\\java\\");
         fileOpener.addPathForFileSearching("C:\\FONTES\\java\\des\\JRIUtil\\src\\main\\java\\");
+        fileOpener.addPathForFileSearching("F:\\FONTES\\java\\JRISiger\\src\\main\\java\\");
+        fileOpener.addPathForFileSearching("F:\\FONTES\\java\\JRISigerWS\\src\\main\\java\\");
+        fileOpener.addPathForFileSearching("F:\\FONTES\\java\\JRIRechApplicationServer\\src\\main\\java\\");
+        fileOpener.addPathForFileSearching("F:\\FONTES\\java\\JRIUtil\\src\\main\\java\\");
         fileOpener.openFromCurrentLine();
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.OpenDebugSource', () => {
