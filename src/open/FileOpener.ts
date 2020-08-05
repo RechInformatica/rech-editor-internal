@@ -1,6 +1,7 @@
 import { Editor, Path, File } from "rech-editor-cobol";
 import { Matcher } from "./Matcher";
-import * as fs from 'fs';
+import { WorkingCopy } from "../wc/WorkingCopy";
+import { Scan } from "rech-ts-commons";
 
 /**
  * Class for opening files on current line
@@ -37,6 +38,7 @@ export class FileOpener {
     var extensions: string[] = [];
     extensions.push("");
     extensions.push(".CBL");
+    extensions.push(".java");
     return extensions;
   }
 
@@ -58,8 +60,36 @@ export class FileOpener {
     const column = editor.getCurrentColumn();
     let opened = this.openFromText(this.getCurrentFileFromCursor(lineText, column));
     if (!opened) {
-      this.openFromText(this.retrieveSelectionOrFullLine());
+      opened = this.openFromText(this.retrieveSelectionOrFullLine());
     }
+    if (!opened) {
+      this.openInImportPropertiesFromText(this.getCurrentFileFromCursor(lineText, column))
+    }
+  }
+
+  /**
+   * Tries to open file in the import.properties from specified text
+   *
+   * @param text text to try to find a valid file on import.properties
+   */
+  private openInImportPropertiesFromText(text: string): boolean {
+    let sucess = false;
+    let match  = /([a-zA-Z0-9]+)/.exec(text);
+    if (match && match.length > 1) {
+      text = match[1]
+      let importPropertiesFile = new File(WorkingCopy.currentSync().getEtcDir() + "import.properties");
+      if (!importPropertiesFile.exists()) {
+        importPropertiesFile = new File("F:\\siger\\des\\etc\\import.properties");
+      }
+      let importProperties = importPropertiesFile.loadBufferSync("latin1");
+      let importPattern = new RegExp(text + "\\=" + "([^\\s]+)");
+      new Scan(importProperties).scan(importPattern, (iterator: any) => {
+        this.openRegexFromCurrentLine(iterator.lineContent.toString(), importPattern, 1)
+        iterator.stop();
+        sucess = true;
+      });
+    }
+    return sucess;
   }
 
   /**
@@ -71,13 +101,16 @@ export class FileOpener {
     if (this.openRegexFromCurrentLine(text, /([A-Z]:)?([^:\s\*\?\"\(\'\<\>\|]+\.\w+)(:\d+|,\sline\s=\s\d+)?(,\scol\s\d+)?/gi, 0)) {
       return true;
     }
-    if (this.openRegexFromCurrentLine(text, / *CALL +"([^"]+)"/gi, 1)) {
+    if (this.openRegexFromCurrentLine(text, / *CALL +(?:CLIENT +|RUN +)*"([^"]+)"/gi, 1)) {
       return true;
     }
-    if (this.openRegexFromCurrentLine(text, / *CANCEL +\"([^"]+)\"/gi, 1)) {
+    if (this.openRegexFromCurrentLine(text, / *CANCEL +(?:CLIENT +)?\"([^"]+)\"/gi, 1)) {
       return true;
     }
     if (this.openRegexFromCurrentLine(text, / *INVOKE +([^ ]+)/gi, 1)) {
+      return true;
+    }
+    if (this.openRegexFromCurrentLine(text, / *CLASS [A-Za-z0-9]+ AS \"([^ ]+)\"/gi, 1)) {
       return true;
     }
     return false;
@@ -163,6 +196,7 @@ export class FileOpener {
    * @param file target file
    */
   private resolvePathForFile(file: string) {
+    file = file.replace(/\./g, "\\")
     var resolvedPath = "";
     this.paths.forEach((currentPath) => {
       if (resolvedPath === "") {
