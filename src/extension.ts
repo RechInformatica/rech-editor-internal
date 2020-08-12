@@ -393,7 +393,7 @@ function defineSourceExpander() {
  */
 function definePreprocessor() {
     const executorList = new ExecutorWrapper();
-    executorList.addExecutor(new Preproc().setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-wop=w077;w078;w079"]));
+    executorList.addExecutor(new Preproc().setOptions(["-cpn", "-spn", "-sco", "-msi", "-vnp", "-war", "-wes", "-cem", "-wop=w077;w078;w079"]));
     executorList.addExecutor(new ExternalScriptValidator());
     return executorList;
 }
