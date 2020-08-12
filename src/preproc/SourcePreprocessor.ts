@@ -1,6 +1,7 @@
 'use babel';
 import { Editor, Path } from 'rech-editor-cobol';
 import { Preproc } from './preproc';
+import { WorkingCopy } from '../wc/WorkingCopy';
 
 /**
  * Class to preprocess the current file open in editor showing user some different
@@ -46,7 +47,8 @@ export class SourcePreprocessor {
     const fileName = new Path(currentFile).fileName();
     new Editor().showInformationMessage("Pré-processando fonte " + fileName + "...");
     const resultFile = this.buildResultFileName(fileName);
-    new Preproc().setOptions(options).setPath(currentFile).execOnOutputChannel(resultFile).then(() => {
+    const wc = WorkingCopy.currentSync();
+    new Preproc().setOptions(options).setPath(currentFile).setExtraParams([wc.getFonDir()]).execOnOutputChannel(resultFile).then(() => {
       new Editor().showInformationMessage("Pré-processamento finalizado com sucesso.");
       new Editor().openFileInsensitive(resultFile);
     }).catch((errorlevel) => {

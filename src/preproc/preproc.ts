@@ -243,7 +243,7 @@ export class Preproc implements GenericExecutor {
     const myWc = this.wc;
     let dc = " -dc=";
     this.extraCopyDirectories.forEach((extraDir) => {
-      dc += ";" + extraDir;
+      dc += extraDir + ";";
     })
     if (this.extraCopyDirectories.length != 0) {
       dc += ".\\;"
