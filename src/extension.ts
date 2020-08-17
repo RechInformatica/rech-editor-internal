@@ -87,11 +87,11 @@ export function activate(_context: any) {
         fileOpener.addPathForFileSearching("F:\\BAT\\");
         fileOpener.addPathForFileSearching("F:\\");
         fileOpener.addPathForFileSearching("C:\\FONTES\\java\\des\\JRISiger\\src\\main\\java\\");
-        fileOpener.addPathForFileSearching("C:\\FONTES\\java\\des\\JRISigerWS\\src\\main\\java\\");
+        fileOpener.addPathForFileSearching("C:\\FONTES\\java\\des\\JRIWebServiceApi\\src\\main\\java\\");
         fileOpener.addPathForFileSearching("C:\\FONTES\\java\\des\\JRIRechApplicationServer\\src\\main\\java\\");
         fileOpener.addPathForFileSearching("C:\\FONTES\\java\\des\\JRIUtil\\src\\main\\java\\");
         fileOpener.addPathForFileSearching("F:\\FONTES\\java\\JRISiger\\src\\main\\java\\");
-        fileOpener.addPathForFileSearching("F:\\FONTES\\java\\JRISigerWS\\src\\main\\java\\");
+        fileOpener.addPathForFileSearching("F:\\FONTES\\java\\JRIWebServiceApi\\src\\main\\java\\");
         fileOpener.addPathForFileSearching("F:\\FONTES\\java\\JRIRechApplicationServer\\src\\main\\java\\");
         fileOpener.addPathForFileSearching("F:\\FONTES\\java\\JRIUtil\\src\\main\\java\\");
         fileOpener.openFromCurrentLine();
