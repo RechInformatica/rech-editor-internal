@@ -2,6 +2,7 @@ import { Editor, Path, File } from "rech-editor-cobol";
 import { Matcher } from "./Matcher";
 import { WorkingCopy } from "../wc/WorkingCopy";
 import { Scan } from "rech-ts-commons";
+import { window } from "vscode";
 
 /**
  * Class for opening files on current line
@@ -63,7 +64,10 @@ export class FileOpener {
       opened = this.openFromText(this.retrieveSelectionOrFullLine());
     }
     if (!opened) {
-      this.openInImportPropertiesFromText(this.getCurrentFileFromCursor(lineText, column))
+      opened = this.openInImportPropertiesFromText(this.getCurrentFileFromCursor(lineText, column))
+    }
+    if (!opened) {
+      window.showInformationMessage("Existing file not found to open!")
     }
   }
 
@@ -82,7 +86,7 @@ export class FileOpener {
         importPropertiesFile = new File("F:\\siger\\des\\etc\\import.properties");
       }
       let importProperties = importPropertiesFile.loadBufferSync("latin1");
-      let importPattern = new RegExp(text + "\\=" + "([^\\s]+)");
+      let importPattern = new RegExp("^" + text + "\\=" + "([^\\s]+)", "mi");
       new Scan(importProperties).scan(importPattern, (iterator: any) => {
         this.openRegexFromCurrentLine(iterator.lineContent.toString(), importPattern, 1)
         iterator.stop();
