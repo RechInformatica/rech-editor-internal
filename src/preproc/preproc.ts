@@ -3,7 +3,7 @@ import { Executor, Path, Process, GenericExecutor, File, Log } from 'rech-editor
 import { Autogrep } from '../autogrep/autogrep';
 import { WorkingCopy } from '../wc/WorkingCopy';
 import { PreprocStatusBar } from './PreprocStatusBar';
-import { debug } from "vscode";
+import { PreprocHeaderDetector } from './PreprocHeaderDetector';
 
 /**
  * Cobol source preprocessor
@@ -73,30 +73,46 @@ export class Preproc implements GenericExecutor {
    */
   public exec(file?: string) {
     return new Promise((resolve, reject) => {
-      if (this.shouldIgnoreExtension(file)) {
-        return resolve("");
+      this.checkShouldIgnoreFile(file)
+        .then(shouldIgnore => {
+          if (shouldIgnore) {
+            return resolve("");
+          }
+          PreprocStatusBar.show(`File: ${this.path} - Options ${this.options}`);
+          this.execPreprocessorFromSource(file).then((result) => {
+            PreprocStatusBar.hide();
+            resolve(result);
+          }).catch(() => {
+            PreprocStatusBar.hide();
+            reject();
+          });
+        }).catch(err => reject(err));
+    });
+  }
+
+  /**
+   * Creates and returns a promise indicating whether the file
+   * should be ignored for any reason.
+   * 
+   * @param file file to check whether should or not be ignored
+   */
+  private checkShouldIgnoreFile(file?: string): Promise<boolean> {
+    return new Promise((resolve, _reject) => {
+      if (file && this.shouldIgnoreExtension(file)) {
+        return resolve(true);
       }
-      PreprocStatusBar.show(`File: ${this.path} - Options ${this.options}`);
-      this.execPreprocessorFromSource(file).then((result) => {
-        PreprocStatusBar.hide();
-        resolve(result);
-      }).catch(() => {
-        PreprocStatusBar.hide();
-        reject();
-      });
+      new PreprocHeaderDetector().checkHeaderExists(this.path)
+        .then(preprocessed => resolve(preprocessed))
+        .catch(_ => resolve(false));
     });
   }
 
   /**
    * Returns true whether the preprocessor should ignore file
    */
-  private shouldIgnoreExtension(file?: string): boolean {
+  private shouldIgnoreExtension(file: string): boolean {
     // No warning should appear for COBOL template files
-    if (file && file.toLowerCase().endsWith(".tpl")) {
-      return true;
-    }
-    // No warning should appear while debugging
-    return debug.activeDebugSession != undefined;
+    return file.toLowerCase().endsWith(".tpl");
   }
 
   /**
