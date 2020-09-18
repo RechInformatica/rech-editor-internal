@@ -28,7 +28,8 @@ export class PreprocHeaderDetector {
             }
 
             // Creates instance to read file lines
-            const rl = readline.createInterface({ input: fs.createReadStream(file) });
+            const readStream = fs.createReadStream(file);
+            const rl = readline.createInterface({ input: readStream });
 
             // Variables to control whether preprocessor header has been found
             let streamClosed = false;
@@ -53,10 +54,15 @@ export class PreprocHeaderDetector {
                     lineNumber++;
                 }
             };
+
+            const closeCallbackFn = function (): void {
+                readStream.close();
+                resolve(preprocessedSource);
+            }
             
             // Configure callbacks
             rl.on('line', (line) => readCallbackFn(line));
-            rl.on('close', () => resolve(preprocessedSource));
+            rl.on('close', () => closeCallbackFn());
         });
     }
 
