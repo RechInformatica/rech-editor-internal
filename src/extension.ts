@@ -1,7 +1,7 @@
 'use strict';
 // The module 'vscode' contains  the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { commands, workspace, ExtensionContext, TextDocument, window } from 'vscode';
+import { commands, workspace, ExtensionContext, TextDocument, window, OpenDialogOptions, Uri } from 'vscode';
 import { Editor, Executor, GeradorCobol, Path, CobolDiagnosticFilter} from 'rech-editor-cobol';
 import { Compiler } from './compiler/compiler';
 import { WorkingCopy } from './wc/WorkingCopy';
@@ -34,17 +34,17 @@ export function activate(_context: any) {
     PreprocStatusBar.buildStatusBar();
     // Register extension commands
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.openFontesTrunk', () => {
-        showOpenDialog('F:\\FONTES\\');
+        showOpenDialog('F:\\FONTES\\', 'Abrir fonte do trunk');
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.openCurrentSource', () => {
         showOpenDialog(new Editor().getCurrentFileName());
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.openScripts', () => {
-        showOpenDialog('F:\\BAT\\');
+        showOpenDialog('F:\\BAT\\', 'Abrir script');
     }));
     context.subscriptions.push(commands.registerCommand('rech.editor.internal.openWc', () => {
         WorkingCopy.current().then((wc) => {
-            showOpenDialog(wc.getFonDir());
+            showOpenDialog(wc.getFonDir(), 'Abrir fonte do working-copy');
         }).catch(() => {
             new Editor().showWarningMessage("Working-copy not found");
         });
@@ -433,13 +433,19 @@ function defineDianosticConfigs() {
  * Opens dialog for file selection and automatically opens the files in editor
  *
  * @param defaultDir default directory
+ * @param title dialog title
  */
-function showOpenDialog(defaultDir: string) {
-    const editor = new Editor();
-    editor.showOpenDialog(
-        defaultDir,
-        (currentFile) => { editor.openFileInsensitive(currentFile); },
-    );
+function showOpenDialog(defaultDir: string, title?: string) {
+    const options: OpenDialogOptions = {
+        openLabel: 'Abrir arquivo',
+        defaultUri: defaultDir ? Uri.file(defaultDir) : undefined,
+        title: title
+    };
+    window.showOpenDialog(options).then(selectedFiles => {
+        if (selectedFiles) {
+            selectedFiles.forEach(currentFile => new Editor().openFileInsensitive(currentFile.fsPath));
+        }
+    });
 }
 
 // this method is called when your extension is deactivated
