@@ -54,7 +54,7 @@ export class WorkingCopy {
     editor.showInformationMessage("Executando Checkout de " + baseName + "...");
     editor.closeActiveEditor();
     new Executor().runAsync(
-      "cmd.exe /c F:\\BAT\\Checkout.bat /noopen /nodic " + baseName,
+      "cmd.exe /c F:\\BAT\\Checkout.bat /noopen " + baseName,
       _process => {
         WorkingCopy.current().then((wc) => {
           const targetFilename = this.getTargetFileName(baseName, wc)
